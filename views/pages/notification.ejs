@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tất cả thông báo</title>
+
+    <%- include('../partials/head.ejs') %>
+</head>
+
+<body>
+    <div class="row all-notifications">
+        <div class="col-3">
+            <!-- Vertical navbar -->
+            <div class="vertical-nav bg-white" id="sidebar">
+                <div class="py-4 px-3 mb-4 bg-light">
+                    <div class="media d-flex align-items-center"><img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                        <div class="media-body">
+                            <h4 class="m-0">Jason Doe</h4>
+                            <p class="font-weight-light text-muted mb-0">Web developer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+
+                <ul class="nav flex-column bg-white mb-0">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-dark font-italic bg-light ml-3">
+                            Home
+                        </a>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                            About
+                        </a>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link text-dark font-italic ml-3">
+                            About
+                        </a>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-dark font-italic ml-3">
+                            About
+                        </a>
+
+                </ul>
+
+                <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Charts</p>
+
+                <ul class="nav flex-column bg-white mb-0">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-dark font-italic ml-3">
+                            Area charts
+                        </a>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                            Bar charts
+                        </a>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link text-dark font-italic ml-3">
+                            Pie charts
+                        </a>
+
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link text-dark font-italic ml-3">
+                            Line charts
+                        </a>
+
+                </ul>
+            </div>
+            <!-- End vertical navbar -->
+        </div>
+
+        <div class="col-8 shadow-lg p-3 mb-5 bg-white rounded">
+            <form action="#" method="post">
+                <div class="row">
+                    <div class="form-group col-lg-4 col-sm-12">
+                        <input type="text" class="form-control w-100" id="timkiemten" name="timkiemten" placeholder="Tìm kiếm theo tên thông báo">
+                    </div>
+                    <div class="form-group col-lg-4 col-sm-12">
+                        <input type="text" class="form-control w-100" id="timkiemnoidung" name="timkiemnoidung" placeholder="Tìm kiếm theo nội dung thông báo">
+                    </div>
+                    <div class="col-lg-4">
+                        <select name="phongkhoa" id="phongkhoa" class="phongkhoa custom-select">
+                            <option selected>Chọn Khoa/Phòng</option>
+                            <option value="phongcthssv">Phòng Công tác học sinh sinh viên (CTHSSV)</option>
+                            <option value="phongdaihoc">Phòng Đại học</option>
+                            <option value="phongsaudaihoc">Phòng Sau đại học</option>
+                            <option value="phongdientoanvamaytinh">Phòng điện toán và máy tính</option>
+                            <option value="phongkhaotivakiemdinhchatluong">Phòng khảo thí và kiểm định chất lượng</option>
+                            <option value="phongtaichinh">Phòng tài chính</option>
+                            <option value="phongclc">TDT Creative Language Center</option>
+                            <option value="trungtamtinhoc">Trung tâm tin học</option>
+                            <option value="sdtc">Trung tâm đào tạo phát triển xã hội (SDTC)</option>
+                            <option value="atem">Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)</option>
+                            <option value="trungtamhoptacdoanhnghiepvacuusinhvien">Trung tâm hợp tác doanh nghiệp và cựu sinh viên</option>
+                            <option value="khoaluat">Khoa Luật</option>
+                            <option value="trungtamngoaingutinhocboiduongvanhoa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
+                            <option value="vienchinhsachkinhtevakinhdoanh">Viện chính sách kinh tế và kinh doanh</option>
+                            <option value="khoamtcn">Khoa Mỹ thuật công nghiệp</option>
+                            <option value="khoadiendientu">Khoa Điện – Điện tử</option>
+                            <option value="khoacntt">Khoa Công nghệ thông tin</option>
+                            <option value="khoaquantrikinhdoanh">Khoa Quản trị kinh doanh</option>
+                            <option value="khoamoitruongvabaoholaoding">Khoa Môi trường và bảo hộ lao động </option>
+                            <option value="khoalaodongcongdoan">Khoa Lao động công đoàn</option>
+                            <option value="khoataichinhnganhang">Khoa Tài chính ngân hàng</option>
+                            <option value="khoagiaoducquocte">Khoa giáo dục quốc tế</option>
+                          </select>
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="d-flex">
+                <button type="button" class="btn btn-success" id="searchNotifications">Tìm kiếm</button>
+                <button type="button" class="btn btn-danger" id="">Xóa</button>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary ml-auto" data-toggle="modal" data-target="#exampleModal">
+                    Tạo thông báo mới
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Nội dung thông báo mới</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body py-1">
+                                <form action="#" method="post">
+                                    <div class="form-group pl-0">
+                                        <label for="titleNotification" class="mb-0">Tiêu đề</label>
+                                        <input value="" placeholder="Tiêu đề thông báo" type="text" class="form-control ml-0" id="titleNotification" name="titleNotification">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contentNotification" class="mb-0">Nội dung thông báo</label>
+                                        <textarea class="form-control ml-0" id="contentNotification" name="contentNotification" rows="3"></textarea>
+                                    </div>
+                                    <h5 class="mb-0">Chuyên mục bài đăng</h5>
+                                    <select class="custom-select ml-0 mb-3">
+                                        <option selected>Chọn chuyên mục</option>
+                                        <option value="phongcthssv">Phòng Công tác học sinh sinh viên (CTHSSV)</option>
+                                        <option value="phongdaihoc">Phòng Đại học</option>
+                                        <option value="phongsaudaihoc">Phòng Sau đại học</option>
+                                        <option value="phongdientoanvamaytinh">Phòng điện toán và máy tính</option>
+                                        <option value="phongkhaotivakiemdinhchatluong">Phòng khảo thí và kiểm định chất lượng</option>
+                                        <option value="phongtaichinh">Phòng tài chính</option>
+                                        <option value="phongclc">TDT Creative Language Center</option>
+                                        <option value="trungtamtinhoc">Trung tâm tin học</option>
+                                        <option value="sdtc">Trung tâm đào tạo phát triển xã hội (SDTC)</option>
+                                        <option value="atem">Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)</option>
+                                        <option value="trungtamhoptacdoanhnghiepvacuusinhvien">Trung tâm hợp tác doanh nghiệp và cựu sinh viên</option>
+                                        <option value="khoaluat">Khoa Luật</option>
+                                        <option value="trungtamngoaingutinhocboiduongvanhoa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
+                                        <option value="vienchinhsachkinhtevakinhdoanh">Viện chính sách kinh tế và kinh doanh</option>
+                                        <option value="khoamtcn">Khoa Mỹ thuật công nghiệp</option>
+                                        <option value="khoadiendientu">Khoa Điện – Điện tử</option>
+                                        <option value="khoacntt">Khoa Công nghệ thông tin</option>
+                                        <option value="khoaquantrikinhdoanh">Khoa Quản trị kinh doanh</option>
+                                        <option value="khoamoitruongvabaoholaoding">Khoa Môi trường và bảo hộ lao động </option>
+                                        <option value="khoalaodongcongdoan">Khoa Lao động công đoàn</option>
+                                        <option value="khoataichinhnganhang">Khoa Tài chính ngân hàng</option>
+                                        <option value="khoagiaoducquocte">Khoa giáo dục quốc tế</option>
+                                      </select>
+
+                                    <div class="form-group">
+                                        <div class="flex">
+                                            <button type="submit" class="btn btn-success">Đăng bài</button>
+                                            <button type="submit" class="btn btn-danger">Hủy</button>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="card my-2 w-100">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-truncate w-75">THÔNG BÁO V/V ĐĂNG KÝ MÔN HỌC TRONG HK3/2020-2021 DÀNH CHO SINH VIÊN HỆ CHÍNH</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Thông báo V/v đăng ký môn học trong HK3/2020-2021 dành cho sinh viên hệ chính quy các lớp tiêu chuẩn, chất lượng cao từ khóa tuyển sinh 2020 trở về trước</h6>
+                    <a href="#" class="card-link">Chi tiết thông báo</a>
+                    <div class="phongban-date">Phòng ban | Ngày đăng: 1-3-2021</div>
+                </div>
+            </div>
+
+            <div class="card my-2 w-100">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-truncate w-75">THÔNG BÁO V/V ĐĂNG KÝ MÔN HỌC TRONG HK3/2020-2021 DÀNH CHO SINH VIÊN HỆ CHÍNH</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Thông báo V/v đăng ký môn học trong HK3/2020-2021 dành cho sinh viên hệ chính quy các lớp tiêu chuẩn, chất lượng cao từ khóa tuyển sinh 2020 trở về trước</h6>
+                    <a href="#" class="card-link">Chi tiết thông báo</a>
+                    <div class="phongban-date">Phòng ban | Ngày đăng: 1-3-2021</div>
+                </div>
+            </div>
+            <div class="card my-2 w-100">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-truncate w-75">THÔNG BÁO V/V ĐĂNG KÝ MÔN HỌC TRONG HK3/2020-2021 DÀNH CHO SINH VIÊN HỆ CHÍNH</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Thông báo V/v đăng ký môn học trong HK3/2020-2021 dành cho sinh viên hệ chính quy các lớp tiêu chuẩn, chất lượng cao từ khóa tuyển sinh 2020 trở về trước</h6>
+                    <a href="#" class="card-link">Chi tiết thông báo</a>
+                    <div class="phongban-date">Phòng ban | Ngày đăng: 1-3-2021</div>
+                </div>
+            </div>
+            <div class="card my-2 w-100">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase text-truncate w-75">THÔNG BÁO V/V ĐĂNG KÝ MÔN HỌC TRONG HK3/2020-2021 DÀNH CHO SINH VIÊN HỆ CHÍNH</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Thông báo V/v đăng ký môn học trong HK3/2020-2021 dành cho sinh viên hệ chính quy các lớp tiêu chuẩn, chất lượng cao từ khóa tuyển sinh 2020 trở về trước</h6>
+                    <a href="#" class="card-link">Chi tiết thông báo</a>
+                    <div class="phongban-date">Phòng ban | Ngày đăng: 1-3-2021</div>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary">Trang 1 Trong 10 Trang</button>
+            <div class="page-number-list d-inline">
+                <a href="#" class="page-number btn btn-dark">1</a>
+                <a href="#" class="page-number btn btn-dark">2</a>
+                <a href="#" class="page-number btn btn-dark">3</a>
+                <a href="#" class="page-number btn btn-dark">4</a>
+                <a href="#" class="page-number btn btn-dark">5</a>
+                <a href="#" class="page-number btn btn-dark">6</a>
+                <a href="#" class="page-number btn btn-dark">7</a>
+                <a href="#" class="page-number btn btn-dark">8</a>
+                <a href="#" class="page-number btn btn-dark">9</a>
+                <a href="#" class="page-number btn btn-dark">></a>
+                <a href="#" class="page-number btn btn-dark">>></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-1"></div>
+    </div>
+
+</body>
+
+</html>

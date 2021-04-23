@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo tài khoản phòng ban</title>
+
+    <%- include('../partials/head.ejs') %>
+</head>
+
+<body>
+    <div class="register-background">
+        <div class="container">
+            <div class="register-content">
+                <form method="post" action="#" id="register-form" class="register-form">
+                    <h2>Tạo tài khoản Phòng/Khoa</h2>
+                    <div class="form-group"><input type="text" placeholder="Tên Phòng/Khoa" class="form-input" id="account-name"></div>
+                    <div class="form-group"><input type="text" placeholder="Tên tài khoản Phòng/Khoa" class="form-input" id="name"></div>
+                    <div class="form-group"><input type="password" placeholder="Mật khẩu" class="form-input" id="password"></div>
+                    <div class="form-group"><input type="password" placeholder="Nhập lại mật khẩu" class="form-input" id="repeat-password"></div>
+                    <div class="btn-group">Phân quyền Phòng/Khoa</div>
+                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Phòng Công tác học sinh sinh viên (CTHSSV)</label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Phòng Đại học</label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Phòng Sau đại học</label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Phòng điện toán và máy tính</label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Phòng khảo thí và kiểm định chất lượng </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Phòng tài chính </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> TDT Creative Language Center </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Trung tâm tin học </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Trung tâm đào tạo phát triển xã hội (SDTC) </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM) </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Trung tâm hợp tác doanh nghiệp và cựu sinh viên </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa Luật </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Viện chính sách kinh tế và kinh doanh </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa Mỹ thuật công nghiệp </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa Điện – Điện tử </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa Công nghệ thông tin </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa Quản trị kinh doanh </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa Môi trường và bảo hộ lao động </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa Lao động công đoàn </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa Tài chính ngân hàng  </label></div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value=""> Khoa giáo dục quốc tế </label></div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" name="submit" id="submit" class="form-submit btn">Lưu lại</button>
+                    </div>
+                    <p>Quay lại trang chủ?<a href="/"> Click here!</a></p>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

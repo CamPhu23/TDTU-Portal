@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách phòng ban</title>
+
+    <%- include('../partials/head.ejs') %>
+</head>
+
+<body>
+    <div class="department-list">
+        <div class="row">
+            <div class="col-3">
+                <!-- Vertical navbar -->
+                <div class="vertical-nav bg-white" id="sidebar">
+                    <div class="py-4 px-3 mb-4 bg-light">
+                        <div class="media d-flex align-items-center"><img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="..." width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                            <div class="media-body">
+                                <h4 class="m-0">Jason Doe</h4>
+                                <p class="font-weight-light text-muted mb-0">Web developer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+
+                    <ul class="nav flex-column bg-white mb-0">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic bg-light ml-3">
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                                About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                                About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                                About
+                            </a>
+                        </li>
+                    </ul>
+
+                    <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Charts</p>
+
+                    <ul class="nav flex-column bg-white mb-0">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                                Area charts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                                Bar charts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                                Pie charts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link text-dark font-italic ml-3">
+                                Line charts
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End vertical navbar -->
+            </div>
+
+            <div class="col-8 bg-light p-0">
+
+                <h5 class="text-white bg-dark p-3">Danh sách phòng ban</h5>
+                <div class="row m-0 text-center">
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Phòng Công tác học sinh sinh viên</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Phòng Công tác học sinh sinh viên (CTHSSV)</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Phòng Đại học</div>
+                            <div class="middle">
+                                <a class="btn btn-primary" href="#" role="button">Phòng Đại học</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Phòng Sau đại học</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Phòng Sau đại học</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Phòng điện toán và máy tính
+                            </div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Phòng điện toán và máy tính</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Phòng khảo thí và kiểm định chất lượng</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Phòng khảo thí và kiểm định chất lượng</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Phòng tài chính</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Phòng tài chính</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">TDT Creative Language Center</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">TDT Creative Language Center</a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Trung tâm tin học</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Trung tâm tin học</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Trung tâm đào tạo phát triển xã hội (SDTC)</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Trung tâm đào tạo phát triển xã hội (SDTC)</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ<</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Trung tâm hợp tác doanh nghiệp và cựu sinh viên</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Trung tâm hợp tác doanh nghiệp và cựu sinh viên</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa Luật</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Khoa Luật</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Viện chính sách kinh tế và kinh doanh</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Viện chính sách kinh tế và kinh doanh</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa Mỹ thuật công nghiệp</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Khoa Mỹ thuật công nghiệp</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa Điện – Điện tử/div>
+                            </div>
+                            <div class="middle">
+                                <a class="btn btn-primary" href="#" role="button">Khoa Điện – Điện tử</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa Công nghệ thông tin</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Khoa Công nghệ thông tin</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa Quản trị kinh doanh</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Khoa Quản trị kinh doanh</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa Môi trường và bảo hộ lao động</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Khoa Môi trường và bảo hộ lao động</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa Lao động công đoàn</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Khoa Lao động công đoàn</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa Tài chính ngân hàng</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Khoa Tài chính ngân hàng</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg-3 mb-2 hover1">
+                        <div class="mix">
+                            <div class="phongban">Khoa giáo dục quốc tế</div>
+                        </div>
+                        <div class="middle">
+                            <a class="btn btn-primary" href="#" role="button">Khoa giáo dục quốc tế</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-1"></div>
+        </div>
+    </div>
+</body>
+
+</html>

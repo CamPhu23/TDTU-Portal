@@ -47,17 +47,253 @@ span .writer-name {
     color: blue !important;
 }
 
+
 /* login pages */
+
 html {
     height: 100%;
 }
 
-#login-background {
-    display:table;
-    width:100%;
+body {
     height: 100%;
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../images/TDTU_logo.png');
-    background-position:center top;
+}
+
+#login-background {
+    display: table;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./images/tdtu.jpg');
+    background-position: center top;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+}
+
+.login-form {
+    min-width: 300px;
+    min-height: 460px;
+    border-radius: 14px;
+    box-shadow: 0 6px 12px 4px rgba(140, 140, 140, 0.9)
+}
+
+.btn-login {
+    height: 45px;
+}
+
+.login-form input[type="password"],
+input[type="email"] {
+    height: 45px;
+}
+
+
+/* Tri */
+
+
+/* Change Password */
+
+.changePassword {
+    min-width: 180px;
+}
+
+
+/* Department Líst */
+
+.image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 90px;
+    left: 90px;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.mix {
+    width: 180px;
+    /*width of your image*/
+    height: 180px;
+    /*height of your image*/
+    background-image: url('./images/logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: 180px 180px;
+    margin: 0;
+    /* If you want no margin */
+    padding: 0;
+    /*if your want to padding */
+    border: 1px solid;
+}
+
+.phongban {
+    position: absolute;
+    text-transform: uppercase;
+    bottom: 0;
+    text-align: center;
+    width: 180px;
+    background-color: black;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hover1 {
+    max-width: 180px;
+    margin-right: 3.5px;
+    padding: 0px;
+}
+
+@media (max-width: 1344px) and (min-width: 1110px) {
+    .hover1 {
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 1109px) and (min-width: 960px) {
+    .hover1 {
+        margin-right: 40px;
+    }
+}
+
+@media (max-width: 945px) {
+    .hover1 {
+        margin-right: auto;
+    }
+}
+
+.hover1:hover .image {
+    opacity: 0.3;
+}
+
+.hover1:hover .middle {
+    opacity: 1;
+}
+
+.all-notifications input[type="text"] {
+    width: 35%;
+    min-width: 275px;
+}
+
+.all-notifications button,
+input,
+optgroup,
+select,
+textarea {
+    margin: 4px;
+}
+
+.phongkhoa {
+    min-width: 160px;
+}
+
+
+/* Register */
+
+.register-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-form {
+    min-width: 400px;
+    padding: 50px 85px;
+    margin-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 1px 2px #f4f46d;
+    background-color: #fff;
+}
+
+.form-input {
+    width: 100%;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    padding: 17px 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    color: #222;
+}
+
+.dropdown-menu {
+    max-height: 200px;
+    max-width: 400px;
+    overflow: auto;
+}
+
+.register-form h2 {
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+.register-background {
+    background-image: linear-gradient(to top, darkorange, rgb(239, 174, 96));
+    min-height: 100%;
+}
+
+.register-form .form-submit {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    padding: 17px 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    border: none;
+    background-image: linear-gradient(to left, rgb(132, 132, 247), rgb(151, 213, 247));
+}
+
+
+/* Profile */
+
+.profile-content {
+    max-width: 450px;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.profile-content .change-avatar {
+    margin-bottom: 15px;
+}
+
+.profile-content .avatar {
+    border-radius: 50%;
+}
+
+.profile-content .form-submit {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    padding: 17px 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    border: none;
+    background-image: linear-gradient(to left, rgb(132, 132, 247), rgb(151, 213, 247));
 }
