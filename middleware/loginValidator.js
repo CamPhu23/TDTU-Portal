@@ -1,10 +1,9 @@
 const {check} = require('express-validator')
 
 checker = [
-    check('email')
-    .exists().withMessage("Bạn cần nhập email")
-    .notEmpty().withMessage("Email không được để trống")
-    .isEmail().withMessage("Email không hợp lệ"),
+    check('username')
+    .exists().withMessage("Bạn cần nhập Tên tài khoản")
+    .notEmpty().withMessage("Tên tài khoản không được để trống"),
 
     check('pass')
     .exists().withMessage("Bạn cần nhập password")

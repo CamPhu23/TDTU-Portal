@@ -1,7 +1,6 @@
 const express = require('express')
 
-const authController = require('../controllers/auth')
-    // const userModel = require('../models/user')
+const authController = require('../controllers/authController')
 
 const loginValidator = require('../middleware/loginValidator')
 
@@ -14,12 +13,6 @@ Router.post('/googlelogin', authController.postGoogleLogin)
 Router.post('/login', loginValidator, authController.postLogin)
 
 Router.get('/changePassword', authController.getChangePassword)
-
-Router.get('/departmentlist', authController.getDepartmentlist)
-
-Router.get('/notification', authController.getNotification)
-
-Router.get('/profile', authController.getProfile)
 
 Router.get('/register', authController.getRegister)
 
