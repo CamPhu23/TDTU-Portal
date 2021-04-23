@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+
+    <%- include('../partials/head.ejs') %>
+
+    <!-- googleapis -->
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    <meta name="google-signin-client_id" content="591004915054-1kjagbh4omn10rg7n36g8p7up4qrv058.apps.googleusercontent.com">
+
+</head>
+<body id="login-background">
+    <div class="d-flex h-100">
+        <div class="w-25 bg-white container p-4 border rounded align-self-center">
+            <div class="row d-flex justify-content-center">
+                <h2>Đăng nhập</h2>
+            </div>
+    
+            <div class="row">
+                <div class="w-100">
+                    <form action="./login" method="post">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input value="<%= email %>" placeholder="Email" type="email" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="pass">Mật khẩu</label>
+                            <input value="<%= pass %>" placeholder="Mật khẩu" type="password" class="form-control" id="pass" name="pass">
+                        </div> 
+    
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox"> Ghi nhớ cho lần đăng nhập tiếp
+                            </label>
+                        </div>
+    
+                        <% if (locals.errorMess) { %>                
+                            <div class="alert alert-danger">
+                                <%= errorMess  %>
+                            </div> 
+                        <% } %>
+            
+                        <div class="form-group">
+                            <button type="submit" class="w-100 btn btn-primary">Đăng nhập</button>
+                        </div>   
+                    </form>
+
+                    <hr>                    
+                    <div class="d-flex justify-content-center">
+                        <div data-width="200" data-height="40" data-longtitle="true" id="googleSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+                    </div>
+                </div>
+            </div>  
+    
+        </div>
+
+        <!-- <a href="#" onclick="signOut();">Sign out</a> -->
+    </div>
+
+    <script>
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+
+            fetch('http://localhost:8080/auth/googlelogin', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify({'id_token': id_token})
+            })
+            .then(json => json.json())
+            .then(result => {
+                if (result.result === "success") {
+                    window.location.replace("http://localhost:8080");
+                } else {
+                    signOut()
+                    console.log(result);
+                }
+            })
+            .catch (err => console.log(err))
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        }
+    </script>
+</body>
+</html>

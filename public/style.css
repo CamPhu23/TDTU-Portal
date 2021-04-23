@@ -1,0 +1,63 @@
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-x: hidden;
+}
+
+.vertical-nav {
+    min-width: 270px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    /* z-index: 1; */
+}
+
+.right-part {
+    background-color: #f0f2f5;
+}
+
+span .writer-name {
+    color: black;
+}
+
+.upload-photo {
+    max-height: 500px;
+}
+
+.more-option {
+    width: 40px;
+    height: 40px;
+}
+
+.more-option:hover {
+    background-color: #f0f2f5;
+}
+
+.more-option:focus {
+    box-shadow: none;
+}
+
+.show-all-comment {
+    text-decoration: underline !important;
+    color: blue !important;
+}
+
+/* login pages */
+html {
+    height: 100%;
+}
+
+#login-background {
+    display:table;
+    width:100%;
+    height: 100%;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../images/TDTU_logo.png');
+    background-position:center top;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
