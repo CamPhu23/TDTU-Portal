@@ -1,6 +1,6 @@
 const express = require('express')
 const path = require('path');
-const mainRoute = require('./routes/main.js')
+const homeRoute = require('./routes/home.js')
 const authRoute = require('./routes/auth.js')
 const mongoose = require('mongoose')
 const session = require('express-session')
@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended:false }))
 app.use(session({secret: 'seesion-pass'}))
 
-app.use(mainRoute)
+app.use(homeRoute)
 app.use('/auth', authRoute)
 
 let opts = {

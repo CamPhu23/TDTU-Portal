@@ -297,3 +297,32 @@ textarea {
     border: none;
     background-image: linear-gradient(to left, rgb(132, 132, 247), rgb(151, 213, 247));
 }
+
+/* Vi */
+#input_tag_new_post:focus {
+    outline: none;
+    border: none;
+}
+
+.preview-images {
+    width: 20%;
+    height: auto;
+}
+
+#preview_div {
+    display: none
+}
+
+.carousel-inner {
+    max-width: 100%;
+    max-height: 460px;
+}
+
+.carousel-item img {
+    object-fit: contain;
+    max-height: 450px;
+}
+
+.media-body .div-content {
+    min-height: 35px
+}
