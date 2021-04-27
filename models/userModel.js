@@ -8,7 +8,7 @@ const user = new Schema({
         unique: true
     },
     fullname: String,
-    avatar: {type: String, default: "../public/images/defaultAvt"},
+    avatar: {type: String, default: "/resources/avatars/TDTU_logo.png"},
     class: {type: String, default: null},
     department: {type: String, default: null},
 })

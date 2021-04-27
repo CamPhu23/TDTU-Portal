@@ -10,18 +10,69 @@
     <%- include('../partials/head.ejs') %>
 </head>
 
-<body>
-    <div class="container mt-3">
-        <div class="profile-content">
-            <form action="#" id="profile-form" class="profile-form">
-                <div class="change-avatar"><img src="http://via.placeholder.com/100" class="avatar" alt="100px"><a href="#"> Thay đổi ảnh đại diện</a></div>
-                <div class="form-group"><input type="text" placeholder="Tên hiển thị" class="form-input" id="tenhienthi"></div>
-                <div class="form-group"><input type="text" placeholder="Lớp" class="form-input" id="lop"></div>
-                <div class="form-group"><input type="text" placeholder="Khoa" class="form-input" id="khoa"></div>
-                <div class="form-group"><input type="submit" name="submit" id="submit" class="form-submit" value="Lưu thay đổi"></div>
-            </form>
+<body id="image-background">
+    <div class="h-100 d-flex mr-5">
+        <div class="w-25 px-4 py-2 align-self-center register-form container mr-5">
+            <div class="row">
+                <div class="w-100 px-3 pt-4 pb-2">
+                    <h2 class="justify-content-center text-center">Thông tin tài khoản</h2>
+                    <form method="post" class="my-4" enctype="multipart/form-data">
+                        
+                        <div class="change-avatar mb-3">
+                            <img src="<%= avatar %>" id="avatar" class="avatar img-thumbnail " alt="avatar">
+                            
+                            <input id="upload" type="file" name="avatar"/>
+                            <a id="upload_link">Chọn ảnh đại diện</a>
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <label class="mx-1 my-0">Email</label>
+                            <input value="<%= email %>" type="text" readonly placeholder="Email" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label class="mx-1 my-0">Tên hiển thị</label>
+                            <input value="<%= fullname %>" type="text" placeholder="Tên hiển thị" class="form-control" id="fullname" name="fullname">
+                        </div>
+                        <div class="form-group">
+                            <label class="mx-1 my-0">Lớp</label>
+                            <input value="<%= _class %>" type="text" placeholder="Lớp" class="form-control" id="class" name="_class">
+                        </div>
+                        
+                        <div>Khoa</div>
+                        <select name="department" class="selectpicker phongkhoa custom-select">
+                            <option <%= department == "" ? "selected" : "" %> value="">Chọn khoa</option>
+                            <option <%= department == "khoa luật" ? "selected" : "" %> value="Khoa luật">Khoa Luật</option>
+                            <option <%= department == "trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa" ? "selected" : "" %> value="Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
+                            <option <%= department == "viện chính sách kinh tế và kinh doanh" ? "selected" : "" %> value="Viện chính sách kinh tế và kinh doanh">Viện chính sách kinh tế và kinh doanh</option>
+                            <option <%= department == "khoa mỹ thuật công nghiệp" ? "selected" : "" %> value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>
+                            <option <%= department == "khoa điện – Điện tử" ? "selected" : "" %> value="Khoa điện – Điện tử">Khoa Điện – Điện tử</option>
+                            <option <%= department == "khoa công nghệ thông tin" ? "selected" : "" %> value="Khoa công nghệ thông tin">Khoa Công nghệ thông tin</option>
+                            <option <%= department == "khoa quản trị kinh doanh" ? "selected" : "" %> value="Khoa quản trị kinh doanh">Khoa Quản trị kinh doanh</option>
+                            <option <%= department == "khoa môi trường và bảo hộ lao động" ? "selected" : "" %> value="Khoa môi trường và bảo hộ lao động">Khoa Môi trường và bảo hộ lao động </option>
+                            <option <%= department == "khoa lao động công đoàn" ? "selected" : "" %> value="Khoa lao động công đoàn">Khoa Lao động công đoàn</option>
+                            <option <%= department == "khoa tài chính ngân hàng" ? "selected" : "" %> value="Khoa tài chính ngân hàng">Khoa Tài chính ngân hàng</option>
+                            <option <%= department == "khoa giáo dục quốc tế" ? "selected" : "" %> value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
+                        </select>
+    
+                        <!-- <% if (locals.resultUpdate && locals.resultUpdate == true) { %>                
+                            <div class="alert alert-success">
+                                Cập nhật thành công
+                            </div> 
+                        <% } else if (locals.resultUpdate && locals.resultUpdate == false) {%>
+                            <div class="alert alert-danger">
+                                Cập nhật thất bại
+                            </div> 
+                        <% } %> -->
+                        <div class="form-group">
+                            <button type="submit" id="submit" class="form-submit btn">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
+
     </div>
 </body>
-
 </html>

@@ -9,14 +9,14 @@
 
     <%- include('../partials/head.ejs') %>
 
-        <!-- googleapis -->
-        <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
-        <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-        <meta name="google-signin-client_id" content="591004915054-1kjagbh4omn10rg7n36g8p7up4qrv058.apps.googleusercontent.com">
+    <!-- googleapis -->
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+    <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+    <meta name="google-signin-client_id" content="591004915054-1kjagbh4omn10rg7n36g8p7up4qrv058.apps.googleusercontent.com">
 
 </head>
 
-<body id="login-background">
+<body id="image-background">
     <div class="d-flex h-100">
         <div class="w-25 bg-white container px-4 pt-2 border rounded align-self-center login-form">
             <div class="row d-flex justify-content-center">
@@ -27,7 +27,7 @@
                 <div class="w-100 px-3 pt-4 pb-2">
                     <form action="./login" method="post">
                         <div class="form-group">
-                            <label for="username">Tên đăng nhập</label>
+                            <label for="username" class="mb-0">Tên đăng nhập</label>
                             <input value="<%= username %>" placeholder="Tên đăng nhập" type="text" class="form-control" id="username" name="username">
                         </div>
                         <div class="form-group mb-2">
@@ -41,11 +41,11 @@
                             </label>
                         </div>
     
-                        <!-- <% if (locals.errorMess) { %>                 -->
-                        <div class="alert alert-danger">
-                            <%= errorMess  %>
-                        </div> 
-                        <!-- <% } %> -->
+                        <% if (locals.errorMess && locals.errorMess != '') { %>                
+                            <div class="alert alert-danger">
+                                <%= errorMess  %>
+                            </div> 
+                        <% } %>
             
                         <div class="form-group">
                             <button type="submit" class="w-100 btn btn-primary">Đăng nhập</button>
@@ -61,42 +61,7 @@
 
         </div>
 
-        <!-- <a href="#" onclick="signOut();">Sign out</a> -->
     </div>
-
-    <script>
-        function onSignIn(googleUser) {
-            var id_token = googleUser.getAuthResponse().id_token;
-
-            fetch('http://localhost:8080/auth/googlelogin', {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    method: "POST",
-                    body: JSON.stringify({
-                        'id_token': id_token
-                    })
-                })
-                .then(json => json.json())
-                .then(result => {
-                    if (result.result === "success") {
-                        window.location.replace("http://localhost:8080");
-                    } else {
-                        signOut()
-                        console.log(result);
-                    }
-                })
-                .catch(err => console.log(err))
-        }
-
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function() {
-                console.log('User signed out.');
-            });
-        }
-    </script>
 </body>
 
 </html>

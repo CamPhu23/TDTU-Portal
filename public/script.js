@@ -129,6 +129,60 @@ $(document).ready(() => {
             console.log('Error occured: ' + e);
         })
     })
+
+    
+
+    // register.ejs
+    $('option').mousedown(function(e) {
+        e.preventDefault();
+        $(this).prop('selected', !$(this).prop('selected'));
+        return false;
+    });
+    
+    $('.permissions-dropdown').click( function (e) {
+        e.stopPropagation();
+    });
+
+    // profile.ejs
+    $("#upload_link").on('click', e => {
+        e.preventDefault();
+        $("#upload:hidden").trigger('click');
+    });
+    
+    $("#upload").change(function() {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                $('#avatar').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(this.files[0]); // convert to base64 string
+        }
+    });
+
+    
+    // new_notification.ejs
+    $("#new-notification-btn").click(function() {
+
+        let form = $('#notification-form')[0]
+        let data = new FormData(form)
+        let url = window.location.origin + "/createNewNotification"
+
+        fetch(url, {
+            method: 'POST',
+            body: data
+        })
+        .then(() => {
+        })
+        .catch(error => console.log(error))
+    })
+
+    $('#new-notification-btn-cancel').click(function() {
+        $('#new-notification').modal('hide')
+    })
+
+
 });
 
 //handle event append elements
@@ -348,4 +402,41 @@ function updateNewComment(newComment, postId) {
     } else {
         $(`#comment-post-${postId}`).append(newCommentHTML)
     }
+}
+
+// google sign in (login.ejs)
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+
+    let url = window.location.origin + '/auth/googlelogin'
+
+    fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({
+                'id_token': id_token
+            })
+        })
+        .then(json => json.json())
+        .then(result => {
+            if (result.result === "success") {
+
+                let redi = window.location.origin + 'home'
+                window.location.replace(redi);
+            } else {
+                signOut()
+                console.log(result);
+            }
+        })
+        .catch(err => console.log(err))
+}
+
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function() {
+        console.log('User signed out.');
+    });
 }

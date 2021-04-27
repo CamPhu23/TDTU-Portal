@@ -10,76 +10,91 @@
     <%- include('../partials/head.ejs') %>
 </head>
 
-<body>
-    <div class="register-background">
-        <div class="container">
-            <div class="register-content">
-                <form method="post" action="#" id="register-form" class="register-form">
-                    <h2>Tạo tài khoản Phòng/Khoa</h2>
-                    <div class="form-group"><input type="text" placeholder="Tên Phòng/Khoa" class="form-input" id="account-name"></div>
-                    <div class="form-group"><input type="text" placeholder="Tên tài khoản Phòng/Khoa" class="form-input" id="name"></div>
-                    <div class="form-group"><input type="password" placeholder="Mật khẩu" class="form-input" id="password"></div>
-                    <div class="form-group"><input type="password" placeholder="Nhập lại mật khẩu" class="form-input" id="repeat-password"></div>
-                    <div class="btn-group">Phân quyền Phòng/Khoa</div>
-                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Phòng Công tác học sinh sinh viên (CTHSSV)</label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Phòng Đại học</label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Phòng Sau đại học</label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Phòng điện toán và máy tính</label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Phòng khảo thí và kiểm định chất lượng </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Phòng tài chính </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> TDT Creative Language Center </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Trung tâm tin học </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Trung tâm đào tạo phát triển xã hội (SDTC) </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM) </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Trung tâm hợp tác doanh nghiệp và cựu sinh viên </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa Luật </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Viện chính sách kinh tế và kinh doanh </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa Mỹ thuật công nghiệp </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa Điện – Điện tử </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa Công nghệ thông tin </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa Quản trị kinh doanh </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa Môi trường và bảo hộ lao động </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa Lao động công đoàn </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa Tài chính ngân hàng  </label></div>
-                        <div class="checkbox">
-                            <label><input type="checkbox" value=""> Khoa giáo dục quốc tế </label></div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" name="submit" id="submit" class="form-submit btn">Lưu lại</button>
-                    </div>
-                    <p>Quay lại trang chủ?<a href="/"> Click here!</a></p>
+<body id="image-background">
+    <div class="h-100 d-flex mr-5">
+        <div class="w-25 px-4 py-2 align-self-center register-form container mr-5">
+            <div class="row">
+                <div class="w-100 px-3 pt-4 pb-2">
+                    <h2 class="justify-content-center text-center">Tạo tài khoản</h2>
+                    <form method="post">
 
-                </form>
+                        <div class="form-group">
+                            <label class="mx-1 my-0">Tên Phòng/Khoa</label>
+                            <input type="text" placeholder="Tên Phòng/Khoa" class="form-control" id="account-name" name="department">
+                        </div>
+                        <div class="form-group">
+                            <label class="mx-1 my-0">Tên tài khoản Phòng/Khoa</label>
+                            <input type="text" placeholder="Tên tài khoản Phòng/Khoa" class="form-control" id="name" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label class="mx-1 my-0">Mật khẩu</label>
+                            <input type="password" placeholder="Mật khẩu" class="form-control" id="password" name="password">
+                        </div>
+                        <div class="form-group">
+                            <label class="mx-1 my-0">Xác nhận mật khẩu mới</label>
+                            <input type="password"  placeholder="Nhập lại mật khẩu" class="form-control" id="repeat-password">
+                        </div>
+                        
+                        <div class="btn-group">Phân quyền Phòng/Khoa</div>
+                        <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu permissions-dropdown">
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Phòng công tác học sinh sinh viên (CTHSSV)"> Phòng Công tác học sinh sinh viên (CTHSSV)</label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Phòng đại học"> Phòng Đại học</label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Phòng sau đại học"> Phòng Sau đại học</label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Phòng điện toán và máy tính"> Phòng điện toán và máy tính</label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Phòng khảo thí và kiểm định chất lượng"> Phòng khảo thí và kiểm định chất lượng </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Phòng tài chính"> Phòng tài chính </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="TDT creative Language Center"> TDT Creative Language Center </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Trung tâm tin học"> Trung tâm tin học </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Trung tâm đào tạo phát triển xã hội (SDTC)"> Trung tâm đào tạo phát triển xã hội (SDTC) </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)"> Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM) </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Trung tâm hợp tác doanh nghiệp và cựu sinh viên"> Trung tâm hợp tác doanh nghiệp và cựu sinh viên </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa luật"> Khoa Luật </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa"> Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Viện chính sách kinh tế và kinh doanh"> Viện chính sách kinh tế và kinh doanh </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa mỹ thuật công nghiệp"> Khoa Mỹ thuật công nghiệp </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa điện – Điện tử"> Khoa Điện – Điện tử </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa công nghệ thông tin"> Khoa Công nghệ thông tin </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa quản trị kinh doanh"> Khoa Quản trị kinh doanh </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa môi trường và bảo hộ lao động"> Khoa Môi trường và bảo hộ lao động </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa lao động công đoàn"> Khoa Lao động công đoàn </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa tài chính ngân hàng"> Khoa Tài chính ngân hàng  </label></div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="permissions" value="Khoa giáo dục quốc tế"> Khoa giáo dục quốc tế </label></div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="submit" class="form-submit btn">Tạo tài khoản</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </div>
 
+        </div>
+
+    </div>
 </body>
 
 </html>

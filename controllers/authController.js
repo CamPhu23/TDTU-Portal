@@ -3,11 +3,16 @@ const CLIENT_ID = "591004915054-1kjagbh4omn10rg7n36g8p7up4qrv058.apps.googleuser
 const client = new OAuth2Client(CLIENT_ID)
 const accountModel = require("../models/accountModel")
 const userModel = require("../models/userModel")
+const bcryptjs = require("bcryptjs")
 
 const {validationResult} = require('express-validator')
 
 exports.getLogin = (req, res) => {
-    res.render('pages/login', {username: '', pass: '', errorMess: ''})
+    let username = req.flash('usernameLogin') || ''
+    let password = req.flash('passwordLogin') || ''
+    let error = req.flash('errorLogin') || ''
+
+    res.render('pages/login', {username: username, pass: password, errorMess: error})
 }
 
 exports.postGoogleLogin = (req, res) => {
@@ -36,7 +41,7 @@ exports.postGoogleLogin = (req, res) => {
 
             userModel.findOne({email: user.email})
             .then((account) => {
-                if (!account || account.length === 0) {
+                if (!account) {
                     user = new userModel({email: user.email, fullname: user.name, avatar: user.picture})
     
                     user.save((user) => {
@@ -62,32 +67,41 @@ exports.postGoogleLogin = (req, res) => {
 exports.postLogin = (req, res) => {
     const result = validationResult(req);
     let {username, pass} = req.body
-    console.log(req.body);
 
     if (result.errors.length !== 0) {
-        return res.render('pages/login', {username: username, pass: pass, 
-                                    errorMess: result.errors[0].msg})
+        
+        req.flash('usernameLogin', username)
+        req.flash('passwordLogin', pass)
+        req.flash('errorLogin', result.errors[0].msg)
+
+        return res.redirect('/auth/login')
     }
 
     accountModel.findOne({username: username})
+    .populate('user')
     .then((account) => {
         
-        if (account && account.length !== 0 && account.password === pass) {
-            req.session.userId = account._id
+        let verify = bcryptjs.compareSync(pass, account.password)
+        if (account && verify) {
+
+            req.session.accountId = account._id
+            req.session.userId = account.user._id
+
+            return res.redirect('/')
+        } else {
+
+            req.flash('usernameLogin', username)
+            req.flash('passwordLogin', pass)
+            req.flash('errorLogin', 'Tài khoản hoặc mật khẩu bị sai')
             
-            return res.render('pages/home')
+            return res.redirect('/auth/login')
         }
-        
-        return res.render('pages/login', {username: username, pass: pass, errorMess: "Tài khoản hoặc mật khẩu bị sai"})
     })
     .catch(error => console.log(error))
 }
 
+exports.postLogout = (req, res) => {
+    req.session.destroy()
 
-exports.getRegister = (req, res) => {
-    res.render('pages/register')
-}
-
-exports.getChangePassword = (req, res) => {
-    res.render('pages/changePassword')
+    res.redirect('/login')
 }
