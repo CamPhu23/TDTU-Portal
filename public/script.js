@@ -1,3 +1,10 @@
+window.onload = function(e) {
+    console.log(window.location.pathname);
+    if (window.location.pathname === '/home' || window.location.pathname === '/home/') {
+        getListPost(1)
+    }
+}
+
 $(document).ready(() => {
     $(".custom-file-input").on('change',function(){
         $("#preview_div").show()
@@ -23,10 +30,11 @@ $(document).ready(() => {
 
     $('#close_new_post_modal').click(() => {
         $('#newPostModal').modal('hide')
-        $('#textarea-content').val('')
+        // $('#textarea-content').val('')
         $("#preview_div").empty()
         $(".custom-file-label").html('Đính kèm ảnh')
         $("#video-url").val('')
+        $('#new_post_form').find("input, textarea").val("");
     })
 
     $('.carousel').carousel({
@@ -34,15 +42,24 @@ $(document).ready(() => {
     })
 
     $('#submit_new_post').click(() => {
-        let form = document.getElementById("new_post_form")
-        let formData = new FormData(form)
-        formData.append('author', 'dlcvi') //just for test -> will be adjust when login module done
 
+        let form = $("#new_post_form")
+        let formData = new FormData(form[0])
+        let author = $('#user-id').data('id')
+        formData.append('author', author) //just for test -> will be adjust when login module done
         let url = window.location.origin + '/home/addNewPost/'
+        let postId = $('#submit_new_post').data('id')
+        if (postId) { //it mean change post because modal has post id
+            url = window.location.origin + '/home/updatePost/' + postId
+        }
+         
         let opts = {
             method: 'POST',
             body: formData
         }
+
+        let authorAvatar = $('.user-avatar').attr('src')
+        let authorName = $.trim($('#user-id > div > div > h4').text())
 
         fetch(url, opts)
         .then((response) => {
@@ -50,11 +67,14 @@ $(document).ready(() => {
         })
         .then((json) => {
             if (json.status) {
+                if (!postId) updatePost(json.result, {authorAvatar, authorName}, true)
+                else if (postId) updateExistPost(json.result)
+
                 $('#close_new_post_modal').click()
-                updateNewPost(json.result)
             } else { //add new post fail
                 console.log('add new post failed');
             }
+            console.log(json);
         })
         .catch(e => {
             console.log('Error occured: ' + e);
@@ -96,7 +116,6 @@ $(document).ready(() => {
         })
     })
 
-    //dang test chua lam xong
     $('#saveChangeButton').click(() => {
         let id = $('#saveChangeButton').data('comment')
         let post = $('#saveChangeButton').data('post')
@@ -130,7 +149,13 @@ $(document).ready(() => {
         })
     })
 
-    
+    let count = 1
+    $('.right-part').scroll(function() {
+        if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+            count++
+            getListPost(count)
+        }
+    });
 
     // register.ejs
     $('option').mousedown(function(e) {
@@ -161,7 +186,6 @@ $(document).ready(() => {
         }
     });
 
-    
     // new_notification.ejs
     $("#new-notification-btn").click(function() {
 
@@ -181,7 +205,6 @@ $(document).ready(() => {
     $('#new-notification-btn-cancel').click(function() {
         $('#new-notification').modal('hide')
     })
-
 
 });
 
@@ -205,7 +228,8 @@ $(document).on('click', '.delete-post-comment', function() {
 $(document).on('click', '.submit_new_comment', function() {
     let form = $(this).closest("form.new_comment_form")
     let formData = new FormData(form[0])
-    formData.append('author', '6085851e4e6af481eba8c324') //just for test -> will be adjust when login module done
+    let author = $('#user-id').data('id')
+    formData.append('author', author)
 
     let postId = $(this).data('id')
     let url = window.location.origin + '/home/addNewComment/' + postId
@@ -214,13 +238,16 @@ $(document).on('click', '.submit_new_comment', function() {
         body: formData
     }
 
+    let authorAvatar = $('.user-avatar').attr('src')
+    let authorName = $.trim($('#user-id > div > div > h4').text())
+
     fetch(url, opts)
     .then((response) => {
         return response.json()
     })
     .then((json) => {
         if (json.result) {
-            updateNewComment(json.comment, postId)
+            updateComment(json.comment, {authorAvatar, authorName}, postId)
             $(form[0][0]).val('')
         } else { //add new post fail
             console.log('add new comment failed');
@@ -239,9 +266,36 @@ $(document).on('click', '.show-all-comment', (event) => {
 
     if (str.localeCompare(show) === 0) {
         event.target.innerHTML = hide
+
+        let postId = $(event.target).data('target').split('-')[2]
+
+        let url = window.location.origin + '/home/getComments/' + postId
+        let opts = { method: 'GET' }
+    
+        fetch(url, opts)
+        .then((response) => {
+            return response.json()
+        })
+        .then((json) => {
+            if (json.result) {
+                json.comments.forEach(comment => {
+                    let authorAvatar = comment.author.avatar
+                    let authorName = comment.author.fullname
+                    updateComment(comment, {authorAvatar, authorName}, postId)
+                })
+            } else { //fetch comments fail
+                console.log(json);
+                console.log('get all comment failed');
+            }
+        })
+        .catch(e => {
+            console.log('Error occured: ' + e);
+        })
     } else if (str.localeCompare(hide) === 0) {
         event.target.innerHTML = show
     }
+
+
 })
 
 $(document).on('click', '.edit-comment', (event) => {
@@ -257,12 +311,52 @@ $(document).on('click', '.edit-comment', (event) => {
     $('#editCommentModal').modal('show')
 })
 
-function updateNewPost(result) {
+$(document).on('click', '.edit-post', (event) => {
+    $('.modal-title').text('Chỉnh sửa bài đăng')
+    $('#submit_new_post').text('Lưu thay đổi')
+
+    let postId = $(event.target).data('id')
+    let content = $.trim($(`#${postId} > div > div > div.div-content`).text());
+
+    $('#textarea-content').val(content)
+
+    let nImage = $(`#carousel-${postId} > div > div`).length
+    if (nImage > 0) {
+        $(".custom-file-label").html('Đã chọn ' + nImage + ' hình ảnh');
+
+        $("#preview_div").show()
+        $("#preview_div").empty()
+        
+        for(let i = 0; i < nImage; i++) {
+            let src = $(`#carousel-${postId} > div > div`).get(i).children[0].getAttribute('src')
+            
+            let $img = `<img class='preview-images mx-1' src='${src}'>`
+            $("#preview_div").append($img);
+        }    
+    } else {
+        $(".custom-file-label").html('Đính kèm ảnh')
+    }
+
+    let youtubeUrl = undefined
+    if ($(`#video-url-${postId}`).length > 0) {
+        youtubeUrl = $(`#video-url-${postId}`).attr('src')
+    }
+
+    if (youtubeUrl) $('#video-url').val(youtubeUrl)
+
+    $('#submit_new_post').data('id', postId)
+
+    $('#newPostModal').modal('show')
+})
+
+function updatePost(result, author, isPrepend) {
     let postTime = new Date(result.lastUpdate).toLocaleString().split(',')
     postTime = postTime[0] + ' ' + postTime[1];
         
     let ImageArr = result.imgUrl
     let carousel = ''
+    let user = $('.user-avatar')
+
     if (ImageArr.length > 0) {
         let baseUrl = window.location.origin, divElement = '', carousel_id = 'carousel-' + result._id 
 
@@ -299,41 +393,71 @@ function updateNewPost(result) {
         `
     }
 
+    let videoHTML = ''
+    if (result.videoUrl) {
+        videoHTML = `                                        
+        <div class="mt-3">
+            <iframe id="video-url-${result._id}" class="youtube-video-frame" width="100%" height="100%" src="${result.videoUrl}">
+            </iframe>
+        </div>`
+    }
+
+    let show_hide_commentsHTML = ''
+    if (result.comments.length > 0) {
+        show_hide_commentsHTML =         
+        `<!-- comment list -->
+        <div>
+            <a class="show-all-comment" data-toggle="collapse" data-target="#comment-post-${result._id}" aria-expanded="false" aria-controls="collapseExample">Hiển thị tất cả bình luận</a>
+        </div>
+        <div class="collapse list-comment" id="comment-post-${result._id}"> 
+        </div>
+        <!-- end comment list -->`
+    }
+
+    let currentUserName = $.trim($("#user-id > div > div > h4").text())
+    let postToolHTML = ''
+    if (currentUserName === author.authorName) {
+        postToolHTML = `
+        <div class="mr-2">
+            <div class="btn-group dropright">
+                <button type="button" class="btn more-option rounded-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 20 20">
+                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                    </svg>
+                </button>
+                <div class="dropdown-menu">
+                <a class="dropdown-item edit-post" data-id="${result._id}">Chỉnh sửa bài viết</a>
+                <a class="dropdown-item delete-post-comment" data-id="${result._id}" data-type="post">Xoá bài viết</a>
+                </div>
+            </div>
+        </div>`
+    }
+
     let newPost = 
     `<div id="${result._id}" class="my-3 p-2 bg-white rounded shadow-sm">
         <div class="media">
-            <img class="mr-3" src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="Generic placeholder image">
+            <img class="mr-3 rounded-circle img-thumbnail shadow-sm author-post-avatar" src="${author.authorAvatar}" alt="author avatar">
             <div class="media-body">
                 <!-- post infor -->
                 <div class="d-flex align-items-center">
-                    <span class="font-weight-bold h5 mr-auto"><a href="" class="writer-name">Jason Doe</a></span>
+                    <span class="font-weight-bold h5 mr-auto"><a href="" class="writer-name">${author.authorName}</a></span>
                     <div><small class="text-muted mb-2 mx-3">${postTime}</small></div>
                     
-                    <div class="mr-2">
-                        <div class="btn-group dropright">
-                            <button type="button" class="btn more-option rounded-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 20 20">
-                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                </svg>
-                            </button>
-                            <div class="dropdown-menu">
-                            <a class="dropdown-item edit-post" data-id="${result._id}">Chỉnh sửa bài viết</a>
-                            <a class="dropdown-item delete-post-comment" data-id="${result._id}" data-type="post">Xoá bài viết</a>
-                            </div>
-                        </div>
-                    </div>
+                    ${postToolHTML}
                 </div>
                 <!-- end post info -->
 
                 <!-- post content -->
                 <div class="div-content">${result.content}</div>
                 ${carousel}
+                ${videoHTML}
                 <hr>
+                ${show_hide_commentsHTML}
                 <div class="mt-3 new-comment-area">
                 <form method="POST" class="new_comment_form">
                     <div class="form-row d-flex align-items-center">
                         <div class="col-1">
-                            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                            <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
                         </div>
                         <div class="col-9">
                             <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
@@ -345,36 +469,175 @@ function updateNewPost(result) {
                 </form>
             </div>
                 `
-    $( ".list-post" ).prepend(newPost)
+    if (isPrepend) $( ".list-post" ).prepend(newPost)
+    else if (!isPrepend) $(".list-post").append(newPost)
+        
 }
 
-function updateNewComment(newComment, postId) {
+function updateExistPost(updatedPost) {
+    let postTime = new Date(updatedPost.lastUpdate).toLocaleString().split(',')
+    postTime = postTime[0] + ' ' + postTime[1];
+        
+    let ImageArr = updatedPost.imgUrl
+    let carouselHTML = ''
+    let user = $('.user-avatar')
+    let authorName = $.trim($("#user-id > div > div > h4").text())
+
+    if (ImageArr.length > 0) {
+        let baseUrl = window.location.origin, divElement = '', carousel_id = 'carousel-' + updatedPost._id 
+
+        carouselHTML = `
+        <div class="mt-3">
+            <div id="${carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
+                <ol class="carousel-indicators">`
+        
+        ImageArr.forEach((image, index) => {
+            carouselHTML += `<li data-target="#${carousel_id}" data-slide-to="${index}" class="active"></li>`
+
+            let isActive = index == 0 ? 'active' : ''
+            divElement += `
+            <div class="carousel-item ${isActive}">
+                <img class="d-block w-100" src="${baseUrl + '/' + image}">
+            </div>`
+        })
+
+        carouselHTML += `
+                </ol>
+                <div class="carousel-inner">
+                    ${divElement}
+                </div>
+                <a class="carousel-control-prev" href="#${carousel_id}" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#${carousel_id}" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+        `
+    }
+
+    let videoHTML = ''
+    if (updatedPost.videoUrl) {
+        videoHTML = `                                        
+        <div class="mt-3">
+            <iframe id="video-url-${updatedPost._id}" class="youtube-video-frame" width="100%" height="100%" src="${updatedPost.videoUrl}">
+            </iframe>
+        </div>`
+    }
+
+    let show_hide_commentsHTML = ''
+    if (updatedPost.comments.length > 0) {
+        show_hide_commentsHTML =         
+        `<!-- comment list -->
+        <div>
+            <a class="show-all-comment" data-toggle="collapse" data-target="#comment-post-${updatedPost._id}" aria-expanded="false" aria-controls="collapseExample">Hiển thị tất cả bình luận</a>
+        </div>
+        <div class="collapse list-comment" id="comment-post-${updatedPost._id}"> 
+        </div>
+        <!-- end comment list -->`
+    }
+
+    let postToolHTML = `
+    <div class="mr-2">
+        <div class="btn-group dropright">
+            <button type="button" class="btn more-option rounded-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 20 20">
+                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                </svg>
+            </button>
+            <div class="dropdown-menu">
+            <a class="dropdown-item edit-post" data-id="${updatedPost._id}">Chỉnh sửa bài viết</a>
+            <a class="dropdown-item delete-post-comment" data-id="${updatedPost._id}" data-type="post">Xoá bài viết</a>
+            </div>
+        </div>
+    </div>`
+
+    let updatePost = 
+    `<div class="media">
+        <img class="mr-3 rounded-circle img-thumbnail shadow-sm author-post-avatar" src="${$(user).attr('src')}" alt="author avatar">
+        <div class="media-body">
+            <!-- post infor -->
+            <div class="d-flex align-items-center">
+                <span class="font-weight-bold h5 mr-auto"><a href="" class="writer-name">${authorName}</a></span>
+                <div><small class="text-muted mb-2 mx-3">${postTime}</small></div>
+                
+                ${postToolHTML}
+            </div>
+            <!-- end post info -->
+
+            <!-- post content -->
+            <div class="div-content">${updatedPost.content}</div>
+            ${carouselHTML}
+            ${videoHTML}
+            <hr>
+            ${show_hide_commentsHTML}
+            <div class="mt-3 new-comment-area">
+            <form method="POST" class="new_comment_form">
+                <div class="form-row d-flex align-items-center">
+                    <div class="col-1">
+                        <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
+                    </div>
+                    <div class="col-9">
+                        <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
+                    </div>
+                    <div class="col-2">
+                        <button type="button" data-id="${updatedPost._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
+                    </div>            
+                </div>                                                
+            </form>`
+
+    $(`#${updatedPost._id}`).html(updatePost)
+}
+
+function updateComment(newComment, author, postId) {
+
+    if ($(`#${newComment._id}`).length > 0) {
+        if ($.trim($(`#${newComment._id} > div > div.mr-2`).text()) !== newComment.content) {
+            $(`#${newComment._id} > div > div.mr-2`).text(newComment.content)
+        }
+
+        return
+    }
 
     let commentTime = new Date(newComment.date).toLocaleString().split(',')
     commentTime = commentTime[0] + ' ' + commentTime[1];
 
+    let currentUserName = $.trim($("#user-id > div > div > h4").text())
+    let commentToolHTML = ''
+    if (currentUserName === author.authorName) {
+        commentToolHTML = `
+        <div class="mr-2">
+            <div class="btn-group dropright">
+                <button type="button" class="btn more-option rounded-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 20 20">
+                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                    </svg>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item edit-comment" data-id="${newComment._id}" data-post="${postId}">Chỉnh sửa bình luận</a>
+                    <a class="dropdown-item delete-post-comment" data-id="${newComment._id}" data-type="comment" data-post="${postId}">Xoá bình luận</a>
+                </div>
+            </div>
+        </div>`
+    } else {
+        commentToolHTML = `
+        <div class="mr-2 empty-option">
+        </div>`
+    }
+
     let newCommentHTML = `<!-- comment -->
     <div class="media mt-3" id="${newComment._id}">
-        <img class="mr-3" height="58px" width="58px" src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="Generic placeholder image">
+        <img class="mr-3 author-comment-avatar rounded-circle img-thumbnail shadow-sm" height="58px" width="58px" src="${author.authorAvatar}" alt="author comment">
         <div class="media-body">
             <!-- comment infor -->
             <div class="d-flex align-items-center">
-                <span class="font-weight-bold h5 mr-auto"><a href="" class="writer-name">Jason Doe</a></span>
+                <span class="font-weight-bold h6 mr-auto"><a href="" class="writer-name">${author.authorName}</a></span>
                 <div><small class="text-muted mb-2 mx-3">${commentTime}</small></div>
                 
-                <div class="mr-2">
-                    <div class="btn-group dropright">
-                        <button type="button" class="btn more-option rounded-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 20 20">
-                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                            </svg>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item edit-comment" data-id="${newComment._id}" data-post="${postId}">Chỉnh sửa bình luận</a>
-                            <a class="dropdown-item delete-post-comment" data-id="${newComment._id}" data-type="comment" data-post="${postId}">Xoá bình luận</a>
-                        </div>
-                    </div>
-                </div>
+                ${commentToolHTML}
             </div>
             <!-- end comment infor -->
 
@@ -387,7 +650,7 @@ function updateNewComment(newComment, postId) {
     </div>
     <!-- end comment -->`
 
-    if($(`#comment-post-${postId}`).length == 0) { //don't comment list have before
+    if($(`#comment-post-${postId}`).length == 0) { //don't have comment list before
         let insertElement = 
         `<!-- comment list -->
             <div>
@@ -402,6 +665,31 @@ function updateNewComment(newComment, postId) {
     } else {
         $(`#comment-post-${postId}`).append(newCommentHTML)
     }
+}
+
+function getListPost(page) {
+    let url = window.location.origin + '/home/getPosts/' + page
+    let opts = { method: 'GET' }
+
+    fetch(url, opts)
+    .then((response) => {
+        return response.json()
+    })
+    .then((json) => {
+        if (json.result) {
+            json.posts.forEach(post => {
+                let authorAvatar = post.author.avatar
+                let authorName = post.author.fullname
+                updatePost(post, {authorAvatar, authorName}, false)
+            })
+        } else { //add new post fail
+            console.log(json);
+            console.log('add new post failed');
+        }
+    })
+    .catch(e => {
+        console.log('Error occured: ' + e);
+    })
 }
 
 // google sign in (login.ejs)
@@ -424,7 +712,7 @@ function onSignIn(googleUser) {
         .then(result => {
             if (result.result === "success") {
 
-                let redi = window.location.origin + 'home'
+                let redi = window.location.origin + '/home'
                 window.location.replace(redi);
             } else {
                 signOut()

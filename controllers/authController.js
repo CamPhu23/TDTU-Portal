@@ -37,22 +37,22 @@ exports.postGoogleLogin = (req, res) => {
         domain = user.email.split("@")[1]
     
         if (domain === "student.tdtu.edu.vn") {
-            res.send({"result": "success"})
-
             userModel.findOne({email: user.email})
             .then((account) => {
                 if (!account) {
                     user = new userModel({email: user.email, fullname: user.name, avatar: user.picture})
     
                     user.save((user) => {
-                        // res.cookie("session-token", user_.id)
-                        req.session.userId = user._id
+                        // res.cookie("session-token", user_.id)                        
+                        
                     })
                     .catch(error => console.log(error))
                 }
+
+                req.session.userId = account._id
+                res.send({"result": "success"})
             })
             .catch(error => console.log(error))
-
         } else {
             res.send({"result": "Không thuộc tên miền student.tdtu.edu.vn"})
         }
@@ -87,7 +87,7 @@ exports.postLogin = (req, res) => {
             req.session.accountId = account._id
             req.session.userId = account.user._id
 
-            return res.redirect('/')
+            return res.redirect('/home')
         } else {
 
             req.flash('usernameLogin', username)

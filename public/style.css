@@ -8,17 +8,21 @@
 }
 
 .vertical-nav {
-    min-width: 270px;
     height: 100vh;
-    position: fixed;
     top: 0;
     left: 0;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-    /* z-index: 1; */
+    position: fixed;
+}
+
+.notifications-area {
+    width: 25%;
+    position: fixed;
 }
 
 .right-part {
     background-color: #f0f2f5;
+    height: 100vh;
+    overflow-y: scroll;
 }
 
 span .writer-name {
@@ -59,15 +63,15 @@ span .writer-name {
 
 
 /* login pages */
-
 html {
     height: 100%;
 }
 
 body {
     height: 100%;
+    background-color: #f0f2f5;
+    box-sizing: border-box;
 }
-
 
 .login-form {
     min-width: 300px;
@@ -84,6 +88,7 @@ body {
 input[type="email"] {
     height: 45px;
 }
+
 
 
 /* Tri */
@@ -332,6 +337,8 @@ option {
 .carousel-inner {
     max-width: 100%;
     max-height: 460px;
+    background-color: #212121;
+    opacity: 0.8;
 }
 
 .carousel-item img {
@@ -348,4 +355,41 @@ option {
     position: fixed; 
     bottom: 0; 
     right: 30px;
+}
+
+.youtube-video-frame {
+    min-height: 500px;;
+}
+
+.navbar-info-text {
+    max-width: 157px;
+    overflow-wrap: break-word;
+}
+
+.user-avatar {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+}
+
+.author-post-avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.author-comment-avatar {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+
+.empty-option {
+    min-width: 40px;
+    min-height: 40px;
+}
+
+iframe {
+    border: 1px solid gray;
+    border-radius: 5px;
 }

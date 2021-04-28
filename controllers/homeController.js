@@ -1,10 +1,22 @@
 const mongoose = require('mongoose')
 const Post = require('../models/postModel')
+const User = require('../models/userModel')
 const fs = require('fs');
-const { auth } = require('google-auth-library');
 
 exports.showHomepage = (req, res) => {
-    res.render('pages/home')
+
+    let {userId, accountId} = req.session
+    let permission = accountId ? true: false
+
+    console.log(userId);
+    console.log(accountId);
+
+    User.findById(userId,
+        (err, result) => {
+            console.log(result);
+            return res.render('pages/home', {user: result, permission});
+        }
+    )
 }
 
 exports.handleAddNewPost = (req, res) => {
@@ -16,17 +28,23 @@ exports.handleAddNewPost = (req, res) => {
         });
     }
 
+
     let {author, content, video} = req.body
+    let embedUrl = null
+    if (video)
+        embedUrl = 'https://www.youtube.com/embed/' + video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)[1];
     let newPost = new Post({
-        author: null, //just for test -> will be adjust later
+        author, 
         content,
         imgUrl,
-        videoUrl: video ? video : null,
+        videoUrl: embedUrl,
     });
 
     newPost.save((err, result) => {
+        console.log(result);
+
         if (err) return res.json({status: false, error: err.message});
-        else return res.json({status: true, result});
+        return res.json({status: true, result});
     })
 }
 
@@ -84,10 +102,31 @@ exports.handleDeteleComment = (req, res) => {
 exports.handleGetAllComments = (req, res) => {
     let id = req.params.id
 
-    Post.findById(id, 'comments -_id', (err, result) => {
-        if (err) return res.json({result: false, message: err.message})
-        return res.json({result: true, comments: result.comments})
+    Post.findById(id, 'comments -_id')
+    .populate('comments.author')
+    .then(comments => {
+        return res.json({result: true, comments: comments.comments})
     })
+    .catch(err => {
+        return res.json({result: false, message: err.message})
+    })
+}
+
+exports.handleGetPosts = (req, res) => {
+    let page = req.params.page
+    let skipPosts = parseInt(page) * 10 - 10
+
+    Post.find({})
+        .populate('author')
+        .sort({lastUpdate: 'desc'})
+        .skip(skipPosts)
+        .limit(10)
+        .then(posts => {
+            return res.json({result: true, posts})
+        })
+        .catch(err => {
+            return res.json({result: false, message: err.message})
+        })
 }
 
 exports.handleUpdateComment = (req, res) => {
@@ -104,4 +143,39 @@ exports.handleUpdateComment = (req, res) => {
             return res.json({result: true, updated: updatedComment})
         }
     )
+}
+
+exports.handleUpdatePost = (req, res) => {
+    let id = req.params.id
+    let files = req.files
+    let {author, content, video} = req.body
+
+    console.log(video);
+    let embedUrl = null
+    if (video) {
+        if (video.includes('embed')) embedUrl = video
+        else embedUrl = 'https://www.youtube.com/embed/' + video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)[1];
+    }
+
+    let imgUrl = []
+    if (files) {
+        files.forEach(file => {
+            imgUrl.push('resources/posts/' + file.filename)
+        });
+
+        Post.findByIdAndUpdate(id, 
+        {
+            content,
+            imgUrl,
+            videoUrl: embedUrl,
+            lastUpate: Date.now
+        },
+        {new: true})
+        .then(updated => {
+            return res.json({status: true, result: updated});
+        })
+        .catch(err => {
+            return res.json({status: false, error: err.message});
+        })
+    }
 }

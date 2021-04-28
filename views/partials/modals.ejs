@@ -1,0 +1,94 @@
+<!-- Confirm delete modal -->
+<div id="confirmDeleteModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-title">Xác nhận xóa bài viết</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-content">
+          <p>Bạn có chắn chắn muốn xóa bài viết này?</p>
+        </div>
+        <div class="modal-footer">
+          <button id="confirmDeleteButton" type="button" class="btn btn-primary">Chắc chắn</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Edit comment modal -->
+<div id="editCommentModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Chỉnh sửa bình luận</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST" id="edit_comment">
+                <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">                                           
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button id="saveChangeButton" type="button" class="btn btn-primary">Lưu thay đổi</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- New post modal -->
+<div class="modal fade" id="newPostModal" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Bài đăng mới</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+          <!-- new post -->
+          <form class="p-2" id="new_post_form" method="POST">
+              <textarea id="textarea-content" class="form-control" rows="3" name="content" placeholder="Nội dung bài đăng..."></textarea>
+              <div class="custom-control mt-3 pl-0">
+                  <div class="custom-file">
+                      <input type="file" name="images" class="custom-file-input" accept="image/*" multiple>
+                      <label class="custom-file-label" for="customFile">Đính kèm ảnh</label>
+                  </div>
+              </div>
+
+              <div class="custom-control mt-3 pl-0">
+                  <div class="input-group mb-2 mr-sm-2">
+                      <div class="input-group-prepend">
+                          <div class="input-group-text">Đính kèm video (Youtube)</div>
+                      </div>
+                      <input type="text" id="video-url" class="form-control" name="video" placeholder="Nhập vào đường link Video youtube">
+                  </div>
+              </div>
+
+              <!-- preview image area -->
+              <div id="preview_div">
+                  <hr>
+              </div>
+          
+          </form>
+          <!-- end new post -->
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+          <button type="button" id="submit_new_post" class="btn btn-primary">Đăng bài</button>
+          <button type="button" id="close_new_post_modal" class="btn btn-danger">Hủy bỏ</button>
+      </div>
+      
+    </div>
+  </div>
+</div>

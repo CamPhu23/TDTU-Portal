@@ -99,7 +99,7 @@ exports.getProfile = (req, res) => {
             let fullname = user.fullname || ''
             let avatar = user.avatar || 'http://via.placeholder.com/100'
             let _class = user.class || ''
-            let department = user.department.toLowerCase() || ''
+            let department = user.department || ''
     
             return res.render('pages/profile', {email, avatar, fullname, _class: _class, department, resultUpdate})
         }

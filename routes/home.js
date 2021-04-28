@@ -11,5 +11,7 @@ router.post('/addNewComment/:id', postUploader.none(), homeController.handleAddN
 router.delete('/deleteComment/:idPost/:idComment', homeController.handleDeteleComment)
 router.get('/getComments/:id', homeController.handleGetAllComments)
 router.post('/updateComment/:idPost/:idComment', postUploader.none(), homeController.handleUpdateComment)
+router.get('/getPosts/:page', homeController.handleGetPosts)
+router.post('/updatePost/:id', postUploader.array('images'), homeController.handleUpdatePost)
 
 module.exports = router
