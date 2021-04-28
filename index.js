@@ -2,13 +2,13 @@ const express = require('express')
 const path = require('path');
 const homeRoute = require('./routes/home.js')
 const authRoute = require('./routes/auth.js')
+const notificationRoute = require('./routes/notification')
 const accountRoute = require('./routes/account.js')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('express-flash')
 const cors = require('cors')
 const socketio = require('./socket')
-// const socketio = require('socket.io')
 
 const app = express()
 app.set('view engine', 'ejs')
@@ -17,13 +17,16 @@ app.use('/resources', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({ extended:false }))
-app.use(session({secret: 'seesion-pass'}))
+app.use(session({
+    secret: 'seesion-pass'
+}))
 app.use(flash())
 
 app.use('/home', homeRoute)
 app.use('/auth', authRoute)
 app.use('/account', accountRoute)
 app.use('/resources', express.static(path.join(__dirname, 'uploads')))
+app.use('/notification', notificationRoute)
 
 let opts = {
     useNewUrlParser: true,

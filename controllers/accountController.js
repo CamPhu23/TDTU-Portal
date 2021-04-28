@@ -100,6 +100,10 @@ exports.getProfile = (req, res) => {
             let avatar = user.avatar || 'http://via.placeholder.com/100'
             let _class = user.class || ''
             let department = user.department || ''
+
+            if (department != '') {
+                department = department.toLowerCase()
+            }
     
             return res.render('pages/profile', {email, avatar, fullname, _class: _class, department, resultUpdate})
         }
@@ -118,7 +122,11 @@ exports.postProfile = (req, res) => {
     let userId = req.session.userId
 
     let {fullname, _class, department} = req.body
-    let avatar = "/resources/avatars/" + req.file.filename
+    
+    let avatar
+    if (req.file) {
+        avatar = "/resources/avatars/" + req.file.filename
+    }
     userModel.findByIdAndUpdate(userId, {fullname: fullname, class: _class, department: department, avatar: avatar}, {new: true})
     .then(data => {
         // req.flash("resultUpdate", "true")

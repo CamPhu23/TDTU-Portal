@@ -28,31 +28,31 @@
                         
                         <div class="form-group">
                             <label class="mx-1 my-0">Email</label>
-                            <input value="<%= email %>" type="text" readonly placeholder="Email" class="form-control" id="email" name="email">
+                            <input value="<%= locals.email %>" type="text" readonly placeholder="Email" class="form-control" id="email" name="email">
                         </div>
                         <div class="form-group">
                             <label class="mx-1 my-0">Tên hiển thị</label>
-                            <input value="<%= fullname %>" type="text" placeholder="Tên hiển thị" class="form-control" id="fullname" name="fullname">
+                            <input value="<%= locals.fullname %>" type="text" placeholder="Tên hiển thị" class="form-control" id="fullname" name="fullname">
                         </div>
                         <div class="form-group">
                             <label class="mx-1 my-0">Lớp</label>
-                            <input value="<%= _class %>" type="text" placeholder="Lớp" class="form-control" id="class" name="_class">
+                            <input value="<%= locals._class %>" type="text" placeholder="Lớp" class="form-control" id="class" name="_class">
                         </div>
                         
                         <div>Khoa</div>
                         <select name="department" class="selectpicker phongkhoa custom-select">
-                            <option <%= department == "" ? "selected" : "" %> value="">Chọn khoa</option>
-                            <option <%= department == "khoa luật" ? "selected" : "" %> value="Khoa luật">Khoa Luật</option>
-                            <option <%= department == "trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa" ? "selected" : "" %> value="Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
-                            <option <%= department == "viện chính sách kinh tế và kinh doanh" ? "selected" : "" %> value="Viện chính sách kinh tế và kinh doanh">Viện chính sách kinh tế và kinh doanh</option>
-                            <option <%= department == "khoa mỹ thuật công nghiệp" ? "selected" : "" %> value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>
-                            <option <%= department == "khoa điện – Điện tử" ? "selected" : "" %> value="Khoa điện – Điện tử">Khoa Điện – Điện tử</option>
-                            <option <%= department == "khoa công nghệ thông tin" ? "selected" : "" %> value="Khoa công nghệ thông tin">Khoa Công nghệ thông tin</option>
-                            <option <%= department == "khoa quản trị kinh doanh" ? "selected" : "" %> value="Khoa quản trị kinh doanh">Khoa Quản trị kinh doanh</option>
-                            <option <%= department == "khoa môi trường và bảo hộ lao động" ? "selected" : "" %> value="Khoa môi trường và bảo hộ lao động">Khoa Môi trường và bảo hộ lao động </option>
-                            <option <%= department == "khoa lao động công đoàn" ? "selected" : "" %> value="Khoa lao động công đoàn">Khoa Lao động công đoàn</option>
-                            <option <%= department == "khoa tài chính ngân hàng" ? "selected" : "" %> value="Khoa tài chính ngân hàng">Khoa Tài chính ngân hàng</option>
-                            <option <%= department == "khoa giáo dục quốc tế" ? "selected" : "" %> value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
+                            <option <%= locals.department == "" ? "selected" : "" %> value="">Chọn khoa</option>
+                            <option <%= locals.department == "khoa luật" ? "selected" : "" %> value="Khoa luật">Khoa Luật</option>
+                            <option <%= locals.department == "trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa" ? "selected" : "" %> value="Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
+                            <option <%= locals.department == "viện chính sách kinh tế và kinh doanh" ? "selected" : "" %> value="Viện chính sách kinh tế và kinh doanh">Viện chính sách kinh tế và kinh doanh</option>
+                            <option <%= locals.department == "khoa mỹ thuật công nghiệp" ? "selected" : "" %> value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>
+                            <option <%= locals.department == "khoa điện – Điện tử" ? "selected" : "" %> value="Khoa điện – Điện tử">Khoa Điện – Điện tử</option>
+                            <option <%= locals.department == "khoa công nghệ thông tin" ? "selected" : "" %> value="Khoa công nghệ thông tin">Khoa Công nghệ thông tin</option>
+                            <option <%= locals.department == "khoa quản trị kinh doanh" ? "selected" : "" %> value="Khoa quản trị kinh doanh">Khoa Quản trị kinh doanh</option>
+                            <option <%= locals.department == "khoa môi trường và bảo hộ lao động" ? "selected" : "" %> value="Khoa môi trường và bảo hộ lao động">Khoa Môi trường và bảo hộ lao động </option>
+                            <option <%= locals.department == "khoa lao động công đoàn" ? "selected" : "" %> value="Khoa lao động công đoàn">Khoa Lao động công đoàn</option>
+                            <option <%= locals.department == "khoa tài chính ngân hàng" ? "selected" : "" %> value="Khoa tài chính ngân hàng">Khoa Tài chính ngân hàng</option>
+                            <option <%= locals.department == "khoa giáo dục quốc tế" ? "selected" : "" %> value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
                         </select>
     
                         <!-- <% if (locals.resultUpdate && locals.resultUpdate == true) { %>                

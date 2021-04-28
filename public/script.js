@@ -3,6 +3,25 @@ window.onload = function(e) {
     if (window.location.pathname === '/home' || window.location.pathname === '/home/') {
         getListPost(1)
     }
+
+    if (window.location.pathname.includes("auth")) {
+    
+        const socket = io();
+        
+        socket.on('connect', () => console.log("kết nối thành công"))
+        
+        socket.on('new_notification', (notiInfo) => {
+
+        let author = notiInfo.author
+        let noti = notiInfo.noti
+        
+        $('#toast-notification').toast("show")
+        $('#toast-notification-title').text(author + " vừa có một thông mới")
+        $('#toast-notification-content').text(noti.title)
+
+            $('#toast-notification').attr("data-noti-link", notiInfo.link_detail)
+        })
+    }
 }
 
 $(document).ready(() => {
@@ -188,24 +207,24 @@ $(document).ready(() => {
 
     // new_notification.ejs
     $("#new-notification-btn").click(function() {
-
-        let form = $('#notification-form')[0]
-        let data = new FormData(form)
-        let url = window.location.origin + "/createNewNotification"
-
-        fetch(url, {
-            method: 'POST',
-            body: data
-        })
-        .then(() => {
-        })
-        .catch(error => console.log(error))
+        $('#notification-form').trigger("reset")
     })
 
     $('#new-notification-btn-cancel').click(function() {
         $('#new-notification').modal('hide')
     })
 
+    // $('#update-noti-btn').click(function() {
+    //     $('#new-notification').modal('show')
+
+    //     $('#notification-title')
+        
+    // })
+
+    $('#toast-notification').click(function() {
+        console.log(window.location.href);
+        window.location.replace(window.location.origin + $('#toast-notification').attr('data-noti-link'))
+    })
 });
 
 //handle event append elements

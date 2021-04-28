@@ -1,0 +1,74 @@
+<div class="modal fade" id="new-notification" tabindex="-1" role="dialog" aria-labelledby="new-notification-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="new-notification-label">Đăng thông báo mới</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+  
+          <form action="./notification/createNewNotification" id="notification-form" method="POST" enctype="multipart/form-data">
+            
+            <div>
+                <label for="notification-title" class="mb-0 mx-1">Tiêu đề thông báo</label>
+                <input placeholder="Tiêu đề thông báo" type="text" class="form-control" id="notification-title" name="title">
+            </div>
+  
+            <div class="mt-3">
+                <label for="notification-content" class="mb-0 mx-1">Nội dung thông báo</label>
+                <textarea placeholder="Nội dung thông báo" rows="5" type="text" class="form-control" id="notification-content" name="content"></textarea>
+            </div>
+    
+            <div class="mt-3 ml-1">
+                <label for="notification-content" class="mb-0 mx-1">Ảnh đính kèm</label>
+  
+                <div class="custom-file">
+                    <input id="notification-file" type="file" class="custom-file-input" accept="image/*" multiple="multiple" name="notification_files">
+                    <label class="custom-file-label" for="customFile">Đính kèm ảnh</label>
+                </div>
+            </div>
+
+            <div class="ml-1 mt-3">
+                <label class="mb-0 mx-1">Chọn phòng ban</label>
+
+                <select class="custom-select ml-0 mb-3" name="subject">
+                    <option value="" selected>Chọn chuyên mục</option>
+                    <option value="Tất cả"> Tất cả</option>
+                    <option value="Phòng công tác học sinh sinh viên (CTHSSV)">Phòng Công tác học sinh sinh viên (CTHSSV)</option>
+                    <option value="Phòng đại học">Phòng Đại học</option>
+                    <option value="Phòng sau đại học">Phòng Sau đại học</option>
+                    <option value="Phòng điện toán và máy tính">Phòng điện toán và máy tính</option>
+                    <option value="Phòng khảo thí và kiểm định chất lượng">Phòng khảo thí và kiểm định chất lượng</option>
+                    <option value="Phòng tài chính">Phòng tài chính</option>
+                    <option value="TDT creative Language Center">TDT Creative Language Center</option>
+                    <option value="Trung tâm tin học">Trung tâm tin học</option>
+                    <option value="Trung tâm đào tạo phát triển xã hội (SDTC)">Trung tâm đào tạo phát triển xã hội (SDTC)</option>
+                    <option value="Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)">Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)</option>
+                    <option value="Trung tâm hợp tác doanh nghiệp và cựu sinh viên">Trung tâm hợp tác doanh nghiệp và cựu sinh viên</option>
+                    <option value="Khoa luật">Khoa Luật</option>
+                    <option value="Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
+                    <option value="Viện chính sách kinh tế và kinh doanh">Viện chính sách kinh tế và kinh doanh</option>
+                    <option value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>
+                    <option value="Khoa điện – Điện tử">Khoa Điện – Điện tử</option>
+                    <option value="Khoa công nghệ thông tin">Khoa Công nghệ thông tin</option>
+                    <option value="Khoa quản trị kinh doanh">Khoa Quản trị kinh doanh</option>
+                    <option value="Khoa môi trường và bảo hộ lao động">Khoa Môi trường và bảo hộ lao động </option>
+                    <option value="Khoa lao động công đoàn">Khoa Lao động công đoàn</option>
+                    <option value="Khoa tài chính ngân hàng">Khoa Tài chính ngân hàng</option>
+                    <option value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
+                </select>
+            </div>
+        
+            <hr>
+        
+            <div class="d-flex flex-row-reverse">
+                <button type="reset" class="btn btn-danger" id="new-notification-btn-cancel">Hủy</button>
+                <button type="submit" class="btn btn-primary mx-2" id="new-notification-btn">Đăng bài</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

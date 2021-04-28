@@ -32,6 +32,7 @@ exports.postGoogleLogin = (req, res) => {
         user.picture = payload.picture;
     }
     
+    
     verify()
     .then(() => {
         domain = user.email.split("@")[1]
@@ -42,17 +43,17 @@ exports.postGoogleLogin = (req, res) => {
                 if (!account) {
                     user = new userModel({email: user.email, fullname: user.name, avatar: user.picture})
     
-                    user.save((user) => {
-                        // res.cookie("session-token", user_.id)                        
-                        
-                    })
+                    user.save()
                     .catch(error => console.log(error))
                 }
 
+                console.log(account._id);
+                
                 req.session.userId = account._id
                 res.send({"result": "success"})
             })
             .catch(error => console.log(error))
+            
         } else {
             res.send({"result": "Không thuộc tên miền student.tdtu.edu.vn"})
         }

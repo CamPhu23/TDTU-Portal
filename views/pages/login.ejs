@@ -28,11 +28,11 @@
                     <form action="./login" method="post">
                         <div class="form-group">
                             <label for="username" class="mb-0">Tên đăng nhập</label>
-                            <input value="<%= username %>" placeholder="Tên đăng nhập" type="text" class="form-control" id="username" name="username">
+                            <input value="<%= locals.username %>" placeholder="Tên đăng nhập" type="text" class="form-control" id="username" name="username">
                         </div>
                         <div class="form-group mb-2">
                             <label for="pass" class="mb-0">Mật khẩu</label>
-                            <input value="<%= pass %>" placeholder="Mật khẩu" type="password" class="form-control" id="pass" name="pass">
+                            <input value="<%= locals.pass %>" placeholder="Mật khẩu" type="password" class="form-control" id="pass" name="pass">
                         </div>
 
                         <div class="form-group form-check mb-4">
