@@ -12,14 +12,6 @@ exports.showHomepage = (req, res) => {
     console.log(userId);
     console.log(accountId);
 
-    // User.findById(userId,
-    //     (err, result) => {
-    //         console.log(result);
-    //         return res.render('pages/home', {user: result, permission});
-    //     }
-    // )
-
-
     User.findById(userId)
         .then(user => {
             Notifications.find({})
@@ -42,7 +34,11 @@ exports.handleAddNewPost = (req, res) => {
         });
     }
 
-    let { author, content, video } = req.body
+
+    let {author, content, video} = req.body
+    let embedUrl = null
+    if (video)
+        embedUrl = 'https://www.youtube.com/embed/' + video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)[1];
     let newPost = new Post({
         author, 
         content,
@@ -51,8 +47,10 @@ exports.handleAddNewPost = (req, res) => {
     });
 
     newPost.save((err, result) => {
-        if (err) return res.json({ status: false, error: err.message });
-        else return res.json({ status: true, result });
+        console.log(result);
+
+        if (err) return res.json({status: false, error: err.message});
+        return res.json({status: true, result});
     })
 }
 
