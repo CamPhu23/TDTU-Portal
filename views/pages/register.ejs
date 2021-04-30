@@ -20,19 +20,19 @@
 
                         <div class="form-group">
                             <label class="mx-1 my-0">Tên Phòng/Khoa</label>
-                            <input type="text" placeholder="Tên Phòng/Khoa" class="form-control" id="account-name" name="department">
+                            <input value="<%= department %>" type="text" placeholder="Tên Phòng/Khoa" class="form-control" id="account-name" name="department">
                         </div>
                         <div class="form-group">
                             <label class="mx-1 my-0">Tên tài khoản Phòng/Khoa</label>
-                            <input type="text" placeholder="Tên tài khoản Phòng/Khoa" class="form-control" id="name" name="username">
+                            <input value="<%= username %>" type="text" placeholder="Tên tài khoản Phòng/Khoa" class="form-control" id="name" name="username">
                         </div>
                         <div class="form-group">
                             <label class="mx-1 my-0">Mật khẩu</label>
-                            <input type="password" placeholder="Mật khẩu" class="form-control" id="password" name="password">
+                            <input value="<%= password %>" type="password" placeholder="Mật khẩu" class="form-control" id="password" name="password">
                         </div>
                         <div class="form-group">
                             <label class="mx-1 my-0">Xác nhận mật khẩu mới</label>
-                            <input type="password"  placeholder="Nhập lại mật khẩu" class="form-control" id="repeat-password">
+                            <input value="<%= re_password %>" type="password"  placeholder="Nhập lại mật khẩu" class="form-control" id="repeat-password" name="re_password">
                         </div>
                         
                         <div class="btn-group">Phân quyền Phòng/Khoa</div>
@@ -85,6 +85,13 @@
                             <div class="checkbox">
                                 <label><input type="checkbox" name="permissions" value="Khoa giáo dục quốc tế"> Khoa giáo dục quốc tế </label></div>
                         </div>
+
+                        <% if (locals.error && locals.error != '') { %>
+                            <div class="alert alert-danger">
+                                <%= error  %>
+                            </div> 
+                        <% } %>
+
                         <div class="form-group">
                             <button type="submit" id="submit" class="form-submit btn">Tạo tài khoản</button>
                         </div>

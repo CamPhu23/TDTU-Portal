@@ -1,31 +1,54 @@
 const accountModel = require("../models/accountModel")
 const userModel = require("../models/userModel")
 const bcryptjs = require("bcryptjs")
+const {validationResult} = require('express-validator')
+const { validate } = require("../models/accountModel")
 
 exports.getRegister = (req, res) => {
-    res.render('pages/register')
+    let username = req.flash('usernameRegister') || ''
+    let password = req.flash('passwordRegister') || ''
+    let re_password = req.flash('re_passwordRegister') || ''
+    let department = req.flash('departmentRegister') || ''
+    let error = req.flash('errorRegister') || ''
+
+    res.render('pages/register', {username, password, re_password, department, error})
 }
 
 exports.postRegister = (req, res) => {
-    let departments = ["Phòng Công tác học sinh sinh viên (CTHSSV)", "Phòng Đại học", 
-    "Phòng Sau đại học", "Phòng Điện toán và máy tính", 
-    "Phòng Khảo thí và kiểm định chất lượng", 
-    "Phòng Tài chính", "TDT Creative Language Center", 
-    "Trung Tâm tin học", "Trung tâm đào tạo phát triển xã hội (SDTC)", 
-    "Trung Tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)", 
-    "Trung Tâm hợp tác doanh nghiệp và cựu sinh viên", "Khoa Luật", "Trung Tâm ngoại ngữ - tin học – bồi dưỡng văn hóa", 
-    "Viện Chính sách kinh tế và kinh doanh", "Khoa Mỹ thuật công nghiệp", 
-    "Khoa Điện – Điện tử", "Khoa Công nghệ thông tin", "Khoa Quản trị kinh doanh", 
-    "Khoa Môi trường và bảo hộ lao động", "Khoa Lao động công đoàn", 
-    "Khoa Tài chính ngân hàng", "Khoa Giáo dục quốc tế"]
+    const result = validationResult(req);
+    let {department, username, password, re_password} = req.body
+
+    req.flash('departmentRegister', department)
+    req.flash('usernameRegister', username)
+    req.flash('passwordRegister', password)
+    req.flash('re_passwordRegister', re_password)
+
+    if (result.errors.length !== 0) {
+        req.flash('errorRegister', result.errors[0].msg)
+
+        return res.redirect('/account/register')
+    }
+
+    let departments = ["phòng công tác học sinh sinh viên (cthhsv)", "phòng đại học", 
+    "phòng sau đại học", "phòng điện toán và máy tính", 
+    "phòng khảo thí và kiểm định chất lượng", 
+    "phòng tài chính", "tdt creative language center", 
+    "trung tâm tin học", "trung tâm đào tạo phát triển xã hội (sdtc)", 
+    "trung tâm phát triển khoa học quản lý và ứng dụng công nghệ (atem)", 
+    "trung tâm hợp tác doanh nghiệp và cựu sinh viên", "khoa luật", "trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa", 
+    "viện chính sách kinh tế và kinh doanh", "khoa mỹ thuật công nghiệp", 
+    "khoa điện – điện tử", "khoa công nghệ thông tin", "khoa quản trị kinh doanh", 
+    "khoa môi trường và bảo hộ lao động", "khoa lao động công đoàn", 
+    "khoa tài chính ngân hàng", "khoa giáo dục quốc tế"]
 
     info = req.body
-    if (departments.includes(info.department)) { 
+    if (departments.includes(info.department.toLowerCase())) { 
 
         accountModel.findOne({username: info.username})
         .then((account) => {
             if (account) {
-                console.log("tên tài khoản đã tồn tại");
+                req.flash('errorRegister', "Tên tài khoản đã tồn tại")
+
                 return res.redirect("/account/register")
             } else {
 
@@ -48,6 +71,8 @@ exports.postRegister = (req, res) => {
 
                     newAccount.save(function(err) {
                         if (err) return handleError(err);
+
+                        res.redirect('/account/register')
                     })
                 })
             }
@@ -55,16 +80,31 @@ exports.postRegister = (req, res) => {
         .catch(error => console.log(error))
 
     } else {
-        console.log("Không tồn tại phòng này")
+        req.flash('errorRegister', "Tên Phòng/Khoa không hợp lệ")
+
+        return res.redirect("/account/register")
     }
 }
 
 exports.getResetPassword = (req, res) => {
-    res.render('pages/changePassword')
+    
+    let password = req.flash('passwordResetPassword') || '' 
+    let error = req.flash('errorResetPassword') || ''
+
+    res.render('pages/changePassword', {password, error})
 }
 
 exports.postResetPassword = (req, res) => {
+    const result = validationResult(req);
     let {password, newpassword} = req.body
+
+    req.flash('passwordResetPassword', password)
+
+    if (result.errors.length !== 0) {
+        req.flash('errorResetPassword', result.errors[0].msg)
+
+        return res.redirect('/account/resetPassword')
+    }
 
     let id = req.session.accountId
     accountModel.findById(id)
@@ -77,20 +117,33 @@ exports.postResetPassword = (req, res) => {
             accountModel.findByIdAndUpdate(id, {password: hased}, {new: true})
             .then(account => {
                 console.log(account.password);
+                return res.redirect('/account/resetPassword')
             })
             .catch(error => console.log(error))
 
         } else {
-            console.log("Mật khẩu cũ bị sai");
+            req.flash('errorResetPassword', "Mật khẩu cũ bị sai")
+    
+            return res.redirect('/account/resetPassword')
         }
     })
     .catch(error => console.log(error))
 }
 
-exports.getProfile = (req, res) => {
-    let resultUpdate = req.flash("resultUpdate")  
+exports.getProfile = (req, res) => { 
+    let departmentProfile = req.flash('departmentProfile') || ''
+    let classProfile = req.flash('classProfile') || ''
+    let fullnameProfile = req.flash('fullnameProfile') || ''
+    let emailProfile = req.flash('emailProfile') || ''
+    let error = req.flash('errorProfile') || ''
+
+    if (error && error != '') {
+        return res.render('pages/profile', {email: emailProfile, fullname: fullnameProfile, _class: classProfile, department: departmentProfile, error})
+    }
     
     let userId = req.session.userId
+    console.log(req.session.userId);
+
     userModel.findById(userId)
     .then(user => {
 
@@ -105,34 +158,42 @@ exports.getProfile = (req, res) => {
                 department = department.toLowerCase()
             }
     
-            return res.render('pages/profile', {email, avatar, fullname, _class: _class, department, resultUpdate})
+            return res.render('pages/profile', {email, avatar, fullname, _class: _class, department})
         }
 
-        return res.render('pages/profile', {email: '', avatar: 'http://via.placeholder.com/100', fullname: '', _class: '', department: '', resultUpdate})
+        return res.render('pages/profile', {email: '', avatar: 'http://via.placeholder.com/100', fullname: '', _class: '', department: ''})
     })
     .catch(error => {
         console.log(error)
-        return res.render('pages/profile', {email: '', avatar: 'http://via.placeholder.com/100', fullname: '', _class: '', department: '', resultUpdate})
+
     })
     
 }
 
 exports.postProfile = (req, res) => {
+    const result = validationResult(req);
+    let {fullname, _class, department, email} = req.body
 
+    req.flash('departmentProfile', department)
+    req.flash('classProfile', _class)
+    req.flash('fullnameProfile', fullname)
+    req.flash('emailProfile', email)
+
+    if (result.errors.length !== 0) {
+        req.flash('errorProfile', result.errors[0].msg)
+
+        return res.redirect('/account/profile')
+    }
     let userId = req.session.userId
 
-    let {fullname, _class, department} = req.body
     
     let avatar
-    if (req.file) {
+    if (req.file || req.file != undefined) {
         avatar = "/resources/avatars/" + req.file.filename
-    }
+    } 
     userModel.findByIdAndUpdate(userId, {fullname: fullname, class: _class, department: department, avatar: avatar}, {new: true})
     .then(data => {
-        // req.flash("resultUpdate", "true")
-
-        // return res.redirect("/account/profile")
-        console.log(data);
+        return res.redirect("/account/profile")
     })
     .catch(error => console.log(error))
 }

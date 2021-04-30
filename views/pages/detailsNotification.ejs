@@ -19,28 +19,60 @@
         <% if(locals.noti) {%>
             <div class="col-8 d-flex justify-content-center my-4">
                 <div class="shadow-lg p-3 bg-white rounded mx-auto w-100">
-                    <h1 class="mx-100 text-wrap text-break text-center text-info text-uppercase my-3"><%= locals.noti.title %></h1>
-                    <div class="d-flex flex-row-reverse h6 font-italic my-3"><%= locals.noti.subject %> | Ngày đăng: <%= locals.date %></div>
-                    <div class="mx-100 text-wrap text-break my-3">
-                        <%= locals.noti.content %>
-                    </div>
-                    <div class="d-flex justify-content-end my-3">
-                        <div class="d-inline-flex h4 badge badge-success font-italic"><%= locals.noti.author ? locals.noti.author.fullname : "" %></div>
+                    <h1 id="notification-details-title" class="mx-100 text-wrap text-break text-center text-info text-uppercase m-3"><%= locals.noti.title %></h1>
+                    
+                    <div id="notification-details-subject" class="d-flex flex-row-reverse h6 font-italic m-3"><%= locals.noti.subject %> | Ngày đăng: <%= locals.date %></div>
+
+                    <div id="notification-details-content" class="mx-100 text-wrap text-break m-3"><%= locals.noti.content %></div>
+
+                    <div id="files_detail_area">
+                        <% if (locals.noti.files) { %>
+                            <div class="my-4">
+                                <% locals.noti.files.forEach((file, index) => { %>
+                                    <% if (file.Type.includes("image")) { %>
+                                        <img src="../../<%= file.Src %>" alt="" class="w-25 h-50 m-3 rounded">
+                                    <% } %>
+                                <% }) %>
+                            </div>
+    
+                            <div class="my-4">
+                                <% locals.noti.files.forEach((file, index) => { %>
+                                    <% if (!file.Type.includes("image")) { %>
+                                        <a href="../../<%= file.Src.split('&')[0] %>" download=""> <%= file.Src.split("&")[1] %> </a>
+                                    <% } %>
+                                <% }) %>
+                            </div>
+                        <% } %>    
                     </div>
 
-                    <div class="d-flex flex-row-reverse">
-                        <a class="btn btn-danger" href="<%= locals.delete_href %>" role="button">Xóa</a>
-                        <a class="btn btn-primary mr-2 text-light" id="update-noti-btn" role="button">Cập nhật</a>
+                    <div class="d-flex justify-content-end m-3">
+                        <div class="d-inline-flex h4 badge badge-success font-italic" id="author_detail_area"><%= locals.noti.author ? locals.noti.author.fullname : "" %></div>
                     </div>
+
+                    <% if (locals.isEditable == true) { %>
+                        <div class="d-flex flex-row-reverse">
+                            <a  href="<%= locals.delete_href %>" role="button">
+                                <button type="button" class="btn btn-danger">
+                                    Xóa
+                                </button>
+                            </a>
+                            <button id="amend-notification-btn" type="button" class="mr-2 btn btn-primary" data-toggle="modal" data-target="#amend-notification">
+                                Cập nhật thông báo
+                            </button>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         <% } %>
     </div>
 
-    <%- include('../partials/new_notifictation.ejs') %>
+    <!-- <%- include('../partials/new_notifictation.ejs') %> -->
 
     <!-- notify -->
     <%- include('../partials/toast_notification.ejs') %>
+
+    <!-- modal -->
+    <%- include('../partials/notification_modal.ejs') %>
 </body>
 
 </html>

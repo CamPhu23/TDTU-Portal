@@ -41,15 +41,17 @@ exports.postGoogleLogin = (req, res) => {
             userModel.findOne({email: user.email})
             .then((account) => {
                 if (!account) {
-                    user = new userModel({email: user.email, fullname: user.name, avatar: user.picture})
+                    let newUser = new userModel({email: user.email, fullname: user.name, avatar: user.picture})
     
-                    user.save()
+                    newUser.save()
+                    .then(user => {
+                        req.session.userId = user._id
+                    })
                     .catch(error => console.log(error))
+                } else {
+                    req.session.userId = account._id
                 }
 
-                console.log(account._id);
-                
-                req.session.userId = account._id
                 res.send({"result": "success"})
             })
             .catch(error => console.log(error))

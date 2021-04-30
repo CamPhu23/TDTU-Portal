@@ -11,6 +11,7 @@ exports.showHomepage = (req, res) => {
 
     console.log(userId);
     console.log(accountId);
+    console.log(permission);
 
     User.findById(userId)
         .then(user => {
@@ -43,7 +44,7 @@ exports.handleAddNewPost = (req, res) => {
         author, 
         content,
         imgUrl,
-        videoUrl: embedUrl,
+        videoUrl: null
     });
 
     newPost.save((err, result) => {

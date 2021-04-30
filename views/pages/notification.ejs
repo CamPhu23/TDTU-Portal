@@ -13,48 +13,48 @@
 <body>
     <div class="row all-notifications">
         <div class="col-3">
-            <%- include('../partials/navbar.ejs') %>
+            <!-- <%- include('../partials/navbar.ejs') %> -->
         </div>
 
         <div class="col-8 d-flex justify-content-center my-4">
             <div class="shadow-lg p-3 bg-white rounded mx-auto">
                 <div class="row">
-                    <div class="col-lg-8">
-                        <form action="./notification/filter?">
-                            <select name="deparment" id="phongkhoa" class="phongkhoa custom-select">
-                                <option value="" selected>Chọn Khoa/Phòng</option>
-                                <option value="phongcthssv">Phòng Công tác học sinh sinh viên (CTHSSV)</option>
-                                <option value="phongdaihoc">Phòng Đại học</option>
-                                <option value="phongsaudaihoc">Phòng Sau đại học</option>
-                                <option value="phongdientoanvamaytinh">Phòng điện toán và máy tính</option>
-                                <option value="phongkhaotivakiemdinhchatluong">Phòng khảo thí và kiểm định chất lượng</option>
-                                <option value="phongtaichinh">Phòng tài chính</option>
-                                <option value="phongclc">TDT Creative Language Center</option>
-                                <option value="trungtamtinhoc">Trung tâm tin học</option>
-                                <option value="sdtc">Trung tâm đào tạo phát triển xã hội (SDTC)</option>
-                                <option value="atem">Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)</option>
-                                <option value="trungtamhoptacdoanhnghiepvacuusinhvien">Trung tâm hợp tác doanh nghiệp và cựu sinh viên</option>
-                                <option value="khoaluat">Khoa Luật</option>
-                                <option value="trungtamngoaingutinhocboiduongvanhoa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
-                                <option value="vienchinhsachkinhtevakinhdoanh">Viện chính sách kinh tế và kinh doanh</option>
-                                <option value="khoamtcn">Khoa Mỹ thuật công nghiệp</option>
-                                <option value="khoadiendientu">Khoa Điện – Điện tử</option>
-                                <option value="khoacntt">Khoa Công nghệ thông tin</option>
-                                <option value="khoaquantrikinhdoanh">Khoa Quản trị kinh doanh</option>
-                                <option value="khoamoitruongvabaoholaoding">Khoa Môi trường và bảo hộ lao động </option>
-                                <option value="khoalaodongcongdoan">Khoa Lao động công đoàn</option>
-                                <option value="khoataichinhnganhang">Khoa Tài chính ngân hàng</option>
-                                <option value="khoagiaoducquocte">Khoa giáo dục quốc tế</option>
+                    <div class="col-6 col-sm-8 col-md-8 mx-auto p-0">
+                        <form action="./notification/filter" class="row mx-auto">
+                            <select name="department" id="phongkhoa" class="phongkhoa custom-select col-12 col-sm-7">
+                                <option value="" selected>Tất cả</option>
+                                <option value="Phòng công tác học sinh sinh viên (CTHSSV)">Phòng Công tác học sinh sinh viên (CTHSSV)</option>
+                                <option value="Phòng đại học">Phòng Đại học</option>
+                                <option value="Phòng sau đại học">Phòng Sau đại học</option>
+                                <option value="Phòng điện toán và máy tính">Phòng điện toán và máy tính</option>
+                                <option value="Phòng khảo thí và kiểm định chất lượng">Phòng khảo thí và kiểm định chất lượng</option>
+                                <option value="Phòng tài chính">Phòng Tài chính</option>
+                                <option value="TDT creative Language Center">TDT Creative Language Center</option>
+                                <option value="Trung tâm tin học">Trung tâm tin học</option>
+                                <option value="Trung tâm đào tạo phát triển xã hội (SDTC)">Trung tâm đào tạo phát triển xã hội (SDTC)</option>
+                                <option value="Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)">Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)</option>
+                                <option value="Trung tâm hợp tác doanh nghiệp và cựu sinh viên">Trung tâm hợp tác doanh nghiệp và cựu sinh viên</option>
+                                <option value="Khoa luật">Khoa Luật</option>
+                                <option value="Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
+                                <option value="Viện chính sách kinh tế và kinh doanh">Viện chính sách kinh tế và kinh doanh</option>
+                                <option value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>
+                                <option value="Khoa điện – Điện tử">Khoa Điện – Điện tử</option>
+                                <option value="Khoa công nghệ thông tin">Khoa Công nghệ thông tin</option>
+                                <option value="Khoa quản trị kinh doanh">Khoa Quản trị kinh doanh</option>
+                                <option value="Khoa môi trường và bảo hộ lao động">Khoa Môi trường và bảo hộ lao động </option>
+                                <option value="Khoa lao động công đoàn">Khoa Lao động công đoàn</option>
+                                <option value="Khoa tài chính ngân hàng">Khoa Tài chính ngân hàng</option>
+                                <option value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
                             </select>
-                        </div>
-                        <button type="submit" class="btn btn-success" id="searchNotifications">Tìm kiếm</button>
-                    </form>
+                            <button type="submit" class="btn btn-success col-12 col-sm-4 mx-auto" id="searchNotifications">Tìm kiếm</button>
+                        </form>
+                    </div>
 
-                    <div class="d-flex flex-row-reverse">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new-notification">
+                    <% if (locals.isAdded == true) { %> 
+                        <button type="button" class="btn btn-primary col-4 col-sm-3 col-md-3 mx-auto" data-toggle="modal" data-target="#new-notification">
                             Đăng thông báo mới
                         </button>
-                    </div>
+                    <% } %>
                 </div>
     
                 <div id="noti-list">
@@ -98,9 +98,8 @@
 
     </div>
 
-
     <!-- Modal -->
-    <%- include('../partials/new_notifictation.ejs') %>
+    <%- include('../partials/notification_modal.ejs') %>
 
     <!-- notify -->
     <%- include('../partials/toast_notification.ejs') %>
