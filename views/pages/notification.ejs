@@ -11,19 +11,19 @@
 </head>
 
 <body>
-    <div class="row all-notifications">
-        <div class="col-sm-4 col-md-3 col-lg-2 left-part">
+    <div class="row all-notifications py-4">
+        <div class="col-md-0 col-lg-2 left-part">
             <!-- Vertical navbar -->
             <%- include('../partials/navbar.ejs') %>
                 <!-- End vertical navbar -->
         </div>
 
-        <div class="col-sm-8 col-md-9 col-lg-10 d-flex justify-content-center my-4">
+        <div class="col-md-11 col-lg-10 d-flex justify-content-center notification mx-auto">
             <div class="shadow-lg p-3 bg-white rounded mx-auto w-75">
-                <div class="row">
-                    <div class="col-6 col-sm-8 col-md-8 mx-auto p-0">
+                <div>
+                    <div>
                         <form action="./notification/filter" class="row mx-auto">
-                            <select name="department" id="phongkhoa" class="phongkhoa custom-select col-12 col-sm-7">
+                            <select name="department" id="phongkhoa" class="phongkhoa custom-select col-md-8">
                                 <option value="" selected>Tất cả</option>
                                 <option value="Phòng công tác học sinh sinh viên (CTHSSV)">Phòng Công tác học sinh sinh viên (CTHSSV)</option>
                                 <option value="Phòng đại học">Phòng Đại học</option>
@@ -48,14 +48,16 @@
                                 <option value="Khoa tài chính ngân hàng">Khoa Tài chính ngân hàng</option>
                                 <option value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
                             </select>
-                            <button type="submit" class="btn btn-success col-12 col-sm-4 mx-auto" id="searchNotifications">Tìm kiếm</button>
+                            <button type="submit" class="btn btn-success col-md-3 ml-auto" id="searchNotifications">Tìm kiếm</button>
                         </form>
                     </div>
 
                     <% if (locals.isAdded == true) { %> 
-                        <button type="button" class="btn btn-primary col-4 col-sm-3 col-md-3 mx-auto" data-toggle="modal" data-target="#new-notification">
-                            Đăng thông báo mới
-                        </button>
+                        <div class="row d-flex justify-content-end m-auto">
+                            <button type="button" class="btn btn-primary col-md-12 col-lg-3 col-sm-12" data-toggle="modal" data-target="#new-notification">
+                                Đăng thông báo mới
+                            </button>
+                        </div>
                     <% } %>
                 </div>
     

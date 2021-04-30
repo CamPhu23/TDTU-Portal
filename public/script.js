@@ -6,8 +6,9 @@ window.onload = function(e) {
         let id = $('#personal-fullname').data('id')
         getListPost(1, id)
     }
-    else if (!window.location.pathname.includes("auth")) {
+    if (!window.location.pathname.includes("auth")) {
     
+        console.log("ok");
         const socket = io();
         
         socket.on('connect', () => console.log("kết nối thành công"))
@@ -245,6 +246,10 @@ $(document).ready(() => {
         $('#new-notification').modal('hide')
     })
 
+    $('#amend-notification-btn-cancel').click(function() {
+        $('#amend-notification').modal('hide')
+    })
+
     $('#toast-notification').click(function() {
         console.log(window.location.href);
         window.location.replace(window.location.origin + $('#toast-notification').attr('data-noti-link'))
@@ -261,30 +266,31 @@ $(document).ready(() => {
     })
 
     $('#amend-notification-btn-modal').click(function() {
-        let url = window.location.href
-        let id = url.substring(url.lastIndexOf('/') + 1)
-        
-        url = window.location.origin + "/notification/updateNotification"
+        if (checkUpdateNotification()) {
+            let url = window.location.href
+            let id = url.substring(url.lastIndexOf('/') + 1)
+            
+            url = window.location.origin + "/notification/updateNotification"
 
-        let form = document.getElementById('amend-notification-form')
-        form = new FormData(form)
-        form.append("noti_id", id)
+            let form = document.getElementById('amend-notification-form')
+            form = new FormData(form)
+            form.append("noti_id", id)
 
-        fetch(url, {
-            method: 'POST',
-            body: form
-        })
-        .then(json => json.json())
-        .then(data => {
-            console.log(data.result);
-            if (data.result == "Success") {
-                $('#amend-notification').trigger("reset").modal("hide")
-                
-                updateDetailNotification(data.noti)
-            }
-        })
-        .catch(error => console.log(error))
-
+            fetch(url, {
+                method: 'POST',
+                body: form
+            })
+            .then(json => json.json())
+            .then(data => {
+                console.log(data.result);
+                if (data.result == "Success") {
+                    $('#amend-notification').trigger("reset").modal("hide")
+                    
+                    updateDetailNotification(data.noti)
+                }
+            })
+            .catch(error => console.log(error))
+        }
     })
 
 });
@@ -846,39 +852,65 @@ function getListPost(page, condition = '') {
     })
 }
 
-// google sign in (login.ejs)
-function onSignIn(googleUser) {
-    var id_token = googleUser.getAuthResponse().id_token;
+function checkNewNotification() {
+    let title = document.getElementById("notification-title")
+    let content = document.getElementById("notification-content")
+    let subject = document.getElementById("notification-subject")
+    let error = document.getElementById("error-new-notification")
+    
+    if (title.value == '') {
+        title.focus()
+        error.innerHTML = "Bạn cần nhập Tiêu đề thông báo"
+    } else if (content.value == '') {
+        content.focus()
+        error.innerHTML = "Bạn cần nhập Nội dung thông báo"
+    } else if (subject.value == '') {
+        error.innerHTML = "Bạn cần nhập Phòng/Khoa cho thông báo"
+    }
 
-    let url = window.location.origin + '/auth/googlelogin'
+    if (error.innerHTML.length > 0) {
+        error.classList.add("alert")
+        return false 
+    }
 
-    fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify({
-                'id_token': id_token
-            })
-        })
-        .then(json => json.json())
-        .then(result => {
-            if (result.result === "success") {
-
-                let redi = window.location.origin + '/account/profile'
-                window.location.replace(redi);
-            } else {
-                signOut()
-                console.log(result);
-            }
-        })
-        .catch(err => console.log(err))
+    error = ""
+    return true
 }
 
-function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {
-        console.log('User signed out.');
-    });
+function checkUpdateNotification() {
+    let title = document.getElementById("amend-notification-title")
+    let content = document.getElementById("amend-notification-content")
+    let subject = document.getElementById("amend-notification-subject")
+    let error = document.getElementById("error-amend-notification")
+    
+    if (title.value == '') {
+        title.focus()
+        error.innerHTML = "Bạn cần nhập Tiêu đề thông báo"
+    } else if (content.value == '') {
+        content.focus()
+        error.innerHTML = "Bạn cần nhập Nội dung thông báo"
+    } else if (subject.value == '') {
+        error.innerHTML = "Bạn cần nhập Phòng/Khoa cho thông báo"
+    }
+
+    console.log(error);
+    if (error.innerHTML != "") {
+        error.classList.add("alert")
+        return false 
+    }
+
+    error = ""
+    return true
+}
+
+function clearUpdateNotificationError() {
+    let error = document.getElementById("error-amend-notification") 
+    error.innerHTML = "";
+    error.classList.remove("alert")
+}
+
+function clearNewNotificationError() {
+    let error = document.getElementById("error-new-notification") 
+    error.innerHTML = "";
+    error.classList.remove("alert")
 }

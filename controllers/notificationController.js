@@ -2,6 +2,7 @@ const io = require('../socket')
 const notificationModel = require('../models/notificationModel')
 const userModel = require('../models/userModel')
 const accountModel = require('../models/accountModel')
+const getAuthorization = require('../authorization')
 
 exports.postCreateNewNotification = (req, res) => {
 
@@ -40,16 +41,36 @@ exports.postCreateNewNotification = (req, res) => {
     })
 }
 
+let listDepartment = ["Phòng công tác học sinh sinh viên (CTHSSV)", "Phòng đại học", 
+"Phòng sau đại học", "Phòng điện toán và máy tính", 
+"Phòng khảo thí và kiểm định chất lượng", 
+"Phòng tài chính", "TDT creative Language Center", 
+"Trung tâm tin học", "Trung tâm đào tạo phát triển xã hội (SDTC)", 
+"Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)", 
+"Trung tâm hợp tác doanh nghiệp và cựu sinh viên", "Khoa luật", "Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa", 
+"Viện chính sách kinh tế và kinh doanh", "Khoa mỹ thuật công nghiệp", 
+"Khoa điện – Điện tử", "Khoa công nghệ thông tin", "Khoa quản trị kinh doanh", 
+"Khoa môi trường và bảo hộ lao động", "Khoa lao động công đoàn", 
+"Khoa tài chính ngân hàng", "Khoa giáo dục quốc tế"]
+
 exports.getNotificationList = (req, res) => {
+
     let isAdded = false
     let accountId = req.session.accountId
     accountId ? isAdded = true : isAdded = false 
     let permission = []
     let {userId} = req.session
+    let authorization = getAuthorization.getAuthorization(accountId)
 
     accountModel.findById(accountId)
     .then(account => {
-        account ? permission = account.permission : permission = []
+        if (account) {
+            if (account.permission != "admin") {
+                permission = account.permission
+            } else {
+                permission = listDepartment
+            }
+        }
     })
 
     let page = req.query.page
@@ -62,17 +83,7 @@ exports.getNotificationList = (req, res) => {
 
     let department = req.query.department
     if (!department || department == "") {
-        department = ["Phòng công tác học sinh sinh viên (CTHSSV)", "Phòng đại học", 
-        "Phòng sau đại học", "Phòng điện toán và máy tính", 
-        "Phòng khảo thí và kiểm định chất lượng", 
-        "Phòng tài chính", "TDT creative Language Center", 
-        "Trung tâm tin học", "Trung tâm đào tạo phát triển xã hội (SDTC)", 
-        "Trung tâm phát triển Khoa học quản lý và Ứng dụng công nghệ (ATEM)", 
-        "Trung tâm hợp tác doanh nghiệp và cựu sinh viên", "Khoa luật", "Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa", 
-        "Viện chính sách kinh tế và kinh doanh", "Khoa mỹ thuật công nghiệp", 
-        "Khoa điện – Điện tử", "Khoa công nghệ thông tin", "Khoa quản trị kinh doanh", 
-        "Khoa môi trường và bảo hộ lao động", "Khoa lao động công đoàn", 
-        "Khoa tài chính ngân hàng", "Khoa giáo dục quốc tế"]
+        department = listDepartment
     }
 
     let pagi = {page: page}
@@ -103,7 +114,7 @@ exports.getNotificationList = (req, res) => {
                 detail_href.push(req.protocol + "://" + req.get('host') + "/notification/details/" + n._id)
             })
     
-            res.render('pages/notification', {notiList: noti, link: detail_href, date: detail_date, pagi, pagi_link, isAdded, permissionNoti: permission, user, url})
+            res.render('pages/notification', {notiList: noti, link: detail_href, date: detail_date, pagi, pagi_link, isAdded, permissionNoti: permission, user, url, authorization})
         })
     })
 }
@@ -114,10 +125,17 @@ exports.getNotificationDetails = (req, res) => {
     let accountId = req.session.accountId
     let permission = []
     let {userId} = req.session
+    let authorization = getAuthorization.getAuthorization(accountId)
 
     accountModel.findById(accountId)
     .then(account => {
-        account ? permission = account.permission : permission = []
+        if (account) {
+            if (account.permission != "admin") {
+                permission = account.permission
+            } else {
+                permission = listDepartment
+            }
+        }
     })
 
     userModel.findById(userId)
@@ -134,7 +152,7 @@ exports.getNotificationDetails = (req, res) => {
     
             let delete_href = req.protocol + "://" + req.get('host') + "/notification/delete/" + notiId
     
-            res.render('pages/detailsNotification', {noti, date, delete_href, isEditable, permissionNoti: permission, url, user})
+            res.render('pages/detailsNotification', {noti, date, delete_href, isEditable, permissionNoti: permission, url, user, authorization})
         })
     })  
     .catch(err => {

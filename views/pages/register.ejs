@@ -20,19 +20,19 @@
 
                         <div class="form-group">
                             <label class="mx-1 my-0">Tên Phòng/Khoa</label>
-                            <input value="<%= department %>" type="text" placeholder="Tên Phòng/Khoa" class="form-control" id="account-name" name="department">
+                            <input value="<%= locals.department %>" type="text" placeholder="Tên Phòng/Khoa" class="form-control" id="account-name" name="department">
                         </div>
                         <div class="form-group">
                             <label class="mx-1 my-0">Tên tài khoản Phòng/Khoa</label>
-                            <input value="<%= username %>" type="text" placeholder="Tên tài khoản Phòng/Khoa" class="form-control" id="name" name="username">
+                            <input value="<%= locals.username %>" type="text" placeholder="Tên tài khoản Phòng/Khoa" class="form-control" id="name" name="username">
                         </div>
                         <div class="form-group">
                             <label class="mx-1 my-0">Mật khẩu</label>
-                            <input value="<%= password %>" type="password" placeholder="Mật khẩu" class="form-control" id="password" name="password">
+                            <input value="<%= locals.password %>" type="password" placeholder="Mật khẩu" class="form-control" id="password" name="password">
                         </div>
                         <div class="form-group">
                             <label class="mx-1 my-0">Xác nhận mật khẩu mới</label>
-                            <input value="<%= re_password %>" type="password"  placeholder="Nhập lại mật khẩu" class="form-control" id="repeat-password" name="re_password">
+                            <input value="<%= locals.re_password %>" type="password"  placeholder="Nhập lại mật khẩu" class="form-control" id="repeat-password" name="re_password">
                         </div>
                         
                         <div class="btn-group">Phân quyền Phòng/Khoa</div>
@@ -92,11 +92,18 @@
                             </div> 
                         <% } %>
 
+                        <% if (locals.success && locals.success != '') { %>
+                            <div class="alert alert-success">
+                                <%= success  %>
+                            </div> 
+                        <% } %>
+
                         <div class="form-group">
                             <button type="submit" id="submit" class="form-submit btn">Tạo tài khoản</button>
-                            <a type="button" href="<%= url %>/home" class="form-back-home btn">
-                                <i class="fas fa-arrow-left"></i><span class="mx-2">Trở về trang chủ</span>
-                            </a>
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-2">
+                            <a href="<%= url %>/home"><i class="fas fa-arrow-left">Trở về trang chủ</i></a>
                         </div>
                     </form>
                 </div>
