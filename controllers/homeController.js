@@ -9,15 +9,16 @@ exports.showHomepage = (req, res) => {
     let {userId, accountId} = req.session
     let permission = accountId ? true: false
 
-    console.log(userId);
-    console.log(accountId);
-
     User.findById(userId)
         .then(user => {
             Notifications.find({})
+            .sort({date: 'desc'})
+            .limit(10)
             .then(notifications => {
-                console.log(notifications);
-                return res.render('pages/home', { user, permission, notifications })
+                // console.log(notifications);
+                // console.log(user);
+                // console.log(permission);
+                return res.render('pages/home', { user, permission, notifications, url: req.currentURL })
             })
         })
         .catch(err => {
@@ -33,7 +34,6 @@ exports.handleAddNewPost = (req, res) => {
             imgUrl.push('resources/posts/' + file.filename)
         });
     }
-
 
     let {author, content, video} = req.body
     let embedUrl = null
@@ -101,14 +101,18 @@ exports.handleDeteleComment = (req, res) => {
 exports.handleGetAllComments = (req, res) => {
     let id = req.params.id
 
-    Post.findById(id, 'comments -_id', (err, result) => {
-        if (err) return res.json({ result: false, message: err.message })
+    Post.findById(id, 'comments -_id')
+    .populate('comments.author')
+    .then(result => {
         return res.json({ result: true, comments: result.comments })
+    })
+    .catch(err => {
+        return res.json({ result: false, message: err.message })
     })
 }
 
 exports.handleGetPosts = (req, res) => {
-    let page = req.params.page
+    let {page} = req.params
     let skipPosts = parseInt(page) * 10 - 10
 
     Post.find({})
@@ -171,4 +175,42 @@ exports.handleUpdatePost = (req, res) => {
             return res.json({status: false, error: err.message});
         })
     }
+}
+
+exports.handleShowPersonalProfile = (req, res) => {
+    let id = req.params.id
+    let {userId} = req.session
+
+    console.log({userId, id});
+    
+
+    User.find({_id: {$in: [userId, id]}})
+    .then(users => {
+            if (users.length == 1) //it's mean owner profile
+                return res.render('pages/personal', {user: users[0], personal: users[0], url: req.currentURL })
+            else {
+                let user, personal
+                users[0]._id == userId ? (user = users[0], personal = users[1])  : (user = users[1], personal = users[0])
+                return res.render('pages/personal', {user, personal, url: req.currentURL })
+            }
+                
+        })
+}
+
+exports.handleGetPostsOfUser = (req, res) => {
+    let {page, userId} = req.params
+    let skipPosts = parseInt(page) * 10 - 10
+
+    Post.find({author: userId})
+        .populate('author')
+        .sort({lastUpdate: 'desc'})
+        .skip(skipPosts)
+        .limit(10)
+        .then(posts => {
+            // console.log(posts);
+            return res.json({result: true, posts})
+        })
+        .catch(err => {
+            return res.json({result: false, message: err.message})
+        })
 }

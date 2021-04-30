@@ -12,6 +12,6 @@ Router.post('/googlelogin', authController.postGoogleLogin)
 
 Router.post('/login', loginValidator, authController.postLogin)
 
-Router.post('/logout', authController.postLogout)
+Router.get('/logout', authController.postLogout)
 
 module.exports = Router

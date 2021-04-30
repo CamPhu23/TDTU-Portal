@@ -1,10 +1,12 @@
 window.onload = function(e) {
-    console.log(window.location.pathname);
     if (window.location.pathname === '/home' || window.location.pathname === '/home/') {
         getListPost(1)
     }
-
-    if (window.location.pathname.includes("auth")) {
+    else if (window.location.pathname.includes('home/wall')) {
+        let id = $('#personal-fullname').data('id')
+        getListPost(1, id)
+    }
+    else if (window.location.pathname.includes("auth")) {
     
         const socket = io();
         
@@ -22,6 +24,12 @@ window.onload = function(e) {
             $('#toast-notification').attr("data-noti-link", notiInfo.link_detail)
         })
     }
+
+    $('.date-time-format').get().forEach((el) => {
+        let postTime = new Date($(el)[0].innerHTML).toLocaleString().split(',')
+        postTime = postTime[0] + ' ' + postTime[1];
+         $(el)[0].innerHTML = postTime
+    })
 }
 
 $(document).ready(() => {
@@ -77,8 +85,8 @@ $(document).ready(() => {
             body: formData
         }
 
-        let authorAvatar = $('.user-avatar').attr('src')
-        let authorName = $.trim($('#user-id > div > div > h4').text())
+        let avatar = $('.user-avatar').attr('src')
+        let fullname = $.trim($('#user-id > div > div > h4').text())
 
         fetch(url, opts)
         .then((response) => {
@@ -86,7 +94,7 @@ $(document).ready(() => {
         })
         .then((json) => {
             if (json.status) {
-                if (!postId) updatePost(json.result, {authorAvatar, authorName}, true)
+                if (!postId) updatePost(json.result, {avatar, fullname, _id: $('#user-id').data('id')}, true)
                 else if (postId) updateExistPost(json.result)
 
                 $('#close_new_post_modal').click()
@@ -205,11 +213,6 @@ $(document).ready(() => {
         }
     });
 
-    // new_notification.ejs
-    $("#new-notification-btn").click(function() {
-        $('#notification-form').trigger("reset")
-    })
-
     $('#new-notification-btn-cancel').click(function() {
         $('#new-notification').modal('hide')
     })
@@ -257,8 +260,9 @@ $(document).on('click', '.submit_new_comment', function() {
         body: formData
     }
 
-    let authorAvatar = $('.user-avatar').attr('src')
-    let authorName = $.trim($('#user-id > div > div > h4').text())
+    let id = $('#user-id').data('id')
+    let avatar = $('.user-avatar').attr('src')
+    let fullname = $.trim($('#user-id > div > div > h4').text())
 
     fetch(url, opts)
     .then((response) => {
@@ -266,7 +270,7 @@ $(document).on('click', '.submit_new_comment', function() {
     })
     .then((json) => {
         if (json.result) {
-            updateComment(json.comment, {authorAvatar, authorName}, postId)
+            updateComment(json.comment, {id, avatar, fullname}, postId)
             $(form[0][0]).val('')
         } else { //add new post fail
             console.log('add new comment failed');
@@ -298,9 +302,7 @@ $(document).on('click', '.show-all-comment', (event) => {
         .then((json) => {
             if (json.result) {
                 json.comments.forEach(comment => {
-                    let authorAvatar = comment.author.avatar
-                    let authorName = comment.author.fullname
-                    updateComment(comment, {authorAvatar, authorName}, postId)
+                    updateComment(comment, comment.author, postId)
                 })
             } else { //fetch comments fail
                 console.log(json);
@@ -366,6 +368,25 @@ $(document).on('click', '.edit-post', (event) => {
     $('#submit_new_post').data('id', postId)
 
     $('#newPostModal').modal('show')
+})
+
+$(document).on('keypress',  function (e) {
+    if($('#newPostModal').is(':visible')) {
+        let key = e.which;
+        if (key == 13) { 
+            $('#submit_new_post').click();
+        }
+    }
+});
+
+$(document).on('submit', '.new_comment_form', (event) => {
+    event.preventDefault()
+    $(event.target).find('.submit_new_comment').click();
+})
+
+$(document).on('submit', '#newPostModal', (event) => {
+    event.preventDefault()
+    $(event.target).find('.submit_new_post').click();
 })
 
 function updatePost(result, author, isPrepend) {
@@ -435,7 +456,7 @@ function updatePost(result, author, isPrepend) {
 
     let currentUserName = $.trim($("#user-id > div > div > h4").text())
     let postToolHTML = ''
-    if (currentUserName === author.authorName) {
+    if (currentUserName === author.fullname) {
         postToolHTML = `
         <div class="mr-2">
             <div class="btn-group dropright">
@@ -455,11 +476,11 @@ function updatePost(result, author, isPrepend) {
     let newPost = 
     `<div id="${result._id}" class="my-3 p-2 bg-white rounded shadow-sm">
         <div class="media">
-            <img class="mr-3 rounded-circle img-thumbnail shadow-sm author-post-avatar" src="${author.authorAvatar}" alt="author avatar">
+            <img class="mr-3 rounded-circle img-thumbnail shadow-sm author-post-avatar" src="${author.avatar}" alt="author avatar">
             <div class="media-body">
                 <!-- post infor -->
                 <div class="d-flex align-items-center">
-                    <span class="font-weight-bold h5 mr-auto"><a href="" class="writer-name">${author.authorName}</a></span>
+                    <span class="font-weight-bold h5 mr-auto"><a href="${window.location.origin + '/home/wall/' + author._id}" class="writer-name">${author.fullname}</a></span>
                     <div><small class="text-muted mb-2 mx-3">${postTime}</small></div>
                     
                     ${postToolHTML}
@@ -580,7 +601,7 @@ function updateExistPost(updatedPost) {
         <div class="media-body">
             <!-- post infor -->
             <div class="d-flex align-items-center">
-                <span class="font-weight-bold h5 mr-auto"><a href="" class="writer-name">${authorName}</a></span>
+                <span class="font-weight-bold h5 mr-auto"><a href="href="${window.location.origin + '/home/wall/' + $('#user-id').data('id')}"" class="writer-name">${authorName}</a></span>
                 <div><small class="text-muted mb-2 mx-3">${postTime}</small></div>
                 
                 ${postToolHTML}
@@ -612,6 +633,8 @@ function updateExistPost(updatedPost) {
 }
 
 function updateComment(newComment, author, postId) {
+    
+    console.log(author + 'updateComment');
 
     if ($(`#${newComment._id}`).length > 0) {
         if ($.trim($(`#${newComment._id} > div > div.mr-2`).text()) !== newComment.content) {
@@ -626,7 +649,7 @@ function updateComment(newComment, author, postId) {
 
     let currentUserName = $.trim($("#user-id > div > div > h4").text())
     let commentToolHTML = ''
-    if (currentUserName === author.authorName) {
+    if (currentUserName === author.fullname) {
         commentToolHTML = `
         <div class="mr-2">
             <div class="btn-group dropright">
@@ -649,11 +672,11 @@ function updateComment(newComment, author, postId) {
 
     let newCommentHTML = `<!-- comment -->
     <div class="media mt-3" id="${newComment._id}">
-        <img class="mr-3 author-comment-avatar rounded-circle img-thumbnail shadow-sm" height="58px" width="58px" src="${author.authorAvatar}" alt="author comment">
+        <img class="mr-3 author-comment-avatar rounded-circle img-thumbnail shadow-sm" height="58px" width="58px" src="${author.avatar}" alt="author comment">
         <div class="media-body">
             <!-- comment infor -->
             <div class="d-flex align-items-center">
-                <span class="font-weight-bold h6 mr-auto"><a href="" class="writer-name">${author.authorName}</a></span>
+                <span class="font-weight-bold h6 mr-auto"><a href="${window.location.origin + '/home/wall/' + author._id}" class="writer-name">${author.fullname}</a></span>
                 <div><small class="text-muted mb-2 mx-3">${commentTime}</small></div>
                 
                 ${commentToolHTML}
@@ -686,10 +709,14 @@ function updateComment(newComment, author, postId) {
     }
 }
 
-function getListPost(page) {
-    let url = window.location.origin + '/home/getPosts/' + page
+function getListPost(page, condition = '') {
+    let url 
+    if (condition === '') url = window.location.origin + '/home/getPosts/' + page
+    else url = window.location.origin + '/home/getPostsOfUser/' + condition + '/' + page
+    
+    console.log(url);
+    
     let opts = { method: 'GET' }
-
     fetch(url, opts)
     .then((response) => {
         return response.json()
@@ -697,9 +724,7 @@ function getListPost(page) {
     .then((json) => {
         if (json.result) {
             json.posts.forEach(post => {
-                let authorAvatar = post.author.avatar
-                let authorName = post.author.fullname
-                updatePost(post, {authorAvatar, authorName}, false)
+                updatePost(post, post.author, false)
             })
         } else { //add new post fail
             console.log(json);

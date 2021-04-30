@@ -27,6 +27,12 @@
 
 span .writer-name {
     color: black;
+    text-decoration: none!important;
+}
+
+.notification-sm-window {
+    text-decoration: none!important;
+    color: inherit;
 }
 
 .upload-photo {
@@ -270,6 +276,24 @@ textarea {
     background-image: linear-gradient(to left, rgb(132, 132, 247), rgb(151, 213, 247));
 }
 
+.register-form .form-back-home {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -ms-border-radius: 5px;
+    padding: 17px 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    border: none;
+    background-image: linear-gradient(to right, rgb(132, 132, 247), rgb(151, 213, 247));
+}
+
 select {
     max-width: 100%;
     max-height: 80px;
@@ -392,4 +416,29 @@ option {
 iframe {
     border: 1px solid gray;
     border-radius: 5px;
+}
+
+.background-personal {
+    height: 25vh;
+    min-height: 320px;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./images/tdtu.jpg');
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.persional-info-avatar {
+    width: 150px;
+    height: 150px;
+    /* margin-top: -60px; */
+    margin-left: 40px;
+    object-fit: contain;
+}
+
+.personal-info {
+    padding-top: 140px;
+}
+
+.personal-text {
+    color: #eceff1;
 }

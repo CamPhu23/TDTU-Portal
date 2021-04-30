@@ -9,6 +9,7 @@ const session = require('express-session')
 const flash = require('express-flash')
 const cors = require('cors')
 const socketio = require('./socket')
+const url = require('./middleware/url')
 
 const app = express()
 app.set('view engine', 'ejs')
@@ -22,6 +23,7 @@ app.use(session({
 }))
 app.use(flash())
 
+app.use(url)
 app.use('/home', homeRoute)
 app.use('/auth', authRoute)
 app.use('/account', accountRoute)

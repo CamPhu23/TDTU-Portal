@@ -39,6 +39,8 @@ exports.postCreateNewNotification = (req, res) => {
 exports.getNotificationList = (req, res) => {
 
     let page = req.query.page
+    let url = req.currentURL
+
     if (page <= 0 || (isNaN(page) && isNaN(parseFloat(page)))) {
         page = 1
     }
@@ -48,42 +50,56 @@ exports.getNotificationList = (req, res) => {
     notificationModel.countDocuments({}, (error, count) => {
         pagi.total = (parseInt(count / 10  + 1))
     })
-    let pagi_link = req.protocol + "://" + req.get('host') + '/notification?page='
+    let pagi_link = url + '/notification?page='
 
-    notificationModel
-    .find({})
-    .skip(skip)
-    .limit(10)
-    .sort({date: -1})
-    .exec(function(err, noti) {
+    let {userId} = req.session
+    userModel.findById(userId)
+    .then(user => {
+        notificationModel
+        .find({})
+        .skip(skip)
+        .limit(10)
+        .sort({date: -1})
+        .then(noti => {
+            let detail_href = []
+            let detail_date = []
 
-        let detail_href = []
-        let detail_date = []
-        noti.forEach(n => {
-            let date = new Date(n.date).toLocaleString().split(' ')
+            noti.forEach(n => {
+                let date = new Date(n.date).toLocaleString().split(' ')
+        
+                detail_date.push(date[0] + " - " + date[1])
+                detail_href.push(req.protocol + "://" + req.get('host') + req.url.replace('?page=' + page, "notification/details/") + n._id)
+            })
     
-            detail_date.push(date[0] + " - " + date[1])
-            detail_href.push(req.protocol + "://" + req.get('host') + req.url.replace('?page=' + page, "notification/details/") + n._id)
+            return res.render('pages/notification', {notiList: noti, link: detail_href, date: detail_date, pagi, pagi_link, user, url})
         })
-
-        res.render('pages/notification', {notiList: noti, link: detail_href, date: detail_date, pagi, pagi_link})
+    })
+    .catch(err => {
+        console.log(err);
     })
 }
 
 exports.getNotificationDetails = (req, res) => {
     let notiId = req.params.id
+    let url = req.currentURL
 
-    notificationModel.findById(notiId)
-    .populate('author')
-    .then((noti) => {
-        let date = new Date(noti.date).toLocaleString().split(' ')
+    let {userId} = req.session
+    userModel.findById(userId)
+    .then(user => {
+        notificationModel.findById(notiId)
+        .populate('author')
+        .then((noti) => {
+            let date = new Date(noti.date).toLocaleString().split(' ')
 
-        date = date[0] + " - " + date[1]
-        let delete_href = req.protocol + "://" + req.get('host') + "/notification" + req.url.replace("details", "delete")
+            date = date[0] + " - " + date[1]
+            let delete_href = url + "/notification" + req.url.replace("details", "delete")
 
-        res.render('pages/detailsNotification', {noti, date, delete_href})
+            res.render('pages/detailsNotification', {noti, date, delete_href, user, url})
+        })
     })
-    
+    .catch(err => {
+        console.log(err)
+    })    
 }
 
 exports.deleteNotification = (req, res) => {

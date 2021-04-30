@@ -8,52 +8,46 @@
         </div>
     </div>
 
-    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
-
+    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Chức năng</p>
     <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic bg-light ml-3">
-                Home
+            <a href="<%= url %>/home" class="nav-link text-dark font-italic ml-3">
+                <i class="fas fa-home"></i><span class="mx-1">Trang chủ</span>
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic ml-3">
-                About
+            <a href="<%= url %>/notification?page=1" class="nav-link text-dark font-italic ml-3">
+                <i class="fas fa-bell"></i><span class="mx-1">Tất cả thông báo</span>
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic ml-3">
-                About
+            <a href="<%= url %>/home/wall/<%= user._id %>" class="nav-link text-dark font-italic ml-3">
+                <i class="fas fa-user-alt"></i><span class="mx-1">Tường nhà</span>
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic ml-3">
-                About
+            <a href="<%= url %>/account/register" class="nav-link text-dark font-italic ml-3">
+                <i class="fas fa-user-plus"></i><span class="mx-1">Tạo tài khoản</span>
             </a>
         </li>
     </ul>
 
-    <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Charts</p>
+    <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Tài khoản cá nhân</p>
 
     <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic ml-3">
-                Area charts
+            <a href="<%= url %>/account/profile" class="nav-link text-dark font-italic ml-3">
+                <i class="fas fa-user-edit"></i><span class="mx-1">Thay đổi thông tin</span>
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic ml-3">
-                Bar charts
+            <a href="<%= url %>/account/resetPassword" class="nav-link text-dark font-italic ml-3">
+                <i class="fas fa-key"></i><span class="mx-1">Thay đổi mật khẩu</span>
             </a>
-        </li>
+        </li>        
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic ml-3">
-                Pie charts
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic ml-3">
-                Line charts
+            <a href="<%= url %>/auth/logout" class="nav-link text-dark font-italic ml-3">
+                <i class="fas fa-sign-out-alt"></i><span class="mx-1">Đăng xuất</span>
             </a>
         </li>
     </ul>

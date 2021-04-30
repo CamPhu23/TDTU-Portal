@@ -44,7 +44,9 @@ exports.postGoogleLogin = (req, res) => {
                     user = new userModel({email: user.email, fullname: user.name, avatar: user.picture})
     
                     user.save()
-                    .catch(error => console.log(error))
+                    .then(user => {
+                        req.session.userId = user._id
+                    })
                 }
 
                 console.log(account._id);
@@ -104,5 +106,5 @@ exports.postLogin = (req, res) => {
 exports.postLogout = (req, res) => {
     req.session.destroy()
 
-    res.redirect('/login')
+    res.redirect('/auth/login')
 }
