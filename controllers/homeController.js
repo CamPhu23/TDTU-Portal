@@ -36,6 +36,7 @@ exports.handleAddNewPost = (req, res) => {
     }
 
     let {author, content, video} = req.body
+
     let embedUrl = null
     if (video)
         embedUrl = 'https://www.youtube.com/embed/' + video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)[1];
@@ -43,7 +44,7 @@ exports.handleAddNewPost = (req, res) => {
         author, 
         content,
         imgUrl,
-        videoUrl: embedUrl,
+        videoUrl: embedUrl
     });
 
     newPost.save((err, result) => {

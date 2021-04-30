@@ -1,71 +1,70 @@
-const {OAuth2Client} = require('google-auth-library')
-const CLIENT_ID = "591004915054-1kjagbh4omn10rg7n36g8p7up4qrv058.apps.googleusercontent.com"
-const client = new OAuth2Client(CLIENT_ID)
 const accountModel = require("../models/accountModel")
 const userModel = require("../models/userModel")
 const bcryptjs = require("bcryptjs")
-
 const {validationResult} = require('express-validator')
+const passport = require('passport')
+const googleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+//===================== LOGIN PROCESS =====================//
+passport.serializeUser((user, cb) => {cb(null, user)})
+passport.deserializeUser((obj, cb) => {cb(null, obj)})
+
+//login with GG
+const GOOGLE_CLIENT_ID = '329499798329-20pgqrdc6ceh92thup478336a05fijve.apps.googleusercontent.com';
+const GOOGLE_CLIENT_SECRET = '1lylO_PFcHnX1lQW0g7qLlvJ';
+
+const opts_GG = {
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:8080/auth/google/callback"
+}
+
+let user = undefined, token = undefined
+
+const cb_GG = (accessToken, refreshToken, profile, done) => {
+    if (profile._json.hd && profile._json.hd === 'student.tdtu.edu.vn') {
+        user = profile._json
+        token = accessToken
+        return done(null, user);
+    } else {
+        return done(null, false);
+        //or can add message (using flash messages)
+        // return done(null, false, {message: 'Invalid host domain'});
+    }
+}
+
+passport.use(new googleStrategy(opts_GG, cb_GG))
+//end login with google
 
 exports.getLogin = (req, res) => {
     let username = req.flash('usernameLogin') || ''
     let password = req.flash('passwordLogin') || ''
     let error = req.flash('errorLogin') || ''
 
-    res.render('pages/login', {username: username, pass: password, errorMess: error})
+    res.render('pages/login', {username: username, pass: password, errorMess: error, url: req.currentURL})
 }
 
-exports.postGoogleLogin = (req, res) => {
-    let {id_token} = req.body
+exports.googleLoginSuccess = (req, res) => {
+    req.session.user = user.name
+    console.log(user);
 
-    let user = {}
-    async function verify() {
-        const ticket = await client.verifyIdToken({
-            idToken: id_token,
-            audience: CLIENT_ID,  
-        });
-        const payload = ticket.getPayload();
-        const userid = payload['sub'];
+    userModel.findOne({email: user.email})
+    .then((account) => {
+        if (!account) {
+            let newUser = new userModel({email: user.email, fullname: user.name, avatar: user.picture})
 
-        user.email = payload.email;
-        user.name = payload.name;
-        user.picture = payload.picture;
-    }
-    
-    
-    verify()
-    .then(() => {
-        domain = user.email.split("@")[1]
-    
-        if (domain === "student.tdtu.edu.vn") {
-            userModel.findOne({email: user.email})
-            .then((account) => {
-                if (!account) {
-                    user = new userModel({email: user.email, fullname: user.name, avatar: user.picture})
-    
-                    user.save()
-                    .then(user => {
-                        req.session.userId = user._id
-                    })
-                }
-
-                console.log(account._id);
-                
-                req.session.userId = account._id
-                res.send({"result": "success"})
+            newUser.save()
+            .then(user => {
+                req.session.userId = user._id
+                res.redirect('/account/profile')
             })
-            .catch(error => console.log(error))
-            
         } else {
-            res.send({"result": "Không thuộc tên miền student.tdtu.edu.vn"})
+            req.session.userId = account._id
+            res.redirect('/home')
         }
     })
-    .catch((err) => {
-        console.log(err)
-        res.send({"result": err})
-    });
+    .catch(error => console.log(error))
 }
-
 
 exports.postLogin = (req, res) => {
     const result = validationResult(req);
@@ -103,8 +102,7 @@ exports.postLogin = (req, res) => {
     .catch(error => console.log(error))
 }
 
-exports.postLogout = (req, res) => {
+exports.logout = (req, res) => {
     req.session.destroy()
-
     res.redirect('/auth/login')
 }

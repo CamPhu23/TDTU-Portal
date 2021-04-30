@@ -3,7 +3,6 @@ const homeController = require('../controllers/homeController')
 const router = express.Router()
 const multer  = require('multer')
 const postUploader = multer({ dest: 'uploads/posts' })
-// const url = require('../middleware/url')
 
 router.get('/', homeController.showHomepage)
 router.post('/addNewPost', postUploader.array('images'), homeController.handleAddNewPost)

@@ -6,7 +6,7 @@ window.onload = function(e) {
         let id = $('#personal-fullname').data('id')
         getListPost(1, id)
     }
-    else if (window.location.pathname.includes("auth")) {
+    else if (!window.location.pathname.includes("auth")) {
     
         const socket = io();
         
@@ -74,7 +74,9 @@ $(document).ready(() => {
         let formData = new FormData(form[0])
         let author = $('#user-id').data('id')
         formData.append('author', author) //just for test -> will be adjust when login module done
+
         let url = window.location.origin + '/home/addNewPost/'
+
         let postId = $('#submit_new_post').data('id')
         if (postId) { //it mean change post because modal has post id
             url = window.location.origin + '/home/updatePost/' + postId
@@ -217,17 +219,48 @@ $(document).ready(() => {
         $('#new-notification').modal('hide')
     })
 
-    // $('#update-noti-btn').click(function() {
-    //     $('#new-notification').modal('show')
-
-    //     $('#notification-title')
-        
-    // })
-
     $('#toast-notification').click(function() {
         console.log(window.location.href);
         window.location.replace(window.location.origin + $('#toast-notification').attr('data-noti-link'))
     })
+
+    $('#amend-notification-btn').click(function() {
+        let title = $('#notification-details-title').text()
+        let content = $('#notification-details-content').text()
+        let subject = $('#notification-details-subject').text().split("|")[0].slice(0, -1)
+
+        $('#amend-notification-title').val(title)
+        $('#amend-notification-content').val(content)
+        $('select option[value="' + subject + '"]').attr('selected', 'selected')
+    })
+
+    $('#amend-notification-btn-modal').click(function() {
+        let url = window.location.href
+        let id = url.substring(url.lastIndexOf('/') + 1)
+        
+        url = window.location.origin + "/notification/updateNotification"
+
+        let form = document.getElementById('amend-notification-form')
+        form = new FormData(form)
+        form.append("noti_id", id)
+
+        fetch(url, {
+            method: 'POST',
+            body: form
+        })
+        .then(json => json.json())
+        .then(data => {
+            console.log(data.result);
+            if (data.result == "Success") {
+                $('#amend-notification').trigger("reset").modal("hide")
+                
+                updateDetailNotification(data.noti)
+            }
+        })
+        .catch(error => console.log(error))
+
+    })
+
 });
 
 //handle event append elements
@@ -388,6 +421,32 @@ $(document).on('submit', '#newPostModal', (event) => {
     event.preventDefault()
     $(event.target).find('.submit_new_post').click();
 })
+
+function updateDetailNotification(noti) {
+    $('#notification-details-title').text(noti.title)
+    $('#notification-details-content').text(noti.content)
+
+    let img_div = file_div = '<div class="my-4">'
+    noti.files.forEach(file => {
+        if (file.Type.includes("image")) {
+            img_div += `<img src="../../${file.Src}" alt="" class="w-25 h-50 m-3 rounded">`
+        } else {
+            file_div += `<a href="../../${file.Src.split('&')[0]}" download=""> ${file.Src.split('&')[1]} </a>`
+        }
+
+    })
+    img_div += '</div>'
+    file_div += '</div>'
+
+    $('#files_detail_area').html(img_div + file_div)
+
+    let author = noti.author.fullname || ''
+    $('#author_detail_area').text(author)
+
+    $('#notification-details-subject').text(noti.subject + "| Ngày đăng: " + noti.date)
+
+    console.log(noti.date)
+}
 
 function updatePost(result, author, isPrepend) {
     let postTime = new Date(result.lastUpdate).toLocaleString().split(',')
@@ -756,7 +815,7 @@ function onSignIn(googleUser) {
         .then(result => {
             if (result.result === "success") {
 
-                let redi = window.location.origin + '/home'
+                let redi = window.location.origin + '/account/profile'
                 window.location.replace(redi);
             } else {
                 signOut()

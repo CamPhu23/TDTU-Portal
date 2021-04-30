@@ -19,7 +19,7 @@
                     <form method="post" class="my-4" enctype="multipart/form-data">
                         
                         <div class="change-avatar mb-3">
-                            <img src="<%= avatar %>" id="avatar" class="avatar img-thumbnail " alt="avatar">
+                            <img src="<%= locals.avatar %>" id="avatar" class="avatar img-thumbnail " alt="avatar">
                             
                             <input id="upload" type="file" name="avatar"/>
                             <a id="upload_link">Chọn ảnh đại diện</a>
@@ -43,8 +43,6 @@
                         <select name="department" class="selectpicker phongkhoa custom-select">
                             <option <%= locals.department == "" ? "selected" : "" %> value="">Chọn khoa</option>
                             <option <%= locals.department == "khoa luật" ? "selected" : "" %> value="Khoa luật">Khoa Luật</option>
-                            <option <%= locals.department == "trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa" ? "selected" : "" %> value="Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa">Trung tâm ngoại ngữ - tin học – bồi dưỡng văn hóa</option>
-                            <option <%= locals.department == "viện chính sách kinh tế và kinh doanh" ? "selected" : "" %> value="Viện chính sách kinh tế và kinh doanh">Viện chính sách kinh tế và kinh doanh</option>
                             <option <%= locals.department == "khoa mỹ thuật công nghiệp" ? "selected" : "" %> value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>
                             <option <%= locals.department == "khoa điện – Điện tử" ? "selected" : "" %> value="Khoa điện – Điện tử">Khoa Điện – Điện tử</option>
                             <option <%= locals.department == "khoa công nghệ thông tin" ? "selected" : "" %> value="Khoa công nghệ thông tin">Khoa Công nghệ thông tin</option>
@@ -55,17 +53,17 @@
                             <option <%= locals.department == "khoa giáo dục quốc tế" ? "selected" : "" %> value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
                         </select>
     
-                        <!-- <% if (locals.resultUpdate && locals.resultUpdate == true) { %>                
-                            <div class="alert alert-success">
-                                Cập nhật thành công
+                        <% if (locals.error && locals.error != '') { %>                
+                            <div class="alert alert-danger m-1 w-100">
+                                <%= locals.error %> 
                             </div> 
-                        <% } else if (locals.resultUpdate && locals.resultUpdate == false) {%>
-                            <div class="alert alert-danger">
-                                Cập nhật thất bại
-                            </div> 
-                        <% } %> -->
+                        <% } %>
+                        
                         <div class="form-group">
                             <button type="submit" id="submit" class="form-submit btn">Cập nhật</button>
+                            <a type="button" href="<%= url %>/home" class="form-back-home btn">
+                                <i class="fas fa-arrow-left"></i><span class="mx-2">Trở về trang chủ</span>
+                            </a>
                         </div>
                     </form>
                 </div>
