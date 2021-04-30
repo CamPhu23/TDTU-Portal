@@ -7,28 +7,37 @@ const accountRoute = require('./routes/account.js')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('express-flash')
+const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const socketio = require('./socket')
 const url = require('./middleware/url')
+const isAuth = require('./middleware/isAuth')
 
 const app = express()
+
 app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/resources', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({ extended:false }))
+app.use(cookieParser('cookie string'));
 app.use(session({
     secret: 'seesion-pass'
 }))
 app.use(flash())
 
 app.use(url)
-app.use('/home', homeRoute)
+
+app.get('/', (req, res) => {
+    res.redirect('/home')
+})
+
+app.use('/home', isAuth, homeRoute)
 app.use('/auth', authRoute)
-app.use('/account', accountRoute)
-app.use('/resources', express.static(path.join(__dirname, 'uploads')))
-app.use('/notification', notificationRoute)
+app.use('/account', isAuth, accountRoute)
+app.use('/notification', isAuth, notificationRoute)
+app.use('/resources', isAuth, express.static(path.join(__dirname, 'uploads')))
+
 
 let opts = {
     useNewUrlParser: true,
