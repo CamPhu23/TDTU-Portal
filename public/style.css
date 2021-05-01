@@ -276,7 +276,7 @@ textarea {
     background-image: linear-gradient(to left, rgb(132, 132, 247), rgb(151, 213, 247));
 }
 
-.register-form .form-back-home {
+.form-back-home {
     width: 100%;
     margin-top: 20px;
     border-radius: 5px;
@@ -441,4 +441,8 @@ iframe {
 
 .personal-text {
     color: #eceff1;
+}
+
+.invalid-message {
+    display: none;
 }

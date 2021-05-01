@@ -32,6 +32,7 @@
         <div class="modal-body">
             <form method="POST" id="edit_comment">
                 <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">                                           
+                <div class="invalid-message"></div>
             </form>
         </div>
         <div class="modal-footer">
@@ -61,6 +62,7 @@
               <div class="custom-control mt-3 pl-0">
                   <div class="custom-file">
                       <input type="file" name="images" class="custom-file-input" accept="image/*" multiple>
+                      <input type="text" name="change" id="flag" value="false" hidden>
                       <label class="custom-file-label" for="customFile">Đính kèm ảnh</label>
                   </div>
               </div>
@@ -76,11 +78,13 @@
 
               <!-- preview image area -->
               <div id="preview_div">
-                  <hr>
+
               </div>
-          
+              <div class="invalid-message"></div>
           </form>
           <!-- end new post -->
+
+          <div id="errorMessage"></div>
       </div>
       
       <!-- Modal footer -->

@@ -22,15 +22,15 @@
             <div class="col-sm-8 col-md-9 col-lg-10 right-part">
                 <div class="row">
                     <div class="col-md-8 mt-2">
-                        <% if (!permission) { %>
-                            <div class="m-3 p-2 bg-white rounded">
-                                <!-- new post -->
-                                <%- include('../partials/new_post.ejs') %>
-                                <!-- end new post -->
-                            </div>
-                        <% } %>
+                    <% if (!permission) { %>
+                        <div class="m-3 p-2 bg-white rounded">
+                            <!-- new post -->
+                            <%- include('../partials/new_post.ejs') %>
+                            <!-- end new post -->
+                        </div>
+                    <% } %>
 
-                        <div class="mx-3 mt-4 mb-3 list-post">
+                        <div class="mx-3 mt-3 mb-3 list-post">
 
                         </div>
                     </div>
@@ -44,8 +44,8 @@
         </div>
     </div>
 
+    <!-- modals -->
     <%- include('../partials/modals.ejs') %>
-    
 
     <!-- notify -->
     <%- include('../partials/toast_notification.ejs') %>

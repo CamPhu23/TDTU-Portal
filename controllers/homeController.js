@@ -40,6 +40,7 @@ exports.handleAddNewPost = (req, res) => {
     let embedUrl = null
     if (video)
         embedUrl = 'https://www.youtube.com/embed/' + video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)[1];
+
     let newPost = new Post({
         author, 
         content,
@@ -146,29 +147,44 @@ exports.handleUpdateComment = (req, res) => {
 exports.handleUpdatePost = (req, res) => {
     let id = req.params.id
     let files = req.files
-    let {author, content, video} = req.body
+    let {author, content, video, change} = req.body
 
-    console.log(video);
     let embedUrl = null
     if (video) {
         if (video.includes('embed')) embedUrl = video
         else embedUrl = 'https://www.youtube.com/embed/' + video.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)[1];
     }
 
-    let imgUrl = []
-    if (files) {
-        files.forEach(file => {
-            imgUrl.push('resources/posts/' + file.filename)
-        });
+    if (change == 'true') {
+        let imgUrl = []
+        if (files) {
+            files.forEach(file => {
+                imgUrl.push('resources/posts/' + file.filename)
+            });
+        }
 
         Post.findByIdAndUpdate(id, 
-        {
-            content,
-            imgUrl,
-            videoUrl: embedUrl,
-            lastUpate: Date.now
-        },
-        {new: true})
+            {
+                content,
+                imgUrl,
+                videoUrl: embedUrl,
+                lastUpate: Date.now
+            },
+            {new: true})
+        .then(updated => {
+            return res.json({status: true, result: updated});
+        })
+        .catch(err => {
+            return res.json({status: false, error: err.message});
+        })
+    } else if (change == 'false') {
+        Post.findByIdAndUpdate(id, 
+            {
+                content,
+                videoUrl: embedUrl,
+                lastUpate: Date.now
+            },
+            {new: true})
         .then(updated => {
             return res.json({status: true, result: updated});
         })

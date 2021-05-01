@@ -2,7 +2,7 @@ window.onload = function(e) {
     if (window.location.pathname === '/home' || window.location.pathname === '/home/') {
         getListPost(1)
     }
-    else if (window.location.pathname.includes('home/wall')) {
+    else if (window.location.pathname.includes('/home/wall')) {
         let id = $('#personal-fullname').data('id')
         getListPost(1, id)
     }
@@ -34,6 +34,7 @@ window.onload = function(e) {
 
 $(document).ready(() => {
     $(".custom-file-input").on('change',function(){
+        $('#flag').val('true')
         $("#preview_div").show()
         $("#preview_div").empty()
 
@@ -61,7 +62,7 @@ $(document).ready(() => {
         $("#preview_div").empty()
         $(".custom-file-label").html('Đính kèm ảnh')
         $("#video-url").val('')
-        $('#new_post_form').find("input, textarea").val("");
+        $('#new_post_form').find('input[name="content"], textarea').val("");
     })
 
     $('.carousel').carousel({
@@ -69,11 +70,21 @@ $(document).ready(() => {
     })
 
     $('#submit_new_post').click(() => {
-
         let form = $("#new_post_form")
+
+        if ($.trim($(form).find('#textarea-content').val()) == '') {
+            $(form).find('div.invalid-message').css({'color': 'red', 'font-style': 'italic', 'display': 'block'})
+            $(form).find('div.invalid-message').text('Nội dung bài viết không được để rỗng.')
+            $(form).find('#textarea-content').focus()
+
+            return
+        }
+
+        $(form).find('div.invalid-message').hide()
+
         let formData = new FormData(form[0])
         let author = $('#user-id').data('id')
-        formData.append('author', author) //just for test -> will be adjust when login module done
+        formData.append('author', author) 
 
         let url = window.location.origin + '/home/addNewPost/'
 
@@ -112,6 +123,7 @@ $(document).ready(() => {
 
     $('#input_tag_new_post').click((e) => {
         e.preventDefault();
+        $('#errorMessage').hide()
     })
 
     $('#confirmDeleteButton').click(function() {
@@ -150,10 +162,18 @@ $(document).ready(() => {
         let post = $('#saveChangeButton').data('post')
 
 
-        let form = document.getElementById("edit_comment")
-        let formData = new FormData(form)
-        formData.append('author', '608693aaea2336b22b0ec432') //just for test -> will be adjust when login module done
+        let form = $("#edit_comment")
+        if ($.trim($(form).find('input[name="content"]').val()) == '') {
+            $(form).find('div.invalid-message').css({'color': 'red', 'font-style': 'italic', 'display': 'block'})
+            $(form).find('div.invalid-message').text('Bình luận không được để rỗng.')
+            $(form).find('input[name="content"]').focus()
 
+            console.log('empty');
+            return
+        }
+
+        $(form).find('div.invalid-message').hide()
+        let formData = new FormData(form[0])
         let url = window.location.origin + '/home/updateComment/' + post + '/' + id
         let opts = {
             method: 'POST',
@@ -182,7 +202,13 @@ $(document).ready(() => {
     $('.right-part').scroll(function() {
         if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
             count++
-            getListPost(count)
+            if (window.location.pathname === '/home' || window.location.pathname === '/home/') {
+                getListPost(count)
+            }
+            else if (window.location.pathname.includes('/home/wall')) {
+                let id = $('#personal-fullname').data('id')
+                getListPost(count, id)
+            }
         }
     });
 
@@ -276,12 +302,23 @@ $(document).on('click', '.delete-post-comment', function() {
 
     $('#confirmDeleteButton').data('id', id)
     $('#confirmDeleteButton').data('type', type)
-    
+
     $('#confirmDeleteModal').modal('show')
 });
 
 $(document).on('click', '.submit_new_comment', function() {
     let form = $(this).closest("form.new_comment_form")
+
+    if ($.trim($(form).find('input[name="content"]').val()) == '') {
+        $(form).find('div.invalid-message').css({'color': 'red', 'font-style': 'italic', 'display': 'block'})
+        $(form).find('div.invalid-message').text('Bình luận không được để rỗng.')
+        $(form).find('input[name="content"]').focus()
+
+        return 
+    }
+
+    $(form).find('div.invalid-message').hide()
+
     let formData = new FormData(form[0])
     let author = $('#user-id').data('id')
     formData.append('author', author)
@@ -357,7 +394,6 @@ $(document).on('click', '.edit-comment', (event) => {
     let postId = $(event.target).data('post')
     let content = $.trim($(`#${commentId} > div > div.mr-2`).text());
 
-    console.log({commentId, postId});
     $('#edit_comment > input').val(content)
     $('#saveChangeButton').data('comment', commentId)
     $('#saveChangeButton').data('post', postId)
@@ -410,6 +446,18 @@ $(document).on('keypress',  function (e) {
             $('#submit_new_post').click();
         }
     }
+    else if($('#editCommentModal').is(':visible')) {
+        let key = e.which;
+        if (key == 13) { 
+            $('#saveChangeButton').click();
+        }
+    }
+    else if($('#confirmDeleteModal').is(':visible')) {
+        let key = e.which;
+        if (key == 13) { 
+            $('#confirmDeleteButton').click();
+        }
+    }
 });
 
 $(document).on('submit', '.new_comment_form', (event) => {
@@ -420,6 +468,11 @@ $(document).on('submit', '.new_comment_form', (event) => {
 $(document).on('submit', '#newPostModal', (event) => {
     event.preventDefault()
     $(event.target).find('.submit_new_post').click();
+})
+
+$(document).on('submit', '#editCommentModal', (event) => {
+    event.preventDefault()
+    $(event.target).find('.saveChangeButton').click();
 })
 
 function updateDetailNotification(noti) {
@@ -564,6 +617,7 @@ function updatePost(result, author, isPrepend) {
                         <div class="col-2">
                             <button type="button" data-id="${result._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
                         </div>            
+                        <div class="invalid-message"></div>
                     </div>                                                
                 </form>
             </div>
@@ -685,6 +739,7 @@ function updateExistPost(updatedPost) {
                     <div class="col-2">
                         <button type="button" data-id="${updatedPost._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
                     </div>            
+                    <div class="invalid-message"></div>
                 </div>                                                
             </form>`
 
@@ -692,8 +747,6 @@ function updateExistPost(updatedPost) {
 }
 
 function updateComment(newComment, author, postId) {
-    
-    console.log(author + 'updateComment');
 
     if ($(`#${newComment._id}`).length > 0) {
         if ($.trim($(`#${newComment._id} > div > div.mr-2`).text()) !== newComment.content) {
@@ -772,8 +825,6 @@ function getListPost(page, condition = '') {
     let url 
     if (condition === '') url = window.location.origin + '/home/getPosts/' + page
     else url = window.location.origin + '/home/getPostsOfUser/' + condition + '/' + page
-    
-    console.log(url);
     
     let opts = { method: 'GET' }
     fetch(url, opts)

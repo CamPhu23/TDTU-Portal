@@ -38,6 +38,9 @@ app.use('/account', isAuth, accountRoute)
 app.use('/notification', isAuth, notificationRoute)
 app.use('/resources', isAuth, express.static(path.join(__dirname, 'uploads')))
 
+app.use((req, res) => {
+    res.redirect('/home')
+})
 
 let opts = {
     useNewUrlParser: true,
@@ -46,18 +49,18 @@ let opts = {
 
 var io = null
 mongoose.connect('mongodb://127.0.0.1:27017/TDTU_Portal', opts)
-    .then(() => {
-        const port = 8080
-        const httpServer = app.listen(port, () => console.log("http://localhost:" + port))
+.then(() => {
+    const port = 8080
+    const httpServer = app.listen(port, () => console.log("http://localhost:" + port))
 
-        io = socketio.init(httpServer)
+    io = socketio.init(httpServer)
 
-        io.on('connection', (socket) => {
-            console.log('Connection success', socket.id);
-            socket.on('disconnect', () => {
-                console.log('Connection disconnected', socket.id);
-            });
-        })
-
+    io.on('connection', (socket) => {
+        console.log('Connection success', socket.id);
+        socket.on('disconnect', () => {
+            console.log('Connection disconnected', socket.id);
+        });
     })
-    .catch((e) => console.log("Không thể truy cập vào csdl: " + e.message))
+
+})
+.catch((e) => console.log("Không thể truy cập vào csdl: " + e.message))
