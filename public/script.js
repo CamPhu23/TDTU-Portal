@@ -124,6 +124,8 @@ $(document).ready(() => {
     $('#input_tag_new_post').click((e) => {
         e.preventDefault();
         $('#errorMessage').hide()
+        $('.modal-title').text('Bài đăng mới')
+        $('#submit_new_post').text('Đăng bài')
     })
 
     $('#confirmDeleteButton').click(function() {
