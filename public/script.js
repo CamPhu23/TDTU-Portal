@@ -26,6 +26,8 @@ window.onload = function(e) {
         })
     }
 
+            
+
     $('.date-time-format').get().forEach((el) => {
         let postTime = new Date($(el)[0].innerHTML).toLocaleString().split(',')
         postTime = postTime[0] + ' ' + postTime[1];
@@ -613,14 +615,14 @@ function updatePost(result, author, isPrepend) {
                 ${show_hide_commentsHTML}
                 <div class="mt-3 new-comment-area">
                 <form method="POST" class="new_comment_form">
-                    <div class="form-row d-flex align-items-center">
-                        <div class="col-1">
+                    <div class="form-row d-flex align-items-center justify-content-center">
+                        <div class="col-2">
                             <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
                         </div>
-                        <div class="col-9">
+                        <div class="col-7 col-md-8">
                             <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
                         </div>
-                        <div class="col-2">
+                        <div class="col-2 col-md-2">
                             <button type="button" data-id="${result._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
                         </div>            
                         <div class="invalid-message"></div>

@@ -53,14 +53,14 @@ let listDepartment = ["Phòng công tác học sinh sinh viên (CTHSSV)", "Phòn
 "Khoa môi trường và bảo hộ lao động", "Khoa lao động công đoàn", 
 "Khoa tài chính ngân hàng", "Khoa giáo dục quốc tế"]
 
-exports.getNotificationList = (req, res) => {
+exports.getNotificationList = async (req, res) => {
 
     let isAdded = false
     let accountId = req.session.accountId
     accountId ? isAdded = true : isAdded = false 
     let permission = []
     let {userId} = req.session
-    let authorization = getAuthorization.getAuthorization(accountId)
+    let authorization = await getAuthorization.getAuthorization(accountId)
 
     accountModel.findById(accountId)
     .then(account => {
@@ -119,13 +119,13 @@ exports.getNotificationList = (req, res) => {
     })
 }
 
-exports.getNotificationDetails = (req, res) => {
+exports.getNotificationDetails = async (req, res) => {
     let notiId = req.params.id
     let url = req.currentURL
     let accountId = req.session.accountId
     let permission = []
     let {userId} = req.session
-    let authorization = getAuthorization.getAuthorization(accountId)
+    let authorization = await getAuthorization.getAuthorization(accountId)
 
     accountModel.findById(accountId)
     .then(account => {

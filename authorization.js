@@ -1,10 +1,10 @@
-let authorization = 3
 const accountModel = require('./models/accountModel')
 
 module.exports = {
-    getAuthorization: (accountId) => {
+    getAuthorization: async (accountId) => {
+        let authorization = 3
 
-        accountModel.findById(accountId)
+        await accountModel.findById(accountId)
         .then(account => {
 
             if (account) {
