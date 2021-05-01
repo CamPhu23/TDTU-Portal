@@ -16,7 +16,7 @@ const GOOGLE_CLIENT_SECRET = '1lylO_PFcHnX1lQW0g7qLlvJ';
 const opts_GG = {
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:8080/auth/google/callback"
+    callbackURL: process.env.CALLBACK_URL || "http://localhost:8080/auth/google/callback"
 }
 
 let user = undefined, token = undefined
