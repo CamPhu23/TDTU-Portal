@@ -17,9 +17,6 @@ exports.showHomepage = async (req, res) => {
             .sort({date: 'desc'})
             .limit(10)
             .then(notifications => {
-                // console.log(notifications);
-                // console.log(user);
-                // console.log(permission);
                 return res.render('pages/home', { user, permission, notifications, url: req.currentURL, authorization })
             })
         })
@@ -151,6 +148,8 @@ exports.handleUpdatePost = (req, res) => {
     let files = req.files
     let {author, content, video, change} = req.body
 
+    console.log(id);
+
     let embedUrl = null
     if (video) {
         if (video.includes('embed')) embedUrl = video
@@ -164,6 +163,14 @@ exports.handleUpdatePost = (req, res) => {
                 imgUrl.push('resources/posts/' + file.filename)
             });
         }
+
+        Post.findById(id, 'imgUrl -_id')
+        .then(result => {
+            console.log(result.imgUrl);
+            result.imgUrl.forEach(img => {
+                fs.unlinkSync('uploads/posts/' + img.split('/')[2])
+            })
+        })
 
         Post.findByIdAndUpdate(id, 
             {
@@ -229,7 +236,6 @@ exports.handleGetPostsOfUser = (req, res) => {
         .skip(skipPosts)
         .limit(10)
         .then(posts => {
-            // console.log(posts);
             return res.json({result: true, posts})
         })
         .catch(err => {
