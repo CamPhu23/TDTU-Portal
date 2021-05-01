@@ -17,9 +17,9 @@
                 <li class="list-group-item">
                 <% } %>
                     <a href="<%= url %>/notification/details/<%= noti._id %>" class="notification-sm-window">
-                        <div><small class="text-secondary"><%= noti.subject %></small> - <small class="date-time-format"><%= noti.date %></small></div>
-                        <div class="font-weight-bold"><%= noti.title %></div>
-                        <div class="font-weight-light font-italic text-muted"><%= noti.content %></div>
+                        <div class="sm-notification-text"><small class="text-secondary"><%= noti.subject %></small> - <small class="date-time-format"><%= noti.date %></small></div>
+                        <div class="font-weight-bold sm-notification-text"><%= noti.title %></div>
+                        <div class="font-weight-light font-italic text-muted sm-notification-text"><%= noti.content %></div>
                     </a>
                 </li>
             <% }) %>
