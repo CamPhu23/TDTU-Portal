@@ -2,7 +2,6 @@ const accountModel = require("../models/accountModel")
 const userModel = require("../models/userModel")
 const bcryptjs = require("bcryptjs")
 const {validationResult} = require('express-validator')
-const { validate } = require("../models/accountModel")
 
 exports.getRegister = (req, res) => {
     let username = req.flash('usernameRegister') || ''
@@ -10,8 +9,9 @@ exports.getRegister = (req, res) => {
     let re_password = req.flash('re_passwordRegister') || ''
     let department = req.flash('departmentRegister') || ''
     let error = req.flash('errorRegister') || ''
+    let success = req.flash('SuccessRegister') || ''
 
-    res.render('pages/register', {username, password, re_password, department, error, url: req.currentURL})
+    res.render('pages/register', {username, password, re_password, department, error, success, url: req.currentURL})
 }
 
 exports.postRegister = (req, res) => {
@@ -22,10 +22,9 @@ exports.postRegister = (req, res) => {
     req.flash('usernameRegister', username)
     req.flash('passwordRegister', password)
     req.flash('re_passwordRegister', re_password)
-
+    
     if (result.errors.length !== 0) {
         req.flash('errorRegister', result.errors[0].msg)
-
         return res.redirect('/account/register')
     }
 
@@ -72,6 +71,8 @@ exports.postRegister = (req, res) => {
                     newAccount.save(function(err) {
                         if (err) return handleError(err);
 
+                        req.flash('SuccessRegister', "Tạo tài khoản thành công")
+
                         res.redirect('/account/register')
                     })
                 })
@@ -90,24 +91,31 @@ exports.getResetPassword = (req, res) => {
     
     let password = req.flash('passwordResetPassword') || '' 
     let error = req.flash('errorResetPassword') || ''
+    let accountId = req.session.accountId
+    let success = req.flash('SuccessResetPass') || ''
 
-    res.render('pages/changePassword', {password, error, url: req.currentURL})
+    accountModel.findById(accountId)
+    .then(account => {
+        account.permission == "admin" ? isEditable = true : isEditable = false
+
+        res.render('pages/changePassword', {password, error, isEditable, username: account.username, success, url: req.currentURL})
+    })
 }
 
 exports.postResetPassword = (req, res) => {
     const result = validationResult(req);
-    let {password, newpassword} = req.body
+    let {username, password, newpassword} = req.body
 
-    req.flash('passwordResetPassword', password)
-
+    
     if (result.errors.length !== 0) {
+        req.flash('passwordResetPassword', password)
         req.flash('errorResetPassword', result.errors[0].msg)
 
         return res.redirect('/account/resetPassword')
     }
 
     let id = req.session.accountId
-    accountModel.findById(id)
+    accountModel.findOne({username})
     .then(account => {
 
         let verify = bcryptjs.compareSync(password, account.password)
@@ -117,6 +125,8 @@ exports.postResetPassword = (req, res) => {
             accountModel.findByIdAndUpdate(id, {password: hased}, {new: true})
             .then(account => {
                 console.log(account.password);
+
+                req.flash('SuccessResetPass', "Cập nhật thành công")
                 return res.redirect('/account/resetPassword')
             })
             .catch(error => console.log(error))
@@ -136,9 +146,11 @@ exports.getProfile = (req, res) => {
     let fullnameProfile = req.flash('fullnameProfile') || ''
     let emailProfile = req.flash('emailProfile') || ''
     let error = req.flash('errorProfile') || ''
+    let avatarProfile = req.flash('avatarProfile') || 'http://via.placeholder.com/100'
+    let success = req.flash('SuccessUpdateProfile') || ''
 
     if (error && error != '') {
-        return res.render('pages/profile', {email: emailProfile, fullname: fullnameProfile, _class: classProfile, department: departmentProfile, error, url: req.currentURL})
+        return res.render('pages/profile', {email: emailProfile, avatar: avatarProfile, fullname: fullnameProfile, _class: classProfile, department: departmentProfile, error, url: req.currentURL})
     }
     
     let userId = req.session.userId
@@ -158,7 +170,7 @@ exports.getProfile = (req, res) => {
                 department = department.toLowerCase()
             }
     
-            return res.render('pages/profile', {email, avatar, fullname, _class: _class, department, url: req.currentURL})
+            return res.render('pages/profile', {email, avatar, fullname, _class: _class, department, url: req.currentURL, success})
         }
 
         return res.render('pages/profile', {email: '', avatar: 'http://via.placeholder.com/100', fullname: '', _class: '', department: '', url: req.currentURL})
@@ -172,28 +184,52 @@ exports.getProfile = (req, res) => {
 
 exports.postProfile = (req, res) => {
     const result = validationResult(req);
-    let {fullname, _class, department, email} = req.body
+    let {fullname, _class, department, email, avatar} = req.body
+    let userId = req.session.userId
+    
+    if (req.file || req.file != undefined) {
+        avatar = "/resources/avatars/" + req.file.filename
+    } 
 
     req.flash('departmentProfile', department)
     req.flash('classProfile', _class)
     req.flash('fullnameProfile', fullname)
     req.flash('emailProfile', email)
-
-    if (result.errors.length !== 0) {
-        req.flash('errorProfile', result.errors[0].msg)
-
-        return res.redirect('/account/profile')
-    }
-    let userId = req.session.userId
-
     
-    let avatar
-    if (req.file || req.file != undefined) {
-        avatar = "/resources/avatars/" + req.file.filename
-    } 
-    userModel.findByIdAndUpdate(userId, {fullname: fullname, class: _class, department: department, avatar: avatar}, {new: true})
-    .then(data => {
-        return res.redirect("/account/profile")
-    })
-    .catch(error => console.log(error))
+    if (result.errors.length !== 0) {
+        userModel.findById(userId)
+        .then(user => {
+            req.flash('avatarProfile', user.avatar)
+            req.flash('errorProfile', result.errors[0].msg)
+
+            return res.redirect('/account/profile')
+        })
+        
+    } else {
+
+        if (avatar != undefined) {
+
+            userModel.findByIdAndUpdate(userId, {fullname: fullname, class: _class, department: department, avatar}, {new: true})
+            .then(data => {
+                console.log(data);
+                req.flash('SuccessUpdateProfile', "Cập nhật thành công")
+
+                return res.redirect("/account/profile")
+            })
+            .catch(error => console.log(error))
+
+        } else {
+            
+            userModel.findByIdAndUpdate(userId, {fullname: fullname, class: _class, department: department}, {new: true})
+            .then(data => {
+                console.log(data);
+                req.flash('SuccessUpdateProfile', "Cập nhật thành công")
+
+                return res.redirect("/account/profile")
+            })
+            .catch(error => console.log(error))
+
+        }
+    }
+
 }

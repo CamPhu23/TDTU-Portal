@@ -1,6 +1,11 @@
 const {check} = require('express-validator')
 
 checker = [
+    check('username')
+    .exists().withMessage("Bạn cần nhập Tên tài khoản")
+    .notEmpty().withMessage("Tên tài khoản không được để trống")
+    .isLength({min: 6}).withMessage('Tên tài khoản cần dài hơn 6 ký tự'),
+    
     check('password').exists().withMessage('Vui lòng nhập Mật khẩu hiện tại')
     .notEmpty().withMessage('Không được để trống Mật khẩu hiện tại')
     .isLength({min: 6}).withMessage('Mật khẩu hiện tại cần dài hơn 6 ký tự'),

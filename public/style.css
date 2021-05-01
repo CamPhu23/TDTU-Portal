@@ -25,6 +25,12 @@
     overflow-y: scroll;
 }
 
+@media (max-width: 990px) {
+    .vertical-nav {
+        display: none;
+    }
+}
+
 span .writer-name {
     color: black;
     text-decoration: none!important;

@@ -20,31 +20,43 @@
                 <i class="fas fa-bell"></i><span class="mx-1">Tất cả thông báo</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="<%= url %>/home/wall/<%= user._id %>" class="nav-link text-dark font-italic ml-3">
-                <i class="fas fa-user-alt"></i><span class="mx-1">Tường nhà</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="<%= url %>/account/register" class="nav-link text-dark font-italic ml-3">
-                <i class="fas fa-user-plus"></i><span class="mx-1">Tạo tài khoản</span>
-            </a>
-        </li>
+
+        <% if(locals.authorization == 1 || locals.authorization == 3) {%>
+            <li class="nav-item">
+                <a href="<%= url %>/home/wall/<%= user._id %>" class="nav-link text-dark font-italic ml-3">
+                    <i class="fas fa-user-alt"></i><span class="mx-1">Tường nhà</span>
+                </a>
+            </li>
+        <% } %>
+
+        <% if(locals.authorization == 1) {%>
+            <li class="nav-item">
+                <a href="<%= url %>/account/register" class="nav-link text-dark font-italic ml-3">
+                    <i class="fas fa-user-plus"></i><span class="mx-1">Tạo tài khoản</span>
+                </a>
+            </li>
+        <% } %>
     </ul>
 
     <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Tài khoản cá nhân</p>
 
     <ul class="nav flex-column bg-white mb-0">
-        <li class="nav-item">
-            <a href="<%= url %>/account/profile" class="nav-link text-dark font-italic ml-3">
-                <i class="fas fa-user-edit"></i><span class="mx-1">Thay đổi thông tin</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="<%= url %>/account/resetPassword" class="nav-link text-dark font-italic ml-3">
-                <i class="fas fa-key"></i><span class="mx-1">Thay đổi mật khẩu</span>
-            </a>
-        </li>        
+        <% if(locals.authorization == 1 || locals.authorization == 3) {%>
+            <li class="nav-item">
+                <a href="<%= url %>/account/profile" class="nav-link text-dark font-italic ml-3">
+                    <i class="fas fa-user-edit"></i><span class="mx-1">Thay đổi thông tin</span>
+                </a>
+            </li>
+        <% } %>
+
+        <% if(locals.authorization == 1 || locals.authorization == 2) {%>
+            <li class="nav-item">
+                <a href="<%= url %>/account/resetPassword" class="nav-link text-dark font-italic ml-3">
+                    <i class="fas fa-key"></i><span class="mx-1">Thay đổi mật khẩu</span>
+                </a>
+            </li>
+        <% } %>
+
         <li class="nav-item">
             <a href="<%= url %>/auth/logout" class="nav-link text-dark font-italic ml-3">
                 <i class="fas fa-sign-out-alt"></i><span class="mx-1">Đăng xuất</span>

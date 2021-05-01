@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Post = require('../models/postModel')
 const User = require('../models/userModel')
+const getAuthorization = require('../authorization')
 const Notifications = require('../models/notificationModel')
 const fs = require('fs');
 
@@ -8,6 +9,7 @@ exports.showHomepage = (req, res) => {
 
     let {userId, accountId} = req.session
     let permission = accountId ? true: false
+    authorization = getAuthorization.getAuthorization(accountId)
 
     User.findById(userId)
         .then(user => {
@@ -15,7 +17,7 @@ exports.showHomepage = (req, res) => {
             .sort({date: 'desc'})
             .limit(10)
             .then(notifications => {
-                return res.render('pages/home', { user, permission, notifications, url: req.currentURL })
+                return res.render('pages/home', { user, permission, notifications, url: req.currentURL, authorization })
             })
         })
         .catch(err => {
@@ -203,7 +205,10 @@ exports.handleUpdatePost = (req, res) => {
 
 exports.handleShowPersonalProfile = (req, res) => {
     let id = req.params.id
-    let {userId} = req.session
+    let {userId, accountId} = req.session
+
+    authorization = getAuthorization.getAuthorization(accountId)
+
 
     console.log({userId, id});
     
@@ -211,11 +216,11 @@ exports.handleShowPersonalProfile = (req, res) => {
     User.find({_id: {$in: [userId, id]}})
     .then(users => {
             if (users.length == 1) //it's mean owner profile
-                return res.render('pages/personal', {user: users[0], personal: users[0], url: req.currentURL })
+                return res.render('pages/personal', {user: users[0], personal: users[0], url: req.currentURL, authorization })
             else {
                 let user, personal
                 users[0]._id == userId ? (user = users[0], personal = users[1])  : (user = users[1], personal = users[0])
-                return res.render('pages/personal', {user, personal, url: req.currentURL })
+                return res.render('pages/personal', {user, personal, url: req.currentURL, authorization })
             }
                 
         })
