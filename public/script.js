@@ -58,9 +58,8 @@ $(document).ready(() => {
 
     $('#close_new_post_modal').click(() => {
         $('#newPostModal').modal('hide')
-        // $('#textarea-content').val('')
         $("#preview_div").empty()
-        $(".custom-file-label").html('Đính kèm ảnh')
+        $(".custom-file-label").val('')
         $("#video-url").val('')
         $('#new_post_form').find('input[name="content"], textarea').val("");
     })
