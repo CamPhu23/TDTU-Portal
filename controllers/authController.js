@@ -27,10 +27,7 @@ const cb_GG = (accessToken, refreshToken, profile, done) => {
         token = accessToken
         return done(null, user);
     } else {
-        // req.flash('errorMessages', '');
         return done(null, false, {message: 'Chỉ hỗ trợ đăng nhập bằng mail sinh viên.'});
-        //or can add message (using flash messages)
-        // return done(null, false, {message: 'Invalid host domain'});
     }
 }
 

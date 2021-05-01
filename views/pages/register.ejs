@@ -19,24 +19,24 @@
                     <form method="post">
 
                         <div class="form-group">
-                            <label class="mx-1 my-0">Tên Phòng/Khoa</label>
+                            <label class="mx-1 my-0" for="account-name">Tên Phòng/Khoa</label>
                             <input value="<%= locals.department %>" type="text" placeholder="Tên Phòng/Khoa" class="form-control" id="account-name" name="department">
                         </div>
                         <div class="form-group">
-                            <label class="mx-1 my-0">Tên tài khoản Phòng/Khoa</label>
+                            <label class="mx-1 my-0" for="name">Tên tài khoản Phòng/Khoa</label>
                             <input value="<%= locals.username %>" type="text" placeholder="Tên tài khoản Phòng/Khoa" class="form-control" id="name" name="username">
                         </div>
                         <div class="form-group">
-                            <label class="mx-1 my-0">Mật khẩu</label>
+                            <label class="mx-1 my-0" for="password">Mật khẩu</label>
                             <input value="<%= locals.password %>" type="password" placeholder="Mật khẩu" class="form-control" id="password" name="password">
                         </div>
                         <div class="form-group">
-                            <label class="mx-1 my-0">Xác nhận mật khẩu mới</label>
+                            <label class="mx-1 my-0" for="repeat-password">Xác nhận mật khẩu mới</label>
                             <input value="<%= locals.re_password %>" type="password"  placeholder="Nhập lại mật khẩu" class="form-control" id="repeat-password" name="re_password">
                         </div>
                         
-                        <div class="btn-group">Phân quyền Phòng/Khoa</div>
-                        <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <label class="mx-1 my-0" for="permissions-dropdown">Phân quyền Phòng/Khoa</label>
+                        <button id="permissions-dropdown" type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <div class="dropdown-menu permissions-dropdown">

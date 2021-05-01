@@ -8,9 +8,9 @@ const fs = require('fs');
 exports.showHomepage = async (req, res) => {
 
     let {userId, accountId} = req.session
-    authorization = await getAuthorization.getAuthorization(accountId)
+    req.session.authorization = await getAuthorization.getAuthorization(accountId)
 
-    console.log({userId, accountId, authorization});
+    console.log({userId, accountId, authorization: req.session.authorization});
 
     User.findById(userId)
         .then(user => {
@@ -18,7 +18,7 @@ exports.showHomepage = async (req, res) => {
             .sort({date: 'desc'})
             .limit(10)
             .then(notifications => {
-                return res.render('pages/home', { user, notifications, url: req.currentURL, authorization })
+                return res.render('pages/home', { user, notifications, url: req.currentURL, authorization: req.session.authorization })
             })
         })
         .catch(err => {
@@ -207,23 +207,17 @@ exports.handleUpdatePost = (req, res) => {
 exports.handleShowPersonalProfile = async (req, res) => {
     let id = req.params.id
     let {userId, accountId} = req.session
-
-    authorization = getAuthorization.getAuthorization(accountId)
-
-
-    console.log({userId, id});
     
 
     User.find({_id: {$in: [userId, id]}})
     .then(users => {
             if (users.length == 1) //it's mean owner profile
-                return res.render('pages/personal', {user: users[0], personal: users[0], url: req.currentURL, authorization })
+                return res.render('pages/personal', {user: users[0], personal: users[0], url: req.currentURL, authorization: req.session.authorization })
             else {
                 let user, personal
                 users[0]._id == userId ? (user = users[0], personal = users[1])  : (user = users[1], personal = users[0])
-                return res.render('pages/personal', {user, personal, url: req.currentURL, authorization })
-            }
-                
+                return res.render('pages/personal', {user, personal, url: req.currentURL, authorization: req.session.authorization })
+            }                
         })
 }
 

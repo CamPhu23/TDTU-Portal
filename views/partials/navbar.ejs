@@ -4,7 +4,7 @@
             <div class="media-body">
                 <h4 class="m-0 navbar-info-text"><%= locals.user.fullname %></h4>
                 <p class="font-weight-light text-muted mb-0 navbar-info-text"><%= locals.user.department %></p>
-                <div id="user-permission" hidden></div>
+                <div id="user-permission" data-permission="<%= locals.authorization %>" hidden></div>
             </div>
         </div>
     </div>

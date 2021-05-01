@@ -24,9 +24,7 @@ window.onload = function(e) {
 
             $('#toast-notification').attr("data-noti-link", notiInfo.link_detail)
         })
-    }
-
-            
+    }       
 
     $('.date-time-format').get().forEach((el) => {
         let postTime = new Date($(el)[0].innerHTML).toLocaleString().split(',')
@@ -575,8 +573,14 @@ function updatePost(result, author, isPrepend) {
     }
 
     let currentUserName = $.trim($("#user-id > div > div > h4").text())
-    let postToolHTML = ''
+
+    let editPostToolHTML = ''
     if (currentUserName === author.fullname) {
+        editPostToolHTML = `<a class="dropdown-item edit-post" data-id="${result._id}">Chỉnh sửa bài viết</a>`
+    }
+
+    let postToolHTML = ''
+    if (currentUserName === author.fullname || $('#user-permission').data('permission') == 1) {
         postToolHTML = `
         <div class="mr-2">
             <div class="btn-group dropright">
@@ -586,7 +590,7 @@ function updatePost(result, author, isPrepend) {
                     </svg>
                 </button>
                 <div class="dropdown-menu">
-                <a class="dropdown-item edit-post" data-id="${result._id}">Chỉnh sửa bài viết</a>
+                ${editPostToolHTML}
                 <a class="dropdown-item delete-post-comment" data-id="${result._id}" data-type="post">Xoá bài viết</a>
                 </div>
             </div>
@@ -768,8 +772,14 @@ function updateComment(newComment, author, postId) {
     commentTime = commentTime[0] + ' ' + commentTime[1];
 
     let currentUserName = $.trim($("#user-id > div > div > h4").text())
-    let commentToolHTML = ''
+
+    let editCommentToolHTML = ''
     if (currentUserName === author.fullname) {
+        editCommentToolHTML = `<a class="dropdown-item edit-comment" data-id="${newComment._id}" data-post="${postId}">Chỉnh sửa bình luận</a>`
+    }
+
+    let commentToolHTML = ''
+    if (currentUserName === author.fullname || $('#user-permission').data('permission') == 1) {
         commentToolHTML = `
         <div class="mr-2">
             <div class="btn-group dropright">
@@ -779,7 +789,7 @@ function updateComment(newComment, author, postId) {
                     </svg>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item edit-comment" data-id="${newComment._id}" data-post="${postId}">Chỉnh sửa bình luận</a>
+                    ${editCommentToolHTML}
                     <a class="dropdown-item delete-post-comment" data-id="${newComment._id}" data-type="comment" data-post="${postId}">Xoá bình luận</a>
                 </div>
             </div>
