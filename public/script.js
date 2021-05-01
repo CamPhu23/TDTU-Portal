@@ -59,9 +59,8 @@ $(document).ready(() => {
     $('#close_new_post_modal').click(() => {
         $('#newPostModal').modal('hide')
         $("#preview_div").empty()
-        $(".custom-file-label").val('')
-        $("#video-url").val('')
-        $('#new_post_form').find('input[name="content"], textarea').val("");
+        $(".custom-file-label").html('Đính kèm ảnh')
+        $('#new_post_form').trigger("reset");
     })
 
     $('.carousel').carousel({
