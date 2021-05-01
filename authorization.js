@@ -17,7 +17,7 @@ module.exports = {
         })
         .catch(error => console.log(error))
 
-        console.log(authorization);
+        // console.log(authorization);
 
         return authorization
     }

@@ -27,20 +27,20 @@
 
                         
                         <div class="form-group">
-                            <label class="mx-1 my-0">Email</label>
+                            <label class="mx-1 my-0" for="email">Email</label>
                             <input value="<%= locals.email %>" type="text" readonly placeholder="Email" class="form-control" id="email" name="email">
                         </div>
                         <div class="form-group">
-                            <label class="mx-1 my-0">Tên hiển thị</label>
+                            <label class="mx-1 my-0" for="fullname">Tên hiển thị</label>
                             <input value="<%= locals.fullname %>" type="text" placeholder="Tên hiển thị" class="form-control" id="fullname" name="fullname">
                         </div>
                         <div class="form-group">
-                            <label class="mx-1 my-0">Lớp</label>
+                            <label class="mx-1 my-0" for="class">Lớp</label>
                             <input value="<%= locals._class %>" type="text" placeholder="Lớp" class="form-control" id="class" name="_class">
                         </div>
                         
-                        <div>Khoa</div>
-                        <select name="department" class="selectpicker phongkhoa custom-select">
+                        <label class="mx-1 my-0" for="select-picker">Khoa</label>
+                        <select id="select-picker" name="department" class="selectpicker phongkhoa custom-select">
                             <option <%= locals.department == "" ? "selected" : "" %> value="">Chọn khoa</option>
                             <option <%= locals.department == "khoa luật" ? "selected" : "" %> value="Khoa luật">Khoa Luật</option>
                             <option <%= locals.department == "khoa mỹ thuật công nghiệp" ? "selected" : "" %> value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>

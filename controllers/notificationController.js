@@ -2,7 +2,6 @@ const io = require('../socket')
 const notificationModel = require('../models/notificationModel')
 const userModel = require('../models/userModel')
 const accountModel = require('../models/accountModel')
-const getAuthorization = require('../authorization')
 
 exports.postCreateNewNotification = (req, res) => {
 
@@ -60,7 +59,6 @@ exports.getNotificationList = async (req, res) => {
     accountId ? isAdded = true : isAdded = false 
     let permission = []
     let {userId} = req.session
-    let authorization = await getAuthorization.getAuthorization(accountId)
 
     accountModel.findById(accountId)
     .then(account => {
@@ -110,7 +108,7 @@ exports.getNotificationList = async (req, res) => {
                 detail_href.push(req.protocol + "://" + req.get('host') + "/notification/details/" + n._id)
             })
     
-            res.render('pages/notification', {notiList: noti, link: detail_href, pagi, pagi_link, isAdded, permissionNoti: permission, user, url, authorization})
+            res.render('pages/notification', {notiList: noti, link: detail_href, pagi, pagi_link, isAdded, permissionNoti: permission, user, url, authorization: req.session.authorization})
         })
     })
 }
@@ -121,7 +119,6 @@ exports.getNotificationDetails = async (req, res) => {
     let accountId = req.session.accountId
     let permission = []
     let {userId} = req.session
-    let authorization = await getAuthorization.getAuthorization(accountId)
 
     accountModel.findById(accountId)
     .then(account => {
@@ -145,7 +142,7 @@ exports.getNotificationDetails = async (req, res) => {
     
             let delete_href = req.protocol + "://" + req.get('host') + "/notification/delete/" + notiId
     
-            res.render('pages/detailsNotification', {noti, delete_href, isEditable, permissionNoti: permission, url, user, authorization})
+            res.render('pages/detailsNotification', {noti, delete_href, isEditable, permissionNoti: permission, url, user, authorization: req.session.authorization})
         })
     })  
     .catch(err => {

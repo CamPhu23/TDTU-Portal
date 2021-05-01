@@ -39,6 +39,10 @@
                             <div class="alert alert-danger">
                                 <%= locals.messages.error  %>
                             </div> 
+                        <% } else if (locals.localError && locals.localError != '') { %>
+                            <div class="alert alert-danger">
+                                <%= locals.localError  %>
+                            </div> 
                         <% } %>
             
                         <div class="form-group">

@@ -27,10 +27,7 @@ const cb_GG = (accessToken, refreshToken, profile, done) => {
         token = accessToken
         return done(null, user);
     } else {
-        // req.flash('errorMessages', '');
         return done(null, false, {message: 'Chỉ hỗ trợ đăng nhập bằng mail sinh viên.'});
-        //or can add message (using flash messages)
-        // return done(null, false, {message: 'Invalid host domain'});
     }
 }
 
@@ -40,9 +37,9 @@ passport.use(new googleStrategy(opts_GG, cb_GG))
 exports.getLogin = (req, res) => {
     let username = req.flash('usernameLogin') || ''
     let password = req.flash('passwordLogin') || ''
-    let messages = {error: req.flash('errorLogin') || ''}
+    let localError = req.flash('errorLogin') || ''
 
-    res.render('pages/login', {username: username, pass: password, url: req.currentURL, messages})
+    res.render('pages/login', {username: username, pass: password, url: req.currentURL, localError})
 }
 
 exports.configPasspostLoginWithGG = passport.authenticate('google', { scope : ['profile', 'email'] })
