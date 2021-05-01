@@ -25,6 +25,10 @@
     overflow-y: scroll;
 } */
 
+#toast-notification {
+    cursor: pointer;
+}
+
 @media (max-width: 990px) {
     .vertical-nav {
         display: none;

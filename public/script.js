@@ -504,7 +504,7 @@ function updateDetailNotification(noti) {
     let author = noti.author.fullname || ''
     $('#author_detail_area').text(author)
 
-    $('#notification-details-subject').text(noti.subject + "| Ngày đăng: " + noti.date)
+    $('#notification-details-subject').text(noti.subject + " | Ngày đăng: ")
 
     console.log(noti.date)
 }

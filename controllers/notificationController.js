@@ -106,15 +106,11 @@ exports.getNotificationList = async (req, res) => {
         .exec(function(err, noti) {
     
             let detail_href = []
-            let detail_date = []
             noti.forEach(n => {
-                let date = new Date(n.date).toLocaleString().split(' ')
-        
-                detail_date.push(date[0] + " - " + date[1])
                 detail_href.push(req.protocol + "://" + req.get('host') + "/notification/details/" + n._id)
             })
     
-            res.render('pages/notification', {notiList: noti, link: detail_href, date: detail_date, pagi, pagi_link, isAdded, permissionNoti: permission, user, url, authorization})
+            res.render('pages/notification', {notiList: noti, link: detail_href, pagi, pagi_link, isAdded, permissionNoti: permission, user, url, authorization})
         })
     })
 }
@@ -143,16 +139,13 @@ exports.getNotificationDetails = async (req, res) => {
         notificationModel.findById(notiId)
         .populate('author')
         .then((noti) => {
-            let date = new Date(noti.date).toLocaleString().split(' ')
             let isEditable = false
             permission.includes(noti.subject) == true ? isEditable = true : isEditable = false
             console.log(noti.subject);
     
-            date = date[0] + " - " + date[1]
-    
             let delete_href = req.protocol + "://" + req.get('host') + "/notification/delete/" + notiId
     
-            res.render('pages/detailsNotification', {noti, date, delete_href, isEditable, permissionNoti: permission, url, user, authorization})
+            res.render('pages/detailsNotification', {noti, delete_href, isEditable, permissionNoti: permission, url, user, authorization})
         })
     })  
     .catch(err => {
@@ -180,7 +173,7 @@ exports.getFilterNotification = (req, res) => {
 exports.postUpdateNotification = (req, res) => {
     let authorId = req.session.userId
     
-    let {title, content, amend_subject, noti_id} = req.body
+    let {title, content, amend_subject, noti_id, change} = req.body
     let files_req = req.files
     let files = []
     files_req.forEach(file => {
@@ -191,16 +184,29 @@ exports.postUpdateNotification = (req, res) => {
         }
     });
 
-    let date = new Date()
-    date = date.toLocaleDateString() + " " + date.toLocaleTimeString() 
-    
-    notificationModel.findOneAndUpdate({_id: noti_id}, 
-    {title, content, subject: amend_subject, files, date, author: authorId}, 
-    {new: true})
-    .populate("author")
-    .exec((error, noti) => {
 
-        console.log(noti);
-        res.json({result: "Success", noti})
-    })
+    if (change == 'true') {
+    
+        notificationModel.findOneAndUpdate({_id: noti_id}, 
+        {title, content, subject: amend_subject, files, author: authorId}, 
+        {new: true})
+        .populate("author")
+        .exec((error, noti) => {
+    
+            console.log(noti);
+            res.json({result: "Success", noti})
+        })
+
+    } else {
+
+        notificationModel.findOneAndUpdate({_id: noti_id}, 
+        {title, content, subject: amend_subject, author: authorId}, 
+        {new: true})
+        .populate("author")
+        .exec((error, noti) => {
+    
+            console.log(noti);
+            res.json({result: "Success", noti})
+        })
+    }
 }

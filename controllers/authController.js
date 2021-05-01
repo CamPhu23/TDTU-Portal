@@ -86,6 +86,14 @@ exports.postLogin = (req, res) => {
     accountModel.findOne({username: username})
     .populate('user')
     .then((account) => {
+        req.flash('usernameLogin', username)
+        req.flash('passwordLogin', pass)
+
+        if (!account) {
+            req.flash('errorLogin', 'Tài khoản không tồn tại')
+            
+            return res.redirect('/auth/login')
+        }
         
         let verify = bcryptjs.compareSync(pass, account.password)
         if (account && verify) {
@@ -96,8 +104,6 @@ exports.postLogin = (req, res) => {
             return res.redirect('/home')
         } else {
 
-            req.flash('usernameLogin', username)
-            req.flash('passwordLogin', pass)
             req.flash('errorLogin', 'Tài khoản hoặc mật khẩu bị sai')
             
             return res.redirect('/auth/login')

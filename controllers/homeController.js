@@ -9,7 +9,7 @@ exports.showHomepage = async (req, res) => {
 
     let {userId, accountId} = req.session
     let permission = accountId ? true: false
-    authorization = getAuthorization.getAuthorization(accountId)
+    authorization = await getAuthorization.getAuthorization(accountId)
 
     User.findById(userId)
         .then(user => {
@@ -207,7 +207,7 @@ exports.handleShowPersonalProfile = async (req, res) => {
     let id = req.params.id
     let {userId, accountId} = req.session
 
-    authorization = getAuthorization.getAuthorization(accountId)
+    authorization = await getAuthorization.getAuthorization(accountId)
 
 
     console.log({userId, id});

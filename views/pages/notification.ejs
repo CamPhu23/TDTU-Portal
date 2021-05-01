@@ -69,7 +69,7 @@
                                     <h5 class="card-title text-uppercase text-truncate mx-100 text-wrap text-break"><%= n.title %></h5>
                                     <h6 class="card-subtitle mb-2 text-muted mx-100 text-wrap text-break"><%= n.content %></h6>
                                     <a href="<%= locals.link[index] %>" class="card-link">Chi tiết thông báo</a>
-                                    <div class="phongban-date"><%= n.subject %> | <%= locals.date[index] %></div>
+                                    <div class="phongban-date"><%= n.subject %> | <span class="date-time-format"><%= n.date %></span></div>
                                 </div>
                             </div>
                         <% }) %>
