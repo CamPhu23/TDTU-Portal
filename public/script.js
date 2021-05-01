@@ -127,6 +127,7 @@ $(document).ready(() => {
         $('#errorMessage').hide()
         $('.modal-title').text('Bài đăng mới')
         $('#submit_new_post').text('Đăng bài')
+        $('#submit_new_post').removeData('id')
     })
 
     $('#confirmDeleteButton').click(function() {
@@ -443,7 +444,6 @@ $(document).on('click', '.edit-post', (event) => {
     if (youtubeUrl) $('#video-url').val(youtubeUrl)
 
     $('#submit_new_post').data('id', postId)
-
     $('#newPostModal').modal('show')
 })
 
