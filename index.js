@@ -48,9 +48,10 @@ let opts = {
 };
 
 var io = null
-mongoose.connect('mongodb://127.0.0.1:27017/TDTU_Portal', opts)
+const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/TDTU_Portal'
+mongoose.connect(uri, opts)
 .then(() => {
-    const port = 8080
+    const port = process.env.PORT || 8080
     const httpServer = app.listen(port, () => console.log("http://localhost:" + port))
 
     io = socketio.init(httpServer)
