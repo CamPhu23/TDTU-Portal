@@ -22,7 +22,7 @@
             <div class="col-sm-12 col-md-9 col-lg-10 right-part">
                 <div class="row">
                     <div class="col-md-8 mt-2">
-                    <% if (!permission) { %>
+                    <% if(locals.authorization == 1 || locals.authorization == 3) {%>
                         <div class="m-3 p-2 bg-white rounded">
                             <!-- new post -->
                             <%- include('../partials/new_post.ejs') %>

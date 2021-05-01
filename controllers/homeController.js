@@ -5,11 +5,12 @@ const getAuthorization = require('../authorization')
 const Notifications = require('../models/notificationModel')
 const fs = require('fs');
 
-exports.showHomepage = (req, res) => {
+exports.showHomepage = async (req, res) => {
 
     let {userId, accountId} = req.session
-    let permission = accountId ? true: false
-    authorization = getAuthorization.getAuthorization(accountId)
+    authorization = await getAuthorization.getAuthorization(accountId)
+
+    console.log({userId, accountId, authorization});
 
     User.findById(userId)
         .then(user => {
@@ -17,7 +18,7 @@ exports.showHomepage = (req, res) => {
             .sort({date: 'desc'})
             .limit(10)
             .then(notifications => {
-                return res.render('pages/home', { user, permission, notifications, url: req.currentURL, authorization })
+                return res.render('pages/home', { user, notifications, url: req.currentURL, authorization })
             })
         })
         .catch(err => {

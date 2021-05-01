@@ -1,8 +1,8 @@
-let authorization = 3
 const accountModel = require('./models/accountModel')
 
 module.exports = {
-    getAuthorization: (accountId) => {
+    getAuthorization: async (accountId) => {
+        let authorization = 3
 
         accountModel.findById(accountId)
         .then(account => {
@@ -17,7 +17,7 @@ module.exports = {
         })
         .catch(error => console.log(error))
 
-        console.log(authorization);
+        // console.log(authorization);
 
         return authorization
     }
