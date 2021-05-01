@@ -40,9 +40,9 @@ passport.use(new googleStrategy(opts_GG, cb_GG))
 exports.getLogin = (req, res) => {
     let username = req.flash('usernameLogin') || ''
     let password = req.flash('passwordLogin') || ''
-    let messages = {error: req.flash('errorLogin') || ''}
+    let localError = req.flash('errorLogin') || ''
 
-    res.render('pages/login', {username: username, pass: password, url: req.currentURL, messages})
+    res.render('pages/login', {username: username, pass: password, url: req.currentURL, localError})
 }
 
 exports.configPasspostLoginWithGG = passport.authenticate('google', { scope : ['profile', 'email'] })

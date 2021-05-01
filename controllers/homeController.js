@@ -204,7 +204,7 @@ exports.handleUpdatePost = (req, res) => {
     }
 }
 
-exports.handleShowPersonalProfile = (req, res) => {
+exports.handleShowPersonalProfile = async (req, res) => {
     let id = req.params.id
     let {userId, accountId} = req.session
 

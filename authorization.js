@@ -4,7 +4,7 @@ module.exports = {
     getAuthorization: async (accountId) => {
         let authorization = 3
 
-        accountModel.findById(accountId)
+        await accountModel.findById(accountId)
         .then(account => {
 
             if (account) {

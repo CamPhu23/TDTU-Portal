@@ -66,10 +66,10 @@
                         <% notiList.forEach((n, index) => { %>
                             <div class="card my-4 w-100">
                                 <div class="card-body">
-                                    <h5 class="card-title text-uppercase text-truncate mx-100 text-wrap text-break"><%= n.title %></h5>
-                                    <h6 class="card-subtitle mb-2 text-muted mx-100 text-wrap text-break"><%= n.content %></h6>
+                                    <h5 class="card-title text-uppercase text-truncate mx-100 sm-notification-text"><%= n.title %></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted mx-100 sm-notification-text"><%= n.content %></h6>
                                     <a href="<%= locals.link[index] %>" class="card-link">Chi tiết thông báo</a>
-                                    <div class="phongban-date"><%= n.subject %> | <%= locals.date[index] %></div>
+                                    <div class="phongban-date sm-notification-text"><%= n.subject %> | <%= locals.date[index] %></div>
                                 </div>
                             </div>
                         <% }) %>

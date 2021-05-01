@@ -13,13 +13,13 @@
 <body>
     <div class="content">
         <div class="row">
-            <div class="col-sm-0 col-md-3 col-lg-2 left-part">
+            <div class="col-sm-0 col-md-3 col-lg-2">
                 <!-- Vertical navbar -->
                 <%- include('../partials/navbar.ejs') %>
                     <!-- End vertical navbar -->
             </div>
 
-            <div class="col-sm-12 col-md-9 col-lg-10 right-part">
+            <div class="col-sm-12 col-md-8 col-lg-10 right-part">
                 <div class="row">
                     <div class="col-md-8 mt-2">
                     <% if(locals.authorization == 1 || locals.authorization == 3) {%>
@@ -36,7 +36,7 @@
                     </div>
 
                     <!-- new notifications -->
-                    <div class="col-md-4 mt-2">
+                    <div class="col-sm-2 col-lg-4 mt-2">
                         <%- include('../partials/notification.ejs') %>
                     </div>
                 </div>

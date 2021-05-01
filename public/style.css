@@ -19,10 +19,25 @@
     position: fixed;
 }
 
-.right-part {
+/* .right-part {
     background-color: #f0f2f5;
     height: 100vh;
     overflow-y: scroll;
+} */
+
+@media (max-width: 990px) {
+    .vertical-nav {
+        display: none;
+    }
+
+    .notifications-area {
+        width: 90%;
+        margin: 3vw;
+    }
+
+    .right-part {
+        width: 90%;
+    }
 }
 
 @media (max-width: 990px) {
