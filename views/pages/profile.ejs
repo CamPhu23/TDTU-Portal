@@ -34,24 +34,35 @@
                             <label class="mx-1 my-0" for="fullname">Tên hiển thị</label>
                             <input value="<%= locals.fullname %>" type="text" placeholder="Tên hiển thị" class="form-control" id="fullname" name="fullname">
                         </div>
+
                         <div class="form-group">
-                            <label class="mx-1 my-0" for="class">Lớp</label>
-                            <input value="<%= locals._class %>" type="text" placeholder="Lớp" class="form-control" id="class" name="_class">
+                            <% if (locals.isAdmin == false) { %>
+                                <label class="mx-1 my-0" for="class">Lớp</label>
+                                <input value="<%= locals._class %>" type="text" placeholder="Lớp" class="form-control" id="class" name="_class">
+                            <% } else { %>
+                                <input hidden value="admin" type="text" placeholder="Lớp" class="form-control" id="class" name="_class">
+                            <% } %>
                         </div>
                         
-                        <label class="mx-1 my-0" for="select-picker">Khoa</label>
-                        <select id="select-picker" name="department" class="selectpicker phongkhoa custom-select">
-                            <option <%= locals.department == "" ? "selected" : "" %> value="">Chọn khoa</option>
-                            <option <%= locals.department == "khoa luật" ? "selected" : "" %> value="Khoa luật">Khoa Luật</option>
-                            <option <%= locals.department == "khoa mỹ thuật công nghiệp" ? "selected" : "" %> value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>
-                            <option <%= locals.department == "khoa điện – Điện tử" ? "selected" : "" %> value="Khoa điện – Điện tử">Khoa Điện – Điện tử</option>
-                            <option <%= locals.department == "khoa công nghệ thông tin" ? "selected" : "" %> value="Khoa công nghệ thông tin">Khoa Công nghệ thông tin</option>
-                            <option <%= locals.department == "khoa quản trị kinh doanh" ? "selected" : "" %> value="Khoa quản trị kinh doanh">Khoa Quản trị kinh doanh</option>
-                            <option <%= locals.department == "khoa môi trường và bảo hộ lao động" ? "selected" : "" %> value="Khoa môi trường và bảo hộ lao động">Khoa Môi trường và bảo hộ lao động </option>
-                            <option <%= locals.department == "khoa lao động công đoàn" ? "selected" : "" %> value="Khoa lao động công đoàn">Khoa Lao động công đoàn</option>
-                            <option <%= locals.department == "khoa tài chính ngân hàng" ? "selected" : "" %> value="Khoa tài chính ngân hàng">Khoa Tài chính ngân hàng</option>
-                            <option <%= locals.department == "khoa giáo dục quốc tế" ? "selected" : "" %> value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
-                        </select>
+                        <% if (locals.isAdmin == false) { %>
+                            <label class="mx-1 my-0" for="select-picker">Khoa</label>
+                            <select id="select-picker" name="department" class="selectpicker phongkhoa custom-select">
+                                <option <%= locals.department == "" ? "selected" : "" %> value="">Chọn khoa</option>
+                                <option <%= locals.department == "khoa luật" ? "selected" : "" %> value="Khoa luật">Khoa Luật</option>
+                                <option <%= locals.department == "khoa mỹ thuật công nghiệp" ? "selected" : "" %> value="Khoa mỹ thuật công nghiệp">Khoa Mỹ thuật công nghiệp</option>
+                                <option <%= locals.department == "khoa điện – Điện tử" ? "selected" : "" %> value="Khoa điện – Điện tử">Khoa Điện – Điện tử</option>
+                                <option <%= locals.department == "khoa công nghệ thông tin" ? "selected" : "" %> value="Khoa công nghệ thông tin">Khoa Công nghệ thông tin</option>
+                                <option <%= locals.department == "khoa quản trị kinh doanh" ? "selected" : "" %> value="Khoa quản trị kinh doanh">Khoa Quản trị kinh doanh</option>
+                                <option <%= locals.department == "khoa môi trường và bảo hộ lao động" ? "selected" : "" %> value="Khoa môi trường và bảo hộ lao động">Khoa Môi trường và bảo hộ lao động </option>
+                                <option <%= locals.department == "khoa lao động công đoàn" ? "selected" : "" %> value="Khoa lao động công đoàn">Khoa Lao động công đoàn</option>
+                                <option <%= locals.department == "khoa tài chính ngân hàng" ? "selected" : "" %> value="Khoa tài chính ngân hàng">Khoa Tài chính ngân hàng</option>
+                                <option <%= locals.department == "khoa giáo dục quốc tế" ? "selected" : "" %> value="Khoa giáo dục quốc tế">Khoa giáo dục quốc tế</option>
+                            </select>
+                        <% } else { %>
+                            <select hidden id="select-picker" name="department" class="selectpicker phongkhoa custom-select">
+                                <option value="admin">Chọn khoa</option>
+                            </select>
+                        <% } %>
     
                         <% if (locals.error && locals.error != '') { %>                
                             <div class="alert alert-danger m-1 w-100">

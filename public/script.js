@@ -609,7 +609,6 @@ function updatePost(result, author, isPrepend) {
                 <div class="d-flex align-items-center">
                     <span class="font-weight-bold h5 mr-auto"><a href="${window.location.origin + '/home/wall/' + author._id}" class="writer-name">${author.fullname}</a></span>
                     <div><small class="text-muted mb-2 mx-3 post-time">${postTime}</small></div>
-
                     ${postToolHTML}
                 </div>
                 <!-- end post info -->
@@ -811,7 +810,6 @@ function updateComment(newComment, author, postId) {
             <div class="d-flex align-items-center">
                 <span class="font-weight-bold h6 mr-auto"><a href="${window.location.origin + '/home/wall/' + author._id}" class="writer-name">${author.fullname}</a></span>
                 <div><small class="text-muted mb-2 mx-3 comment-time">${commentTime}</small></div>
-
                 ${commentToolHTML}
             </div>
             <!-- end comment infor -->

@@ -136,6 +136,10 @@ exports.getNotificationDetails = async (req, res) => {
         notificationModel.findById(notiId)
         .populate('author')
         .then((noti) => {
+            if (!noti) {
+                res.redirect('/notification?page=1')
+            }
+
             let isEditable = false
             permission.includes(noti.subject) == true ? isEditable = true : isEditable = false
             console.log(noti.subject);
@@ -143,10 +147,13 @@ exports.getNotificationDetails = async (req, res) => {
             let delete_href = req.protocol + "://" + req.get('host') + "/notification/delete/" + notiId
     
             res.render('pages/detailsNotification', {noti, delete_href, isEditable, permissionNoti: permission, url, user, authorization: req.session.authorization})
-        })
+        }) 
+        .catch(err => {                
+            res.redirect('/notification?page=1')
+        })  
     })  
-    .catch(err => {
-        console.log(err)
+    .catch(err => {                
+        res.redirect('/notification?page=1')
     })  
 }
 
