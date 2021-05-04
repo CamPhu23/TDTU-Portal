@@ -7,24 +7,24 @@ window.onload = function(e) {
         getListPost(1, id)
     }
     if (!window.location.pathname.includes("auth")) {
-    
+
         console.log("ok");
         const socket = io();
-        
+
         socket.on('connect', () => console.log("kết nối thành công"))
-        
+
         socket.on('new_notification', (notiInfo) => {
 
         let author = notiInfo.author
         let noti = notiInfo.noti
-        
+
         $('#toast-notification').toast("show")
         $('#toast-notification-title').text(author + " vừa có một thông mới")
         $('#toast-notification-content').text(noti.title)
 
             $('#toast-notification').attr("data-noti-link", notiInfo.link_detail)
         })
-    }       
+    }
 
     $('.date-time-format').get().forEach((el) => {
         let postTime = new Date($(el)[0].innerHTML).toLocaleString().split(',')
@@ -53,7 +53,7 @@ $(document).ready(() => {
         let len = this.files.length
         if (len > 0)
             $(".custom-file-label").html('Đã chọn ' + this.files.length + ' hình ảnh');
-        else 
+        else
             $(".custom-file-label").html('Đính kèm ảnh')
     })
 
@@ -83,7 +83,7 @@ $(document).ready(() => {
 
         let formData = new FormData(form[0])
         let author = $('#user-id').data('id')
-        formData.append('author', author) 
+        formData.append('author', author)
 
         let url = window.location.origin + '/home/addNewPost/'
 
@@ -91,7 +91,7 @@ $(document).ready(() => {
         if (postId) { //it mean change post because modal has post id
             url = window.location.origin + '/home/updatePost/' + postId
         }
-         
+
         let opts = {
             method: 'POST',
             body: formData
@@ -220,7 +220,7 @@ $(document).ready(() => {
         $(this).prop('selected', !$(this).prop('selected'));
         return false;
     });
-    
+
     $('.permissions-dropdown').click( function (e) {
         e.stopPropagation();
     });
@@ -230,15 +230,15 @@ $(document).ready(() => {
         e.preventDefault();
         $("#upload:hidden").trigger('click');
     });
-    
+
     $("#upload").change(function() {
         if (this.files && this.files[0]) {
             var reader = new FileReader();
-            
+
             reader.onload = function(e) {
                 $('#avatar').attr('src', e.target.result);
             }
-            
+
             reader.readAsDataURL(this.files[0]); // convert to base64 string
         }
     });
@@ -270,7 +270,7 @@ $(document).ready(() => {
         if (checkUpdateNotification()) {
             let url = window.location.href
             let id = url.substring(url.lastIndexOf('/') + 1)
-            
+
             url = window.location.origin + "/notification/updateNotification"
 
             let form = document.getElementById('amend-notification-form')
@@ -286,7 +286,7 @@ $(document).ready(() => {
                 console.log(data.result);
                 if (data.result == "Success") {
                     $('#amend-notification').trigger("reset").modal("hide")
-                    
+
                     updateDetailNotification(data.noti)
                 }
             })
@@ -303,9 +303,12 @@ $(document).on('click', '.delete-post-comment', function() {
 
     if (type == 'comment') {
         $('#confirmDeleteButton').data('post', $(this).data('post'))
-        $('#modal-title').text('Xác nhận xóa bình luận')
-        $('#modal-content').text('Bạn có chắc chắn muốn xóa bình luận này?')
-    } 
+        $('#delete-modal-title').text('Xác nhận xóa bình luận')
+        $('#delete-modal-content').text('Bạn có chắc chắn muốn xóa bình luận này?')
+    } else if (type == 'post') {
+        $('#delete-modal-title').text('Xác nhận xóa bài viết')
+        $('#delete-modal-content').text('Bạn có chắc chắn muốn xóa bài viết này?')
+    }
 
     $('#confirmDeleteButton').data('id', id)
     $('#confirmDeleteButton').data('type', type)
@@ -321,7 +324,7 @@ $(document).on('click', '.submit_new_comment', function() {
         $(form).find('div.invalid-message').text('Bình luận không được để rỗng.')
         $(form).find('input[name="content"]').focus()
 
-        return 
+        return
     }
 
     $(form).find('div.invalid-message').hide()
@@ -371,7 +374,7 @@ $(document).on('click', '.show-all-comment', (event) => {
 
         let url = window.location.origin + '/home/getComments/' + postId
         let opts = { method: 'GET' }
-    
+
         fetch(url, opts)
         .then((response) => {
             return response.json()
@@ -423,13 +426,13 @@ $(document).on('click', '.edit-post', (event) => {
 
         $("#preview_div").show()
         $("#preview_div").empty()
-        
+
         for(let i = 0; i < nImage; i++) {
             let src = $(`#carousel-${postId} > div > div`).get(i).children[0].getAttribute('src')
-            
+
             let $img = `<img class='preview-images mx-1' src='${src}'>`
             $("#preview_div").append($img);
-        }    
+        }
     } else {
         $(".custom-file-label").html('Đính kèm ảnh')
     }
@@ -448,19 +451,19 @@ $(document).on('click', '.edit-post', (event) => {
 $(document).on('keypress',  function (e) {
     if($('#newPostModal').is(':visible')) {
         let key = e.which;
-        if (key == 13) { 
+        if (key == 13) {
             $('#submit_new_post').click();
         }
     }
     else if($('#editCommentModal').is(':visible')) {
         let key = e.which;
-        if (key == 13) { 
+        if (key == 13) {
             $('#saveChangeButton').click();
         }
     }
     else if($('#confirmDeleteModal').is(':visible')) {
         let key = e.which;
-        if (key == 13) { 
+        if (key == 13) {
             $('#confirmDeleteButton').click();
         }
     }
@@ -510,19 +513,19 @@ function updateDetailNotification(noti) {
 function updatePost(result, author, isPrepend) {
     let postTime = new Date(result.lastUpdate).toLocaleString().split(',')
     postTime = postTime[0] + ' ' + postTime[1];
-        
+
     let ImageArr = result.imgUrl
     let carousel = ''
     let user = $('.user-avatar')
 
     if (ImageArr.length > 0) {
-        let baseUrl = window.location.origin, divElement = '', carousel_id = 'carousel-' + result._id 
+        let baseUrl = window.location.origin, divElement = '', carousel_id = 'carousel-' + result._id
 
         carousel = `
         <div class="mt-3">
             <div id="${carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
                 <ol class="carousel-indicators">`
-        
+
         ImageArr.forEach((image, index) => {
             carousel += `<li data-target="#${carousel_id}" data-slide-to="${index}" class="active"></li>`
 
@@ -553,7 +556,7 @@ function updatePost(result, author, isPrepend) {
 
     let videoHTML = ''
     if (result.videoUrl) {
-        videoHTML = `                                        
+        videoHTML = `
         <div class="mt-3">
             <iframe id="video-url-${result._id}" class="youtube-video-frame" width="100%" height="100%" src="${result.videoUrl}">
             </iframe>
@@ -562,12 +565,12 @@ function updatePost(result, author, isPrepend) {
 
     let show_hide_commentsHTML = ''
     if (result.comments.length > 0) {
-        show_hide_commentsHTML =         
+        show_hide_commentsHTML =
         `<!-- comment list -->
         <div>
             <a class="show-all-comment" data-toggle="collapse" data-target="#comment-post-${result._id}" aria-expanded="false" aria-controls="collapseExample">Hiển thị tất cả bình luận</a>
         </div>
-        <div class="collapse list-comment" id="comment-post-${result._id}"> 
+        <div class="collapse list-comment" id="comment-post-${result._id}">
         </div>
         <!-- end comment list -->`
     }
@@ -597,7 +600,7 @@ function updatePost(result, author, isPrepend) {
         </div>`
     }
 
-    let newPost = 
+    let newPost =
     `<div id="${result._id}" class="my-3 p-2 bg-white rounded shadow-sm">
         <div class="media">
             <img class="mr-3 rounded-circle img-thumbnail shadow-sm author-post-avatar" src="${author.avatar}" alt="author avatar">
@@ -605,8 +608,8 @@ function updatePost(result, author, isPrepend) {
                 <!-- post infor -->
                 <div class="d-flex align-items-center">
                     <span class="font-weight-bold h5 mr-auto"><a href="${window.location.origin + '/home/wall/' + author._id}" class="writer-name">${author.fullname}</a></span>
-                    <div><small class="text-muted mb-2 mx-3">${postTime}</small></div>
-                    
+                    <div><small class="text-muted mb-2 mx-3 post-time">${postTime}</small></div>
+
                     ${postToolHTML}
                 </div>
                 <!-- end post info -->
@@ -620,42 +623,42 @@ function updatePost(result, author, isPrepend) {
                 <div class="mt-3 new-comment-area">
                 <form method="POST" class="new_comment_form">
                     <div class="form-row d-flex align-items-center justify-content-center">
-                        <div class="col-2">
+                        <div class="col-sm-2 col-md-0 col-lg-2">
                             <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
                         </div>
-                        <div class="col-7 col-md-8">
+                        <div class="col-7 col-sm-7 col-md-6 col-lg-7">
                             <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
                         </div>
-                        <div class="col-2 col-md-2">
+                        <div class="col-5 col-sm-3 col-md-4 col-lg-3">
                             <button type="button" data-id="${result._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
-                        </div>            
+                        </div>
                         <div class="invalid-message"></div>
-                    </div>                                                
+                    </div>
                 </form>
             </div>
                 `
     if (isPrepend) $( ".list-post" ).prepend(newPost)
     else if (!isPrepend) $(".list-post").append(newPost)
-        
+
 }
 
 function updateExistPost(updatedPost) {
     let postTime = new Date(updatedPost.lastUpdate).toLocaleString().split(',')
     postTime = postTime[0] + ' ' + postTime[1];
-        
+
     let ImageArr = updatedPost.imgUrl
     let carouselHTML = ''
     let user = $('.user-avatar')
     let authorName = $.trim($("#user-id > div > div > h4").text())
 
     if (ImageArr.length > 0) {
-        let baseUrl = window.location.origin, divElement = '', carousel_id = 'carousel-' + updatedPost._id 
+        let baseUrl = window.location.origin, divElement = '', carousel_id = 'carousel-' + updatedPost._id
 
         carouselHTML = `
         <div class="mt-3">
             <div id="${carousel_id}" class="carousel slide" data-ride="carousel" data-interval="false">
                 <ol class="carousel-indicators">`
-        
+
         ImageArr.forEach((image, index) => {
             carouselHTML += `<li data-target="#${carousel_id}" data-slide-to="${index}" class="active"></li>`
 
@@ -686,7 +689,7 @@ function updateExistPost(updatedPost) {
 
     let videoHTML = ''
     if (updatedPost.videoUrl) {
-        videoHTML = `                                        
+        videoHTML = `
         <div class="mt-3">
             <iframe id="video-url-${updatedPost._id}" class="youtube-video-frame" width="100%" height="100%" src="${updatedPost.videoUrl}">
             </iframe>
@@ -695,12 +698,12 @@ function updateExistPost(updatedPost) {
 
     let show_hide_commentsHTML = ''
     if (updatedPost.comments.length > 0) {
-        show_hide_commentsHTML =         
+        show_hide_commentsHTML =
         `<!-- comment list -->
         <div>
             <a class="show-all-comment" data-toggle="collapse" data-target="#comment-post-${updatedPost._id}" aria-expanded="false" aria-controls="collapseExample">Hiển thị tất cả bình luận</a>
         </div>
-        <div class="collapse list-comment" id="comment-post-${updatedPost._id}"> 
+        <div class="collapse list-comment" id="comment-post-${updatedPost._id}">
         </div>
         <!-- end comment list -->`
     }
@@ -720,7 +723,7 @@ function updateExistPost(updatedPost) {
         </div>
     </div>`
 
-    let updatePost = 
+    let updatePost =
     `<div class="media">
         <img class="mr-3 rounded-circle img-thumbnail shadow-sm author-post-avatar" src="${$(user).attr('src')}" alt="author avatar">
         <div class="media-body">
@@ -728,7 +731,7 @@ function updateExistPost(updatedPost) {
             <div class="d-flex align-items-center">
                 <span class="font-weight-bold h5 mr-auto"><a href="href="${window.location.origin + '/home/wall/' + $('#user-id').data('id')}"" class="writer-name">${authorName}</a></span>
                 <div><small class="text-muted mb-2 mx-3">${postTime}</small></div>
-                
+
                 ${postToolHTML}
             </div>
             <!-- end post info -->
@@ -742,17 +745,17 @@ function updateExistPost(updatedPost) {
             <div class="mt-3 new-comment-area">
             <form method="POST" class="new_comment_form">
                 <div class="form-row d-flex align-items-center">
-                    <div class="col-1">
+                    <div class="col-sm-2 col-md-0 col-lg-2">
                         <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
                     </div>
-                    <div class="col-9">
+                    <div class="col-7 col-sm-7 col-md-6 col-lg-7">
                         <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
                     </div>
                     <div class="col-2">
                         <button type="button" data-id="${updatedPost._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
-                    </div>            
+                    </div>
                     <div class="invalid-message"></div>
-                </div>                                                
+                </div>
             </form>`
 
     $(`#${updatedPost._id}`).html(updatePost)
@@ -807,8 +810,8 @@ function updateComment(newComment, author, postId) {
             <!-- comment infor -->
             <div class="d-flex align-items-center">
                 <span class="font-weight-bold h6 mr-auto"><a href="${window.location.origin + '/home/wall/' + author._id}" class="writer-name">${author.fullname}</a></span>
-                <div><small class="text-muted mb-2 mx-3">${commentTime}</small></div>
-                
+                <div><small class="text-muted mb-2 mx-3 comment-time">${commentTime}</small></div>
+
                 ${commentToolHTML}
             </div>
             <!-- end comment infor -->
@@ -823,12 +826,12 @@ function updateComment(newComment, author, postId) {
     <!-- end comment -->`
 
     if($(`#comment-post-${postId}`).length == 0) { //don't have comment list before
-        let insertElement = 
+        let insertElement =
         `<!-- comment list -->
             <div>
                 <a class="show-all-comment" data-toggle="collapse" data-target="#comment-post-${postId}" aria-expanded="false" aria-controls="collapseExample">Hiển thị tất cả bình luận</a>
             </div>
-            <div class="collapse list-comment" id="comment-post-${postId}"> 
+            <div class="collapse list-comment" id="comment-post-${postId}">
                 ${newCommentHTML}
             </div>
         <!-- end comment list -->`
@@ -840,10 +843,10 @@ function updateComment(newComment, author, postId) {
 }
 
 function getListPost(page, condition = '') {
-    let url 
+    let url
     if (condition === '') url = window.location.origin + '/home/getPosts/' + page
     else url = window.location.origin + '/home/getPostsOfUser/' + condition + '/' + page
-    
+
     let opts = { method: 'GET' }
     fetch(url, opts)
     .then((response) => {
@@ -869,7 +872,7 @@ function checkNewNotification() {
     let content = document.getElementById("notification-content")
     let subject = document.getElementById("notification-subject")
     let error = document.getElementById("error-new-notification")
-    
+
     if (title.value == '') {
         title.focus()
         error.innerHTML = "Bạn cần nhập Tiêu đề thông báo"
@@ -882,7 +885,7 @@ function checkNewNotification() {
 
     if (error.innerHTML.length > 0) {
         error.classList.add("alert")
-        return false 
+        return false
     }
 
     error = ""
@@ -894,7 +897,7 @@ function checkUpdateNotification() {
     let content = document.getElementById("amend-notification-content")
     let subject = document.getElementById("amend-notification-subject")
     let error = document.getElementById("error-amend-notification")
-    
+
     if (title.value == '') {
         title.focus()
         error.innerHTML = "Bạn cần nhập Tiêu đề thông báo"
@@ -908,7 +911,7 @@ function checkUpdateNotification() {
     console.log(error);
     if (error.innerHTML != "") {
         error.classList.add("alert")
-        return false 
+        return false
     }
 
     error = ""
@@ -916,13 +919,22 @@ function checkUpdateNotification() {
 }
 
 function clearUpdateNotificationError() {
-    let error = document.getElementById("error-amend-notification") 
+    let error = document.getElementById("error-amend-notification")
     error.innerHTML = "";
     error.classList.remove("alert")
 }
 
 function clearNewNotificationError() {
-    let error = document.getElementById("error-new-notification") 
+    let error = document.getElementById("error-new-notification")
     error.innerHTML = "";
     error.classList.remove("alert")
+}
+
+function openNav() {
+    document.getElementById("sidebar").style.width = "270px";
+}
+
+/* Set the width of the sidebar to 0 (hide it) */
+function closeNav() {
+    document.getElementById("sidebar").style.width = "0";
 }
