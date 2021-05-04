@@ -526,7 +526,7 @@ iframe {
         height: 70px;
     }
 
-    .post-time, .author-comment-avatar, #personal-major{
+    .post-time, .comment-time, .author-comment-avatar, #personal-major{
         display: none;
     }
 }
@@ -536,7 +536,7 @@ iframe {
         width: 70px;
         height: 70px;
     }
-    .post-time {
+    .post-time, .comment-time {
         display: none;
     }
 
@@ -549,4 +549,8 @@ iframe {
     .notifications-area {
         display: none;
     }
+}
+
+.notification-page {
+    overflow-x: hidden;
 }

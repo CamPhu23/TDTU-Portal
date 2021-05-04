@@ -742,10 +742,10 @@ function updateExistPost(updatedPost) {
             <div class="mt-3 new-comment-area">
             <form method="POST" class="new_comment_form">
                 <div class="form-row d-flex align-items-center">
-                    <div class="col-1">
+                    <div class="col-sm-2 col-md-0 col-lg-2">
                         <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
                     </div>
-                    <div class="col-9">
+                    <div class="col-7 col-sm-7 col-md-6 col-lg-7">
                         <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
                     </div>
                     <div class="col-2">
@@ -807,7 +807,7 @@ function updateComment(newComment, author, postId) {
             <!-- comment infor -->
             <div class="d-flex align-items-center">
                 <span class="font-weight-bold h6 mr-auto"><a href="${window.location.origin + '/home/wall/' + author._id}" class="writer-name">${author.fullname}</a></span>
-                <div><small class="text-muted mb-2 mx-3">${commentTime}</small></div>
+                <div><small class="text-muted mb-2 mx-3 comment-time">${commentTime}</small></div>
                 
                 ${commentToolHTML}
             </div>
