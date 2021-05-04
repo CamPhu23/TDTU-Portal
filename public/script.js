@@ -605,7 +605,7 @@ function updatePost(result, author, isPrepend) {
                 <!-- post infor -->
                 <div class="d-flex align-items-center">
                     <span class="font-weight-bold h5 mr-auto"><a href="${window.location.origin + '/home/wall/' + author._id}" class="writer-name">${author.fullname}</a></span>
-                    <div><small class="text-muted mb-2 mx-3">${postTime}</small></div>
+                    <div><small class="text-muted mb-2 mx-3 post-time">${postTime}</small></div>
                     
                     ${postToolHTML}
                 </div>
@@ -620,13 +620,13 @@ function updatePost(result, author, isPrepend) {
                 <div class="mt-3 new-comment-area">
                 <form method="POST" class="new_comment_form">
                     <div class="form-row d-flex align-items-center justify-content-center">
-                        <div class="col-2">
+                        <div class="col-sm-2 col-md-0 col-lg-2">
                             <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
                         </div>
-                        <div class="col-7 col-md-8">
+                        <div class="col-7 col-sm-7 col-md-6 col-lg-7">
                             <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
                         </div>
-                        <div class="col-2 col-md-2">
+                        <div class="col-5 col-sm-3 col-md-4 col-lg-3">
                             <button type="button" data-id="${result._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
                         </div>            
                         <div class="invalid-message"></div>
@@ -925,4 +925,13 @@ function clearNewNotificationError() {
     let error = document.getElementById("error-new-notification") 
     error.innerHTML = "";
     error.classList.remove("alert")
+}
+
+function openNav() {
+    document.getElementById("sidebar").style.width = "270px";
+}
+
+/* Set the width of the sidebar to 0 (hide it) */
+function closeNav() {
+    document.getElementById("sidebar").style.width = "0";
 }

@@ -141,6 +141,16 @@ exports.postResetPassword = (req, res) => {
 }
 
 exports.getProfile = (req, res) => { 
+    let accountId = req.session.accountId
+    let isAdmin = false
+
+    accountModel.findById(accountId)
+    .then(account => {
+        if (account && account.permission == "admin") {
+            isAdmin = true
+        }
+    })
+
     let departmentProfile = req.flash('departmentProfile') || ''
     let classProfile = req.flash('classProfile') || ''
     let fullnameProfile = req.flash('fullnameProfile') || ''
@@ -150,7 +160,7 @@ exports.getProfile = (req, res) => {
     let success = req.flash('SuccessUpdateProfile') || ''
 
     if (error && error != '') {
-        return res.render('pages/profile', {email: emailProfile, avatar: avatarProfile, fullname: fullnameProfile, _class: classProfile, department: departmentProfile, error, url: req.currentURL})
+        return res.render('pages/profile', {email: emailProfile, avatar: avatarProfile, fullname: fullnameProfile, _class: classProfile, department: departmentProfile, error, url: req.currentURL, isAdmin})
     }
     
     let userId = req.session.userId
@@ -170,7 +180,7 @@ exports.getProfile = (req, res) => {
                 department = department.toLowerCase()
             }
     
-            return res.render('pages/profile', {email, avatar, fullname, _class: _class, department, url: req.currentURL, success})
+            return res.render('pages/profile', {email, avatar, fullname, _class: _class, department, url: req.currentURL, success, isAdmin})
         }
 
         return res.render('pages/profile', {email: '', avatar: 'http://via.placeholder.com/100', fullname: '', _class: '', department: '', url: req.currentURL})

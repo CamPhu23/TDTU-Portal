@@ -1,5 +1,7 @@
-<div class="vertical-nav bg-white" id="sidebar">
-    <div class="py-4 px-3 mb-4 bg-light" id="user-id" data-id="<%= user._id %>">
+<button class="openbtn d-flex justify-content-start" onclick="openNav()">&#9776; <span class="mx-auto"> TDTU Portal</span></button>
+<div class="vertical-nav sidepanel bg-white" id="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="py-4 px-3 mb-4 " id="user-id" data-id="<%= user._id %>">
         <div class="media d-flex align-items-center"><img src="<%= locals.user.avatar %>" width="65" class="mr-2 rounded-circle img-thumbnail shadow-sm user-avatar">
             <div class="media-body">
                 <h4 class="m-0 navbar-info-text"><%= locals.user.fullname %></h4>

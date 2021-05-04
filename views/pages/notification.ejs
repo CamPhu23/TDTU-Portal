@@ -11,14 +11,14 @@
 </head>
 
 <body>
-    <div class="row all-notifications py-4">
-        <div class="col-md-0 col-lg-2 left-part">
+    <div class="row">
+        <div class="col-0 col-lg-2">
             <!-- Vertical navbar -->
             <%- include('../partials/navbar.ejs') %>
                 <!-- End vertical navbar -->
         </div>
 
-        <div class="col-md-11 col-lg-10 d-flex justify-content-center notification mx-auto">
+        <div class="col-11 col-lg-10 d-flex justify-content-center notification mx-auto mt-4">
             <div class="shadow-lg p-3 bg-white rounded mx-auto w-75">
                 <div>
                     <div>
@@ -54,7 +54,7 @@
 
                     <% if (locals.isAdded == true) { %> 
                         <div class="row d-flex justify-content-end m-auto">
-                            <button type="button" class="btn btn-primary col-md-12 col-lg-3 col-sm-12" data-toggle="modal" data-target="#new-notification">
+                            <button type="button" class="btn btn-primary col-md-12 col-lg-3 col-sm-12 mt-2" data-toggle="modal" data-target="#new-notification">
                                 Đăng thông báo mới
                             </button>
                         </div>
