@@ -514,6 +514,10 @@ iframe {
     .post-time, .comment-time {
         display: none;
     }
+
+    .author-comment-avatar {
+        display: none;
+    }
 }
 
 @media (min-width: 1200px) {

@@ -622,13 +622,13 @@ function updatePost(result, author, isPrepend) {
                 <div class="mt-3 new-comment-area">
                 <form method="POST" class="new_comment_form">
                     <div class="form-row d-flex align-items-center justify-content-center">
-                        <div class="col-sm-2 col-md-0 col-lg-2">
+                        <div class="col-0 col-sm-2 col-md-0 col-lg-2">
                             <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
                         </div>
-                        <div class="col-7 col-sm-7 col-md-6 col-lg-7">
+                        <div class="col-8 col-sm-7 col-md-6 col-lg-7">
                             <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
                         </div>
-                        <div class="col-5 col-sm-3 col-md-4 col-lg-3">
+                        <div class="col-4 col-sm-3 col-md-4 col-lg-3">
                             <button type="button" data-id="${result._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
                         </div>
                         <div class="invalid-message"></div>
@@ -744,13 +744,13 @@ function updateExistPost(updatedPost) {
             <div class="mt-3 new-comment-area">
             <form method="POST" class="new_comment_form">
                 <div class="form-row d-flex align-items-center">
-                    <div class="col-sm-2 col-md-0 col-lg-2">
+                    <div class="col-0 col-sm-2 col-md-0 col-lg-2">
                         <img src="${$(user).attr('src')}" width="56" class="mr-3 rounded-circle img-thumbnail shadow-sm author-comment-avatar">
                     </div>
-                    <div class="col-7 col-sm-7 col-md-6 col-lg-7">
+                    <div class="col-8 col-sm-7 col-md-6 col-lg-7">
                         <input name="content" type="text" class="form-control" placeholder="Nhập nội dung bình luận...">
                     </div>
-                    <div class="col-2">
+                    <div class="col-4 col-sm-3 col-md-4 col-lg-3">
                         <button type="button" data-id="${updatedPost._id}" class="btn btn-primary submit_new_comment">Bình luận</button>
                     </div>
                     <div class="invalid-message"></div>
